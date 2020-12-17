@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+          <header>
+            <h3>Contact Details</h3>
+          </header>
+          
+          
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                    <th>Supplier Name</th>
+                    <th>Manufacturer Name</th>
+                    <th>Division Name</th>
+                   </tr>
+                </thead>
+                <tbody class="scroll">
+                  <tr> <%@contact.map do |i| %>
+                    <td><%= i["name"] %> </td>
+                    <td><%= i["email"] %> </td>
+                    <td><%= i["phone_number"] %></td>
+                    <td><%= i["address"] %>  </td>
+                    <td><%= i["suppliername"] %>  </td>
+                    <td><%= i["manufacturername"] %>  </td>
+                    <td><%= i["divisionname"] %>  </td>
+                    <%end %>
+                                                    
+                </tbody>
+              </table>
+</body>
+</html>
+
+

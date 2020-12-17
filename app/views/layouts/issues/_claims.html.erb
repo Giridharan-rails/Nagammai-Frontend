@@ -1,0 +1,34 @@
+<table id="example" class="display" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Cut-off Date </th>                  
+                  <th>Resolved By</th>
+                  <th>Status</th>
+           
+                  
+                </tr>
+              </thead>
+              <tbody>
+              
+<%if @approval.present?%>
+              <%@approval.map do |i|%>
+                <tr>
+                  <%=hidden_field_tag "ids[]" ,i["id"] %>
+                  <td><span style="width: 400px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" title="<%=i["description"]%>"><%=link_to i["description"], appointment_path(i["appointment_id"]),class: "btn btn-link"%></span></td>
+                  <td><%=i["cut_off_date"].to_date.strftime("%d-%m-%Y") unless i["cut_off_date"].nil? %></td>
+                  
+                  <td><%=i["contact"]["name"]%></td>
+                  <td class="td_issue_status">
+                     
+                    <%= select_tag "status[]", options_for_select([['Open'],['Closed'],['Re-open']],:selected=>i["status"]), :class => 'form-control', include_blank: "Select" %>
+                     </td>                
+                   
+                 </tr>
+                           <%end%>
+                 
+              </tbody>
+            </table>         
+<%else%>
+<h2><center>No Data Found</center></h2>
+<%end%>

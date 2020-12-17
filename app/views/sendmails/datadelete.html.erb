@@ -1,0 +1,126 @@
+
+      
+                
+<!--             <!%=form_for "data filter",:url=>{:controller=>"sendmails",:action=>"deletedata"} do |i|%>
+
+            <table id="example" class="table table_front table-striped">
+            <thead>
+              <tr>
+              <th>Table Name</th>
+              <th>Date</th>
+              <th>delete</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <!%@count=1%>
+              <!%table_list=["PurchaseReturn","RateChange","ExpiryDamage","FreeDis@count","PogrMismatch","PurchaseOrder","ExcessStock"]%>
+              <!%table_list.map do |j|%>
+              <td><label><!%=j%></label></td>
+               <td><!%= i.text_field :table_name, class: "form-control", required: "true",placeholder: "Table Name",value:j%></td>
+              <td><!%=val=date_field_tag :date, class: "form-control",placeholder: "Date"%>
+              <!%= date_field_tag :date,  class: "amount_field",id: "datepicker    " %>
+             
+
+              <input type="date" name="" class="amount_field" id="datepicker<%=@count%>">
+              </td>
+           <td><!%=link_to "Delete",sendmails_datadelete_path("table_name":j), class: "do_it_linkbtn btn-full btn-one"%></td>
+              <td><!%=i.submit "delete"%></td>
+            </tr>
+
+
+                 <!%@count=@count+1%>
+             <!%end%>
+            <!%end%>
+
+
+
+            
+            </tbody>
+
+        
+            </table>
+
+
+            <script>
+   $(document).ready(function() {
+    $(".do_it_link").click(function() {
+      $(this).attr("href", function() {
+        return this.href + "&date=" + $('#datepicker<%=@count%>').val();
+      });
+    });
+  });
+  </script>
+
+           <!%end%>
+
+ -->
+
+
+ 
+
+        <%=form_for "data filter",:url=>{:controller=>"sendmails",:action=>"deletedata"} do |i|%>
+
+                <div class="row">
+                <div class="col-md-3">
+                  <label>Date</label>
+                  <br>
+                  <input name="from_date" type="date" id="dt1" class="form-control" value="<%=@from_date%>" placeholder="dd-M-yy">
+
+                </div>
+                <div class="col-md-3">
+                  <label>Table Name</label>
+                  <br>                  
+                  <select name="table_select">
+                   <option value="" selected disabled>Please select</option>
+                    <option value="PurchaseReturn">Purchase Return</option>
+                    <option value="FreeDiscount">Free Discount</option>
+                    <option value="RateChange">Rate Change</option>
+                    <option value="ExpiryDamage">Expiry Broken</option>
+                    <option value="PurchaseOrder">Purchase Order</option>
+                    <option value="ExcessStock">Excess Stock</option>
+                    <option value="PogrMismatch">Pogr Mismatch</option>
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <label>&nbsp;</label>
+                  <br>
+                  <%=i.submit "Filter", class: "btn btn-full btn-one"%>
+                </div>
+              </div>
+              <%end%>
+
+
+<!--  <script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+         /* dom: 'Bfrtip',
+          bSort:true,
+          "pageLength": 13,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2 ]
+                }
+              }
+          ]*/
+           "bLengthChange": false
+
+      } );
+  } );
+
+  </script-->
+

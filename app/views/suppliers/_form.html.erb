@@ -1,0 +1,269 @@
+
+<div class="container cont_pad">
+  <div class="card">
+    <from class="edit-form">
+      
+      <% if supplier["id"].present? %>
+        
+        <%= form_for(:suppliers, :url => {:controller => 'suppliers',:action => 'supplier_update', method: :put}) do |f| %>
+        
+          <%= f.hidden_field 'id', :value => @supplier["id"] %>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="exampleInputName">SupplierCode<span class="required">*</span></label> 
+                    <%= f.text_field :name, class: "form-control" ,name: "code", :value => @supplier["supplier_code"], required: "true" ,readonly:"true", maxlength: "5", placeholder: "SupplierCode"%> 
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="exampleInputName">SupplierName<span class="required">*</span></label>
+                    <%= f.text_field :supplier_name, :value => @supplier["supplier_name"], class: "form-control",name: "supplier_name", required: "true",placeholder: "SupplierName"%>   
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                    <label>Expiry Broken<span class="required">*</span></label> 
+                    <%if @supplier["expiry_broken"] == "MRP"%>
+                    <%= f.select :expiry_broken, options_for_select(["Purchase Price","MRP"], "MRP") %>
+                    <%else%>
+                    <%= f.select :expiry_broken, options_for_select(["Purchase Price","MRP"], "Purchase Price") %>
+                    <%end%>
+                </div>
+              </div>
+            </div>
+    
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="exampleInputName">Address One<span class="required">*</span></label>
+                    <%= f.text_field :address_one, :value => @supplier["address_one"], class: "form-control" ,name: "address_one", required: "true" ,placeholder: "Address One"%>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="exampleInputName">Address Two</label> 
+                    <%= f.text_field :address_two, :value => @supplier["addrsss_two"], class: "form-control" ,name: "addrsss_two",placeholder: "Address Two"%>
+                </div>
+              </div>
+              
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="exampleInputName">Address Three</label> 
+                   <%= f.text_field :address_three, :value => @supplier["addrsss_three"], class: "form-control" ,name: "addrsss_three",placeholder: "Address Three"%>
+                </div>
+              </div>
+            </div>
+             
+             <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="exampleInputName">Order Copy Format</label> <br>
+                    <div class="col-md-3">
+                    <div class="d-flex">
+                     <input type="radio" name="order_copy_format" value="PDF" <% if @supplier["order_copy_format"]=="PDF" %> checked<%end%> />&nbsp;PDF
+                      
+                    </div>
+                   </div>
+                   <div class="col-md-3">
+                    <div class="d-flex">
+                    <input type="radio" name="order_copy_format" value="Text"<% if @supplier["order_copy_format"]=="Text" %> checked<%end%>/>&nbsp;Text
+                      
+                    </div>
+                   </div>
+                    
+                    
+                  </div>
+                </div>
+
+
+                <div class="col-md-4">
+                 <div class="form-group">
+                   <label for="exampleInputName">GST Number</label> 
+                     <%= f.text_field :gst_no, :value => @supplier["gst_no"], class: "form-control" ,name: "gst_no",placeholder: "GST Number"%>
+                 </div>         
+                </div>
+            
+               <div class="col-md-4">
+                 <div class="form-group">
+                  <label for="exampleInputName">Phone Number<span class="required">*</span></label> 
+                   <%= f.text_field :phone_number, :value => @supplier["phone_number"], class: "form-control" ,name: "phone_number" ,id: "quantity", maxlength:"10",placeholder: "Phone Number"%><div id="errmsg"></div>
+                 </div>
+               </div>
+            </div>
+
+            
+
+          <!--   <div class="form-group">
+               <label for="exampleInputName">Country</label>
+               <select id="country" name ="country" class="form-control" style="height: 30px;"></select>
+               
+             </div>
+           -->
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="exampleInputName">Supplier Abbr<span class="required">*</span></label>
+                    <%= f.text_field :supplier_abb, :value => @supplier["supplier_abb"], class: "form-control",name: "supplier_abb", required: "true",placeholder: "Supplier Abbr"%> 
+                </div>
+              </div>              
+                <div class="col-md-4">
+                   <div class="form-group">
+                   <label for="exampleInputName">City<span class="required">*</span></label> 
+                   <%= f.text_field :city, :value => @supplier["city"], class: "form-control" ,name: "city" ,placeholder: "City Name",required: "true"%>
+                   </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="form-group">
+                   <label for="exampleInputName">State<span class="required">*</span></label> 
+                   <%= f.text_field :state, :value => @supplier["state"], class: "form-control" ,name: "state",placeholder: "State Name",required: "true"%>
+                  </div>
+                </div>
+            </div>
+        <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                    <label>Batch<span class="required">*</span></label> 
+                    <%if @supplier["batch"] == "A"%>
+                    <%= f.select :batch, options_for_select(["A","B"], "A") %>
+                    <%else%>
+                    <%= f.select :batch, options_for_select(["A","B"], "B") %>
+                    <%end%>
+                </div>
+
+              </div>
+              <div class="col-md-4"></div><div class="col-md-4"></div><div class="col-md-4"></div></div>
+           
+            <footer class="form-footer">
+              <a><%= f.submit "Update", class: "btn btn-primary btn-one btn-lg load", id: "sup1" %></a>
+              <a><%= link_to "Cancel", suppliers_path, class: "btn btn-primary btn-lg load", id: "sup2" %></a>
+            </footer>
+        
+          <% end  %>
+        
+        <% else  %>
+
+          <%= form_for(supplier, :url => {:controller => 'suppliers', :action => 'create'}) do |f| %>
+              
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="exampleInputName">SupplierCode</label> 
+                      <%= f.text_field :name, class: "form-control" ,name: "code", required: "true", maxlength: "5"%> 
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="exampleInputName">SupplierName </label>
+                      <%= f.text_field :supplier_name,class: "form-control",name: "supplier_name", required: "true"%>   
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                <div class="form-group">
+                    <label>Expiry Broken</label> 
+                    <%= f.select :expiry_broken, options_for_select(["Purchase Price","MRP"]) %>
+                </div>
+                </div>
+
+
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="exampleInputName">Supplier Abbr</label>
+                      <%= f.text_field :supplier_abb, class: "form-control",name: "supplier_abb", required: "true"%> 
+                  </div>
+                </div>
+              </div>
+          
+              
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="exampleInputName">Address One<span class="required">*</span></label>
+                      <%= f.text_field :address_one,  class: "form-control" ,name: "address_one", required: "true" %>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="exampleInputName">Address Two</label> 
+                      <%= f.text_field :address_two, class: "form-control" ,name: "addrsss_two"%>
+                  </div>
+                </div>
+             
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="exampleInputName">Address Three</label> 
+                     <%= f.text_field :address_three, class: "form-control" ,name: "addrsss_three"%>
+                  </div>
+                </div>
+                </div>
+
+              <div class="form-group">
+                <label for="exampleInputName">GST Number</label> 
+                <%= f.text_field :gst_no, class: "form-control" ,name: "gst_no"%>
+              </div>
+
+              <div class="form-group">
+                      
+                <label for="exampleInputName">Order Copy Format</label> <br>
+                <input type="radio" name="order_copy_format" value="PDF" checked />PDF
+                <input type="radio" name="order_copy_format" value="Text"/>Text
+                          
+              </div>
+
+              <div class="form-group">
+                <label for="exampleInputName">Phone Number</label> 
+                <%= f.text_field :phone_number, class: "form-control" ,name: "phone_number", id: "quantity" ,maxlength: "10"%><div id="errmsg"></div>
+              </div>
+
+            
+
+              <div class="form-group">
+                <label for="exampleInputName">City</label> 
+                <%= f.text_field :city, class: "form-control" ,name: "city"%>
+              </div>
+            
+              <div class="form-group">
+                <label for="exampleInputName">State</label> 
+                <%= f.text_field :state, class: "form-control" ,name: "state"%>
+              </div>  
+           
+              <footer class="form-footer">
+                <%= f.submit "Save", class: "btn btn-primary btn-one btn-lg load", id: "sup3"%>
+                <%= link_to "Cancel", suppliers_path, class: "btn btn-primary btn-lg load", id: "sup4" %>
+              </footer>
+          
+          <% end %>
+        
+        <% end %>
+      </from>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+  //called when key is pressed in textbox
+  $("#quantity").keypress(function (e) {
+     //if the letter is not digit then display error and don't type anything
+     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+        //display error message
+        $("#errmsg").html("Digits Only").show().fadeOut("slow");
+               return false;
+    }
+   });
+});
+
+</script>
+<style type="text/css">
+  #errmsg
+{
+color: red;
+}
+</style>
+
+<script language="javascript">
+  populateCountries("country", "state"); // first parameter is id of country drop-down and 
+</script>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+    <link rel="stylesheet" href="/assets/user-assign.css">
+   </head>
+<body>
+      <section>
+        <div class="container-fluid user-assign">
+          <header>
+                 <ol class="breadcrumb">
+    <%= render_breadcrumbs :tag => :li, :separator => "" %>
+  </ol>
+            <h3>Free and Discounts
+             <span class="float-right">           
+              <input placeholder="Search" class="" id="system-search" name="q" type="text">
+             </span>  
+            </h3>
+          </header>        
+          <div class="card_hg  manufacturer">
+              <table class="table table_front table-striped table-list-search">
+                <thead>
+                  <tr>
+                    <th>Claim No</th>
+                    <th>Claim date</th>
+                    <th>Supplier Name</th>
+                    <th>Total Quantity</th>
+                    <th>Overall discount percentage</th>
+                    <th>Overall discount amount</th>
+                    <th>Claim Amount</th>
+                    <th>Settled Amount</th>
+
+                  </tr>
+                </thead>
+              <tbody class="scroll">
+                <% @free_discounts.map do |i| %>
+                  <tr class="content">             
+                    <td><%=link_to i["claim_no"], claims_free_discounts_claim_path(:claim_no=>i["claim_no"])%> </td>
+                    <td><%= i["ack_date"].to_date.strftime("%d-%m-%Y") %> </td>
+                    <td><%=i["supplier_name"] %> </td>
+                  
+                    <td><%= i["total_quantity"] %> </td>  
+                    
+                    <td><%= i["overall_discount_percentage"] %></td>                             
+                    <td><%= i["overall_discount_amount"] %></td>                             
+                    <td><%= i["claim_amount"] %> </td>                             
+                    <td><%= i["settled_amount"] %> </td>                             
+                     </tr>
+                <% end %>
+            </tbody>
+            </table>
+            
+          </div>
+          </div>
+      </section>
+        <div class="container-fluid">
+          <nav aria-label="Page navigation example" id="page_slider">
+           <h1><ul class="pagination">
+                <%= will_paginate  @free_discounts if @free_discounts.present?%>
+               </ul>
+           </h1> 
+          </nav>          
+        </div>             
+        
+
+</body>
+</html>
+<style type="text/css">
+  select{
+    width: 192px;
+  }
+</style>
+
+
+
+
+
+
+<script type="text/javascript">
+      $(document).ready(function() {
+    var activeSystemClass = $('.list-group-item.active');
+
+    //something is entered in search form
+    $('#system-search').keyup( function() {
+       var that = this;
+        // affect all table rows on in systems table
+        var tableBody = $('.table-list-search tbody');
+        var tableRowsClass = $('.table-list-search tbody tr');
+        $('.search-sf').remove();
+        tableRowsClass.each( function(i, val) {
+        
+            //Lower text for case insensitive
+            var rowText = $(val).text().toLowerCase();
+            var inputText = $(that).val().toLowerCase();
+            if(inputText != '')
+            {
+                $('.search-query-sf').remove();
+                tableBody.prepend('<tr class="search-query-sf"><td colspan="8"><strong>Searching for: "'
+                    + $(that).val()
+                    + '"</strong></td></tr>');
+            }
+            else
+            {
+                $('.search-query-sf').remove();
+            }
+
+            if( rowText.indexOf( inputText ) == -1 )
+            {
+                //hide rows
+                tableRowsClass.eq(i).hide();
+                
+            }
+            else
+            {
+                $('.search-sf').remove();
+                tableRowsClass.eq(i).show();
+            }
+        });
+        //all tr elements are hidden
+        if(tableRowsClass.children(':visible').length == 0)
+        {
+            tableBody.append('<tr class="search-sf"><td class="text-muted" colspan="8">No entries found.</td></tr>');
+        }
+    });
+});
+
+ $('#example tr').click(function() {
+        var href = $(this).find("a").attr("href");
+        if(href) {
+            window.location = href;
+        }
+    });
+    </script>
+    
+
+   <script type="text/javascript">$(document).ready(function(){
+    $('select').change(function(){
+         var value=($(this).val());
+        
+         
+        $.ajax({
+              type: "GET",
+              url: "/manufacturers/manufacturer_list?id="+value
+             })
+        });        
+    });
+
+   </script>

@@ -1,0 +1,233 @@
+
+<head>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+
+</head>
+
+<section>
+
+
+
+        <div class="container-fluid appointment-index">
+          <header>
+              <ol class="breadcrumb">
+                <%= render_breadcrumbs :tag => :li, :separator => "" %>
+                <%= link_to 'MissedList',appointments_pending_appointment_path, class: "btn btn_pad btn-link float-right load"%>
+              </ol>
+              
+          </header>
+          <div class="date-search">
+            
+            <%=form_for "appoint filter",:url=>{:controller=>"appointments",:action=>"appoint_filter"} do |i|%>
+              <div class="row">
+                <div class="col-md-3">
+                  <label>From Date</label>
+                  <br>
+                  <input name="from_date" type="text" id="dt1" class="form-control date" value="<%=@from_date%>" placeholder="dd-M-yy">
+
+                </div>
+                <div class="col-md-3">
+                  <label>To Date</label>
+                  <br>                  
+                  <input name="to_date" type="text" id="dt2" class="form-control date1" value="<%=@to_date%>" placeholder="dd-M-yy">
+                </div>
+                <div class="col-md-4">
+                  <label>Contact Type</label>
+                  <br>                  
+                  <select name="drop_value_select">
+                   <option value="" selected disabled>Please select</option>
+                    <option value="Manufacturer" <%if @type=="Manufacturer"%> selected <%end%> >Manufacturer</option>
+                    <option value="Division" <%if @type=="Division"%> selected <%end%> >Division</option>
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <label>&nbsp;</label>
+                  <br>
+                  <%=i.submit "Filter", class: "btn btn-full btn-primary"%>
+                </div>
+              </div>
+            <%end%>
+          </div>
+          <h3 class="page-title">Appointments
+
+              <a href="appointments/new" class="btn_add load" data-target="#exampleModalLabel"><i class="fa fa-plus" aria-hidden="true"></i></a>
+
+
+          </h3>
+
+          
+          <table id="example" class="display" width="100%" cellspacing="0">
+                  <thead>
+                      <tr>
+                          <th>Division</th>
+                          <th>With</th>
+                          <th>Date & Time</th>
+                          <th>Notes</th>
+                          <th>Supplier Users</th>
+                          <th>View</th>
+                          <th>Edit</th>
+                      </tr>
+                  </thead>                 
+                  <tbody>
+
+<% if @all_appointments.present?%>
+                    <%@all_appointments.map do |appointment|%>                    
+                      <tr>
+
+                        <td><%= appointment["contact_name"]%></td>
+                        <td><%= appointment["contacter_table_name"]%></td>
+                        <td><%= appointment["appoint_date"].to_date.strftime("%d-%m-%Y") if appointment["appoint_date"].present?%>,<%=appointment["appoint_time"] %></td>
+                        <td class="overflow-text"><span><%= appointment["appoint_note"]%></span></td>
+                        <td><%= appointment["supplier_contact"].join(",")%></td>                 
+                        <td><%= link_to 'View', appointment_path(appointment["id"]), class: "btn btn_pad btn-link load" %></td>
+                        <td><%= link_to '', edit_appointment_path(appointment["id"]), class: "btn btn_pad fa fa-pencil-square-o icon_clr load" %></td>
+
+                       </tr>
+                    <%end%>                     
+                  </tbody>
+              </table>
+            
+            </div>   
+      <%end%>       
+        
+</section>
+
+
+
+
+<script type="text/javascript">
+  $(document).ready(function () {
+
+        $("#dt1").datepicker({
+            
+            dateFormat: "dd-M-yy",
+            /*setDate: ,*/
+
+            //minDate: 0,
+            onSelect: function (date) {
+                var dt2 = $('#dt2');
+                var startDate = $(this).datepicker('getDate');
+                var minDate = $(this).datepicker('getDate');
+                dt2.datepicker('setDate', minDate);
+                startDate.setDate(startDate.getDate() + 60);
+                //sets dt2 maxDate to the last day of 30 days window
+                dt2.datepicker('option', 'maxDate', startDate);
+                dt2.datepicker('option', 'minDate', minDate);
+                //$(this).datepicker('option', 'minDate', minDate);
+            }
+        });
+        $('#dt2').datepicker({
+            dateFormat: "dd-M-yy"
+        });
+    });
+
+
+</script>
+<script type="text/javascript">
+  $(document).ready(function(){ 
+    $("#dt1").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "dd-mm-yy");
+    }
+    });
+    $("#dt2").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "dd-mm-yy");
+    }
+    });    
+  });  
+
+
+</script>
+
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+</script>
+<script type="text/javascript">
+$( document ).ready(function() {
+    var d = new Date();
+    var curr_date = d.getDate();
+    var curr_month = d.getMonth() + 1;
+    var curr_year = d.getFullYear();
+    var date=(curr_date + "-" + curr_month + "-" + curr_year);
+   $("#dt1").attr("placeholder",date);
+   $("#dt2").attr("placeholder",date);
+});
+</script>
+
+
+
+
+  <link rel="stylesheet" href="/assets/datatable.css">
+  <link rel="stylesheet" href="/assets/datatablebutton.css">
+  <script src="/assets/datatablejquery.js"></script>
+  <script src="/assets/datatablejquery1.js"></script>
+  <script src="/assets/datatablebuttons.js"></script>
+  <script src="/assets/datatablejszip.js"></script>
+  <script src="/assets/datatablepdf.js"></script>
+  <script src="/assets/datatablefont.js"></script>
+  <script src="/assets/datatablehtml.js"></script>
+  <script src="/assets/datatableprint.js"></script>
+
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+<!-- <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>  -->
+
+<!-- <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+
+<script src="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/jqueryui/dataTables.jqueryui.js">
+</script>
+ -->
+
+
+
+  <script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+          dom: 'Bfrtip',
+          bSort:true,
+          buttons: [
+              'excelHtml5',
+              'pdfHtml5',
+              'print'
+          ]
+          
+      } );
+  } );
+
+  </script>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type=search]").focus();
+  });
+
+  $(document).ready(function(){
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+</script>

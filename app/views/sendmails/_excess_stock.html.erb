@@ -1,0 +1,31 @@
+                <table class="table table-striped table_front table-list-search filter" id="example">
+                  <thead class="tbl-header">
+                    <tr>
+                      <th class="text-right">Supplier ID</th>
+                      <th class="text-right">Product Code</th>
+                      <th class="text-right">Division Code</th>
+                      <th class="text-left">Product Name</th>
+                      <th class="text-right">Quantity</th>
+                      <th class="text-right">Free Quantity</th>
+                     <th class="text-right">Excess Stock</th>
+                      <th class="text-right">Current Stock</th>
+                                            
+                    </tr>
+                  </thead>
+                   
+                  <tbody class="scroll">
+                    <%@excess_report.map do |i|%>
+                    <tr>
+                    <td class="text-right"><%=i["supplier_id"]%></td>
+                    <td class="text-right"><%=i["product_code"]%></td>
+                    <td class="text-right"><%= i["division_code"]%>
+                    <td class="text-left"><%=i["product_name"]%></td>
+                    <td class="text-right"><%=i["quantity"]%></td>
+                    <td class="text-right"><%=i["free_quantity"]%></td>
+                    <td class="text-right"><%=i["excess_stock"]%></td>
+                    <td class="text-right"><%=i["current_stock"]%></td>
+                    </tr>
+                    <%end%>
+
+                 </tbody>
+                </table>

@@ -1,0 +1,119 @@
+      <section class="users_admin">
+        <div class="container-fluid">
+          <a href="/sendmails/purchase_return_claims" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a>
+          <header>
+            <ol class="breadcrumb">
+             <li><%=link_to "Purchase Return Claims", sendmails_purchase_return_claims_path,class: " load"%></li>
+             <li> View Purchase Return </li>
+            </ol>
+         
+            <h3>View Purchase Return<span class="float-right adj-details">
+              <%=@purchase_return_claims[0]["supplier_code"] if @purchase_return_claims.present?%>,&nbsp;
+              Claim Number : <%=@purchase_return_claims[0]["claim_no"] if @purchase_return_claims.present?%>,&nbsp;
+              Claim Date : <%=@purchase_return_claims[0]["claim_date"].to_date.strftime('%d-%m-%Y') if @purchase_return_claims.present?%>
+           <!--  <a href="claims_add.html?sent=addclaims" class="btn_add" data-target="#exampleModalLabel"><i class="fa fa-plus" aria-hidden="true"></i></a> -->
+            </span></h3>
+          
+
+            
+          </header>
+        
+     <div class="card_hg claims_radio">     
+
+ <div class="tab-content">
+              <div class="tab-pane active" id="subject1" role="tabpanel">
+                <table class="table table-striped table_front table-list-search">
+                  <thead class="tbl-header">
+                    <tr>
+                    <th class="text-center">Product Code</th>
+                    <th class="text-center">Product</th>
+                    <th class="text-center">Batch</th>
+                    <th class="text-center">Expiry Date</th>
+                    <th class="text-center">Qty</th>   
+                    <th class="text-center" style="width: 5.75%;">Adjust Quantity</th>
+                    <th class="text-center">Free Qty</th>
+                    <th >Rate</th>
+                    <th class="text-center">MRP</th>
+                    <th >GST</th>
+                    <th class="text-center">Claim Amt</th>   
+                    <th class="text-center">Settled Amt</th>
+                    <th class="text-center">Balance Amt</th>
+                    <th class="text-center">Credit Amt</th>
+                    <th class="text-center">Credit Note Number</th>
+                    <th class="text-center">Credit Note Date</th>
+                    <th class="text-center">Actual Amount</th>
+                    <th class="text-center">Remarks</th>
+                    </tr>
+                  </thead>
+                  <tbody class="scroll">
+
+                  <%@purchase_return_claims.map do |i|%>
+
+                    <% if i["adjustments"] != [] %>
+
+                    <%i["adjustments"].map do |j|%>
+                      <tr>
+                                    <td><%=i["product_code"]%></td> 
+                                    <td class="text-left"><%=i["product"]["product_name"]%></td>
+                                    <td class="text-left"><%=i["batch"]%></td>
+                                    <td class="text-center"><%=i["expiry_date"]%></td>
+                                    <td class="text-right"><%=i["quantity"]%></td>  
+                                    <td class="text-right"><%=j["adjust_quantity"]%></td>
+                                    <td class="text-right"><%=i["free_quantity"]%></td>  
+                                    <td class="input-lable"><%=i["rate"].to_f.round(2)%></td>
+                                    <td class="input-lable"><%=i["mrp"].to_f.round(2)%></td>
+                                    <td class="input-lable"><%=i["gst"].to_f.round(2)%></td>
+                                    <td class="text-right"><%=i["claim_amount"].to_f.round(2)%></td> 
+                                    <td class="text-right"><%=i["settled_amount"].to_f.round(2)%></td>
+                                    <td class="text-right"><%=(i["claim_amount"].to_f-i["settled_amount"].to_f).round(2)%></td>
+                                    <td class="text-right"><%=j["credit_amount"]%></td>
+                                    <td class="text-right"><%=j["credit_note_num"]%></td>
+                                    <td class="text-center"><%=j["credit_date"].to_date.strftime('%d-%m-%Y') if j["credit_date"].present?%></td>
+                                    <td class="text-right"><%=j["actual_amount"]%></td>
+                                    <td class="text-left"><%=j["remark"]%></td>
+                                </tr>
+                         
+                    
+                    <%end%>
+
+                    <% else %>
+
+                                  <tr>
+                                    <td><%=i["product_code"]%></td> 
+                                    <td class="text-left"><%=i["product"]["product_name"]%></td>
+                                    <td class="text-left"><%=i["batch"]%></td>
+                                    <td class="text-center"><%=i["expiry_date"]%></td>
+                                    <td class="text-right"><%=i["quantity"]%></td>  
+                                    <td class="text-right"><%= 0 %></td>
+                                    <td class="text-right"><%=i["free_quantity"]%></td>  
+                                    <td class="input-lable"><%=i["rate"].to_f.round(2)%></td>
+                                    <td class="input-lable"><%=i["mrp"].to_f.round(2)%></td>
+                                    <td class="input-lable"><%=i["gst"].to_f.round(2)%></td>
+                                    <td class="text-right"><%=i["claim_amount"].to_f.round(2)%></td> 
+                                    <td class="text-right"><%=i["settled_amount"].to_f.round(2)%></td>
+                                    <td class="text-right"><%=(i["claim_amount"].to_f-i["settled_amount"].to_f).round(2)%></td>
+                                    <td class="text-right"><%= 0 %></td>
+                                    <td class="text-right"><%= 0 %></td>
+                                    <td class="text-center"><%= 0 %></td>
+                                    <td class="text-right"><%= 0 %></td>
+                                    <td class="text-left"><%= 0 %></td>
+                                </tr>
+
+
+                    <%end%>
+
+                    <% end %>
+
+                 </tbody>
+                </table>
+              </div>
+
+            </div>
+
+
+
+
+        </div>
+
+      </section>
+

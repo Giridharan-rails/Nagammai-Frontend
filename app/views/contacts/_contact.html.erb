@@ -1,0 +1,65 @@
+
+
+<div class="card cnt-edit-tabel">
+<table id="myTable" class="table table-striped">
+
+  <tr class="cntct-list-head">
+    <th style="width:85%;">Name</th>
+    <th style="width:15%;">Select</th>
+  </tr>  
+    <%if @suppliers.present?%>
+      <%= form_for(:supplier, :url => {:controller => 'contacts',:action => 'create'}) do |f| %>  
+         <%@suppliers.map do |i| %>
+      <tr>
+        <td><% i["supplier_name"] %> <%= i["supplier_name"] %> </td>                                      
+        <td><input type="checkbox" name="supplier_id" value="<%=i["id"]%>"></td>                     
+      </tr>
+         <%end%>
+      <%end%>
+    <%elsif @manufacturers.present?%>
+      <%= form_for(:manufacturers, :url => {:controller => 'contacts',:action => 'create'}) do |f| %>  
+        <% @manufacturers.map do |i| %>
+        <tr>
+          <td><%i["manufacturer_name"] %><%= i["manufacturer_name"] %> </td>                                      
+          <td><input type="checkbox" name="manufacturer_id" value="<%=i["id"]%>"></td>
+        </tr>
+        <%end%>                       
+      <%end%>    
+    <% else%>
+      <%= form_for(:division, :url => {:controller => 'contacts',:action => 'create'}) do |f| %>  
+         <%@divisions.map do |i| %>
+           <tr>
+              <td><% i["div_name"] %><%= i["div_name"] %> </td>                                      
+                <td><input type="checkbox" name="division_id" value="<%=i["id"]%>"></td>                                          
+            </tr>
+          <% end %>
+      <%end%>          
+    
+  <%end%>
+</table>
+</div>
+
+<script>
+function myFunction() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+</script>
+
+
+</body>
+</html>
+

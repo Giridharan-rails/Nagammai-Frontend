@@ -1,0 +1,129 @@
+<head>
+<link rel="stylesheet" href="/assets/user-assign.css">
+</head>
+         <section>
+        <div class="container-fluid division-index">
+          <header class="table-header">
+            <ol class="breadcrumb">
+              <%= render_breadcrumbs :tag => :li, :separator => "" %>
+            </ol>
+            <h3>Divisions
+<!--             <span class="float-right">
+            <select class="selectpicker" id="combobox" title="Select Role" data-style="btn-select"  data-live-search="true" onchange='return filterText();'>
+                <option value="10">GENERAL</option>
+                    <option value="100">UNICHEM</option>
+                    <option value="101">WOCKHARDT-FOOD DIVISION</option>
+                    <option value="102">VITALIS-CIPLA</option>
+                    <option value="103">BERGEN-ALKEM LABS LTD</option>
+                    <option value="104">RADIANT-SUN DIVISION</option>
+                    <option value="105">FUTURA-DR.REDDY S</option>
+                    <option value="106">CND-ZYDUS</option>
+                    <option value="107">PSYCAN-TORRENT</option>
+                    <option value="112">ENTEROPLUS-GLAXO WELLCOME</option>
+                    <option value="110">MIND-TORRENT</option>
+                    <option value="111">VISTA-TORRENT</option>
+              </select>
+             
+            </span>
+ -->            </h3>
+          </header>      
+          <div class="">
+            <table id="example" class="table table_front table-striped table-list-search">
+              <thead>
+                <tr>
+                  <th>Division Code</th>
+                  <th>Division Name</th>             
+                  <th>Division Abbr</th>             
+                  <th>Manufacture code</th>
+                  <th>Address</th>
+                  <th>Edit</th>
+                  <th>SOP</th>
+                  <th>Contacts</th>
+                  <th>Products</th>
+                </tr>
+              </thead>
+              <tbody class="scroll">
+              <% if @divisions.present?  %>
+
+                <%unless  @divisions[0]["response"]== "no data" %>
+                         <% @divisions.map do |i| %>
+            
+                <tr>
+                    <td><%= i["div_code"] %> </td>
+                    <td><%= i["div_name"] %> </td>
+                    <td><%= i["div_abb"] %> </td>
+                    <td><%= i["manufacturer"]["manufacturer_code"] if i["manufacturer"].present?%> </td>
+                    
+                    
+                    
+                    <td><%= i["address_one"] %>,<%= i["address_two"] %>,<%= i["address_three"] %> </td>
+                    <td><%= link_to '', edit_division_path(i["id"]), class:"fa fa-pencil-square-o icon_clr load" %></td>
+                    <!--%= link_to 'Destroy', divisions_division_delete_path(i["id"]), method: :delete, data: { confirm: 'Are you sure?' } %-->
+                    <td><%= link_to 'SOP', sops_path(:division_id=>i["id"]), :class=>"btn btn-link btn_pad load"%></td>
+                    <td><%if i.present?%><%= link_to 'Contacts', contacts_sup_man_div_based_contacts_path(:division_id=>i["id"] ,:data=>"Division"), :class=>"btn btn-link btn_pad load" %><%end%></td>
+                    <td><%= link_to 'Products', sops_products_view_path(:division_id=>i["id"]), :class=>"btn btn-link btn_pad load" %></td>                  
+                 </tr>
+                   <% end %>
+               
+                        <%end%>              
+
+        <%end%>
+                </tbody>
+                
+              </table>
+          
+          </div>
+          </div>
+          </section>
+
+
+  <script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+       /*   dom: 'Bfrtip',
+          bSort:true,
+          "pageLength": 13,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2, 3, 4 ]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2, 3, 4 ]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2, 3, 4 ]
+                }
+              }
+          ]
+      */
+         
+        "bLengthChange": false
+
+    } );
+  } );
+
+  </script>
+
+ <script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+
+</script>

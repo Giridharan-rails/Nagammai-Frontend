@@ -1,0 +1,220 @@
+<head>
+    <link rel="stylesheet" href="/assets/user-assign.css">
+</head>
+<body>
+    <section>
+      <div class="container-fluid user-assign">
+        <header>
+
+            <h3>Expiry / Broken
+                    <%if params["data"].present?%>
+                    <a href="/sendmails/expiry_damage_claims" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a>
+              
+                    <%elsif params["id"]=="pendingreport"%>
+                    
+                      <a href="/sendmails/pending_claims_report" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a>
+                    <%elsif params["id"]=="settledreport"%>
+                    <a href="/sendmails/settled_claims_report" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a>
+
+                      <%else%>
+                        <a href="/sendmails/sendmails_claims_broken_damage" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a>
+
+                    <%end%>
+                   <!--  <span class="float-right">           
+                      <input placeholder="Search" class="" id="system-search" name="q" type="text">
+                    </span>   -->
+            </h3>
+        </header>   
+        <div class="card manufacturer purschase-order">
+             <% if @ed_emails.present?%>
+                <div class="mail-span">
+                    <label>To: </label>
+                    <%@ed_emails.map do |i|%>
+                    <span><%= i["email"]%></span>
+               <%end%>
+                </div>
+               <%end%>            
+            <div class="row order-address">
+                <div class="col-md-4">
+                  <label> Claim Number: <span><%= @expiry_damage_claims[0]["claim_no"] if @expiry_damage_claims.present? && @expiry_damage_claims[0].present? %></span></label>
+                </div> 
+                <div class="col-md-4">
+                  <label>Claim Date: <span><%= @expiry_damage_claims[0]["ack_date"].to_date.strftime("%d-%m-%Y") if @expiry_damage_claims.present? && @expiry_damage_claims[0].present? %></span></label>
+                </div>
+
+                <div class="col-md-4">
+
+                  <label> Supplier Code: <span><%= @expiry_damage_claims[0]["supplier_code"] if @expiry_damage_claims.present? && @expiry_damage_claims[0].present? %></span></label>
+                </div>
+            </div>
+            <table class="table table-responsive">
+                <thead>
+                  <tr>
+                    <th>P.Code</th>
+                    <th>Description & Packing</th>
+                    <th class="text-right">Qty</th>
+                    <th class="text-right">Free</th>
+                    <th class="text-center">Exp</th>
+                    <th class="text-right">MRP</th>
+                    <th class="text-right">Rate</th> 
+                    <th class="text-right">GST</th>
+                    <th class="text-right">Claim Amount</th>
+                    <th class="text-right">Settled Amount</th>
+                  </tr>
+                </thead>
+            <tbody class="scroll">
+                <% @expiry_damage_claims.map do |i| %>
+                  <tr class="content">
+                     <td><%= i["product"]["hsn_code"] if i["product"]["hsn_code"].present?%> </td>
+                     <td><%= i["item_desc"] %> <%= i["packing"] %> </td>
+                     <td class="text-right"><%= i["quantity"] %> </td>
+                     <td class="text-right"><%= i["free_quantity"] %> </td>
+                     <td class="text-center"><%= i["expiry_date"].to_date.strftime('%d-%m-%Y') %></td> 
+                     <td class="text-right"><%= i["mrp"] %> </td>
+                     <td class="text-right"><%= i["rate"] %> </td>
+                     <td class="text-right"><%= i["gst"].to_f.round(2) %> </td>
+                     <td class="text-right"><%= i["claim_amount"].to_f.round(2) %> </td>
+                     <td class="text-right"><%= i["settled_amount"].to_f.round(2) %> </td>
+                 </tr>
+                <% end %>
+
+            </tbody>
+            </table>
+            <!-- <div class="row">
+         <div class="col-md-4">     
+               
+                 <label style="margin-top: 40px;">Gross Amount: <span><!%if @expiry_damage_claims[0]["supplier"]["expiry_broken"] == "Purchase Price"%><!%@expiry_damage_claims.map{|i| @gross<<(i["quantity"].to_f*i["rate"].to_f)}%><!%=@gross.sum.round(2)%><!%end%></span>
+                </label
+                >
+              </div>
+              </div>
+ -->
+            <div class="col-md-12"> 
+
+                <div class="col-md-3">     
+               <%@mrp=[]%>
+                <label style="font-weight: bold;">MRP: <span><%if @expiry_damage_claims[0]["supplier"]["expiry_broken"] == "MRP"%><%@expiry_damage_claims.map{|i| @mrp<<(i["quantity"].to_f*i["mrp"].to_f)+i["gst"].to_f}%>
+                  &#8377;&nbsp;<%= "#{@mrp.sum.to_f.round(2).to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}"%>
+                <%end%></span>
+                </label
+                >
+                </div>
+              
+
+               <div class="col-md-3">     
+               
+                 <label style="font-weight: bold;">Gross Amount: <span><%if @expiry_damage_claims[0]["supplier"]["expiry_broken"] == "Purchase Price"%><%@expiry_damage_claims.map{|i| @gross<<(i["quantity"].to_f*i["rate"].to_f)}%>
+                 &#8377;&nbsp;<%= "#{@gross.sum.to_f.round(2).to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}"%><%end%></span>
+                </label
+                >
+              </div>
+              <div class="col-md-3">     
+                  <label style="font-weight: bold;">Vat Amount: <span><%if @expiry_damage_claims[0]["supplier"]["expiry_broken"] == "Purchase Price"%><%@expiry_damage_claims.map{|i| @vat<<i["gst"].to_f}%>
+                  &#8377;&nbsp;<%= "#{@vat.sum.to_f.round(2).to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}"%><%end%></span>
+                  </label>
+              </div>
+              <div class="col-md-3">     
+                  <label style="font-weight: bold;">Total Amount: <span><%@expiry_damage_claims.map{|i| @total<<i["claim_amount"].to_f}%>&#8377;&nbsp;<%= "#{@total.sum.to_f.round(2).to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}"%></span>
+                  </label>
+              </div>
+              <div class="col-md-3">     
+                  <label style="font-weight: bold;">Settled Amount: <span><%@set_total=[]%><%@expiry_damage_claims.map{|i| @set_total<< i["settled_amount"].to_f}%>&#8377;&nbsp;<%= "#{@set_total.sum.to_f.round(2).to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}"%></span>
+                  </label>
+              </div>
+            </div>  
+          </div>
+      </div>
+ </section>
+      <div class="container-fluid">
+          <nav aria-label="Page navigation example" id="page_slider">
+            <h1><ul class="pagination">
+               
+               </ul>
+           </h1> 
+          </nav>          
+      </div>             
+        
+
+</body>
+
+<style type="text/css">
+  select{
+    width: 192px;
+  }
+</style>
+
+
+
+<!-- 
+
+
+<script type="text/javascript">
+      $(document).ready(function() {
+    var activeSystemClass = $('.list-group-item.active');
+
+    //something is entered in search form
+    $('#system-search').keyup( function() {
+       var that = this;
+        // affect all table rows on in systems table
+        var tableBody = $('.table-list-search tbody');
+        var tableRowsClass = $('.table-list-search tbody tr');
+        $('.search-sf').remove();
+        tableRowsClass.each( function(i, val) {
+        
+            //Lower text for case insensitive
+            var rowText = $(val).text().toLowerCase();
+            var inputText = $(that).val().toLowerCase();
+            if(inputText != '')
+            {
+                $('.search-query-sf').remove();
+                tableBody.prepend('<tr class="search-query-sf"><td colspan="6"><strong>Searching for: "'
+                    + $(that).val()
+                    + '"</strong></td></tr>');
+            }
+            else
+            {
+                $('.search-query-sf').remove();
+            }
+
+            if( rowText.indexOf( inputText ) == -1 )
+            {
+                //hide rows
+                tableRowsClass.eq(i).hide();
+                
+            }
+            else
+            {
+                $('.search-sf').remove();
+                tableRowsClass.eq(i).show();
+            }
+        });
+        //all tr elements are hidden
+        if(tableRowsClass.children(':visible').length == 0)
+        {
+            tableBody.append('<tr class="search-sf"><td class="text-muted" colspan="6">No entries found.</td></tr>');
+        }
+    });
+});
+
+ $('#example tr').click(function() {
+        var href = $(this).find("a").attr("href");
+        if(href) {
+            window.location = href;
+        }
+    });
+    </script> -->
+    
+
+   <script type="text/javascript">$(document).ready(function(){
+    $('select').change(function(){
+         var value=($(this).val());
+        
+         
+        $.ajax({
+              type: "GET",
+              url: "/manufacturers/manufacturer_list?id="+value
+             })
+        });        
+    });
+
+   </script>

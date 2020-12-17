@@ -1,0 +1,103 @@
+
+           <section class="users_admin">
+        <div class="container-fluid sync-job">
+          <header class="table-header">
+            <ol class="breadcrumb">
+              <%= render_breadcrumbs :tag => :li, :separator => "" %>
+            </ol>
+            <h3>Sync</h3>
+          </header>
+          <a href="syncsettings/new" class="btn_add load" data-target="#exampleModalLabel"><i class="fa fa-plus" aria-hidden="true"></i></a>
+          <div class="">
+              <table id="example" class="table table-striped">
+                  <thead>
+                  <tr>
+                    <th class="th_titles2">Jobs</th>
+                    <th class="th_schedule">Scheduled Time</th>
+                    <th class="th_frequency">Frequency</th>
+                 <!--    <th class="th_lastsync">Last Sync at</th>                     -->
+                    <!-- <th class="th_sync">Sync</th> -->
+                    <th class="th_settings">Settings</th>
+                  </tr>
+                </thead>
+                <tbody>
+              <% @sync_data.map do |i| %>
+                   <tr>
+                    <td class="td_titles2"><%= i["job_name"] %> </td>
+                    <td class="td_schedule"><span class="schedule_bg"><%=i["schedule_time"]%></span></td>
+                    <td class="td_frequency"><%= i["schedule"] %> - <%= i["schedule_period"] %> </td>
+                       <!-- <td class="td_lastsync"></td> -->
+                 
+                    <!-- <td class="td_sync"><i class="fa fa-refresh icon_clr" ng-click="show('Extract Supplier Masters')" aria-hidden="true"></i></td>
+                     --><td class="td_settings"><%=link_to '<i class="fa fa-cog icon_clr load" aria-hidden="true"></i>'.html_safe,syncsettings_sync_setting_page_path(:id=>i["id"])%></td>
+
+
+<!-- 
+
+<td class="td_sync">
+                      <a href="#" class="btn btn_pad"><i class="fa fa-refresh icon_clr" ng-click="show('Extract Supplier Masters')" aria-hidden="true"></i></a>
+
+                    </td>
+                    <td class="td_settings">
+                      <a href="sync_setting.html" class="btn btn_pad"><i class="fa fa-cog icon_clr" aria-hidden="true"></i></a>
+                    </td>
+
+ -->
+                   </tr>
+                   <% end %>
+        
+                </tbody>
+                
+              </table>
+          </div>   
+          </div>
+          </section>       
+   
+  <script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+         /* dom: 'Bfrtip',
+          bSort:true,
+          "pageLength": 13,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2 ]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2 ]
+                }
+              }
+          ]*/
+           "bLengthChange": false
+
+      } );
+  } );
+
+  </script>
+
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+
+</script>

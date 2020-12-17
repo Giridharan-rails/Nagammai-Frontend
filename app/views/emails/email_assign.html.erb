@@ -1,0 +1,147 @@
+ 
+
+ 
+<head>
+  <link rel="stylesheet" href="/assets/user-assign.css">
+</head>
+
+<!-- 
+<section id="mail-box">
+        <div class="container-fluid user-assign">
+          <header>
+                 <ol class="breadcrumb">
+    <%#= render_breadcrumbs :tag => :li, :separator => "" %>
+  </ol>
+          <!%= form_for(:email, :url => {:controller => 'emails',:action => 'email_update',:email_id=>params["id"]}) do |f| %>  
+            <h3>Inbox<span class="float-right">
+                
+                 
+ <!%= select("supplier", "supplier_id", @suppliers.collect {|p| [ p["supplier_name"], p["id"] ] }, class: "e1")%>
+                   
+                   <!%= f.submit "Move", class: "btn btn-primary"%>
+
+                   <!%end%>
+
+              </span>
+
+            </h3>
+          </header>
+          <div class="mail_tbl_bg">
+            <table id="example" class="table table-hover table_front table-striped table-list-search">
+              <tbody class="scroll">
+            
+              
+                <tr>
+                  <td class="mailbox-subject"><!%=@emails["subject"]%></td>
+                  </tr>
+                  <tr>
+                  <td class="mailbox-subject"><!%=@emails["mailer_name"]%></td></tr>
+                  <tr>
+                  <td class="mailbox-attachment"><img src="/assets/atchm.png" width="32px"></td>
+                  </tr>
+                  <tr>
+                  <td class="mailbox-date"><!%=@emails["date"]%></td>
+
+                </tr>
+                
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </section>
+ -->
+ <section id="mail-box">
+        <div class="container-fluid user-assign">
+           <div class="card readmail_card">
+       <div id="lblnew">
+       <!-- <label >Assigned Successfully</label> -->
+       </div>
+            <header>
+              <h3>
+                <span class="float-right">
+                   <!--  <div class="btn-group"> -->
+                      <!-- <button type="button" class="btn btn-one dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fa fa-folder-open" aria-hidden="true"></i>
+                      </button> -->
+ <%= form_for(:email, :url => {:controller => 'emails',:action => 'email_update',:class => 'd-inline-flex', :email_id=>params["id"]}) do |f| %>
+  <label>Move To:</label>
+  <%= select("supplier", "supplier_id", @suppliers.collect {|p| [ p["supplier_name"], p["id"] ] }, class: "e1 selectpicker")%>
+            <!-- <select  id="combobox" class="selectpicker" title="Select" data-style="btn-select"  data-live-search="true" ng-model="abc">
+                  <option selected>Select Supplier</option>
+                  <option value="500">SURGICARE</option>
+                  <option value="501">LLOYD HEALTHCARE PVT LTD</option>
+                  <option value="502">SRI SARAVANA MEDICAL&SURGICAL </option>
+                  <option value="503">WIN PHARMA</option>
+                  <option value="504">RATHNA HOSPITAL SUPPLIES {KLM}</option>               
+                </select> -->
+<div class="btn-group"><!-- <button class="btn btn-primary btn-one btn-sm" onclick="window.location.href='email.html'" type="submit" name="action" value="delete"><i class="fa fa-arrows"></i>&nbsp;Move</button> -->
+  <%= f.submit "Move", class: "btn btn-primary"%>
+
+                   
+
+</div>
+<%end%>
+         <!-- <div class="btn-group">
+                      <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-chevron-left"></i></button>
+                      <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-chevron-right"></i></button>
+                    </div>    -->
+
+                </span>
+              <%=@emails["subject"]%>
+        
+                <p class="readmail_p">from: <%=@emails["from_mail"]%></p>
+              </h3>              
+            </header>
+            <div class="card-block">
+            <p class="card-text">
+               <%=@emails["message"]%>
+              </p>
+              <div class="dwnld_card">
+                <div class="card">
+                  <div class="img_card"><img class="" src="/assets/downloadarrow.png"></div>
+                  <div class="card-block">
+                    <h4 class="card-title"><img src="/assets/atchm.png" width="32px"> <%=@emails["attachment"].split("\\").last if @emails["attachment"].present?%></h4>
+                    <p class="readmail_p2"></p>
+                  </div>
+
+                  <div class="overlay"></div>
+                 <div class="button"> <a href="#"><i class="fa fa-arrow-circle-down" aria-hidden="true"></i> Download</a> 
+                 
+<!--  <!%= link_to emails_download_path({"id":@path}) do %><i class="fa fa-arrow-circle-down"></i> <span class="hidden-sm-down">Download</span><!% end %> -->
+
+
+                  </div>                  
+                </div>
+              </div>
+               <footer class="form-footer">
+
+<!-- 
+                <button type="submit" class="btn btn-primary btn-one" onclick="window.location.href='emails'" style="float: right;" >Back</button> -->
+
+<a href="/emails" class="btn btn-primary btn-one" style="float: right;">Back</a>
+                <!-- <button type="submit" class="btn btn-primary" onclick="window.location.href='received_mail.html'">Cancel</button> -->
+              </footer>
+            </div>
+           </div>
+        </div>
+       
+      </section>
+
+<script type="text/javascript">
+     
+$(document).ready(function() {
+    $('select').select2();
+});
+   </script>
+
+
+<style type="text/css">
+  select{
+    width: 192px;
+  }
+</style>
+
+
+
+
+            

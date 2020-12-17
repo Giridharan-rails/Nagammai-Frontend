@@ -1,0 +1,533 @@
+
+<head>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.2/select2.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.2/select2.min.js"></script>
+  <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
+  <!-- <script src="https://rawgit.com/select2/select2/master/dist/js/select2.js"></script> -->
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+</head>
+<section id="appointment">
+  <div class="container-fluid">
+    <header>
+       <ol class="breadcrumb">
+        <%= render_breadcrumbs :tag => :li, :separator => "" %>
+       </ol>
+      <h3>Edit Appointments</h3>
+    </header>
+
+
+    <!-- <div class="row mrgn_add">
+
+        <div id="myRadioGroup">
+            <div class="d-flex">
+            <!%if @appointment["division_id"].present?%>
+                <input type="radio" name="cars" value="Manufacturer" />&nbsp;Manufacturer
+                <input type="radio" name="cars" value="Division" checked="checked"/>&nbsp;Division
+            <!%else%>
+                <input type="radio" name="cars" value="Manufacturer" checked="checked"/>&nbsp;Manufacturer
+                <input type="radio" name="cars" value="Division" />&nbsp;Division
+            <!%end%>
+            </div>
+            
+        </div>
+
+    </div> -->
+    <%= form_for(@appoin, :url => {:controller => 'appointments', :action => 'update_appointment',:id=>@appointment["id"]}) do |f| %>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="">
+          <div class="row row_mrgn">
+            <div class="col-md-6">
+              <label class="form-control-label" for="formGroupExampleInput">Select Supplier<span class="required">*</span></label>
+              <%= select_tag "supplier_id", options_for_select(@suppliers.map { |obj| [obj['supplier_name'], obj['id']] },:selected=>@appointment["supplier_id"]), class: "fold1 se1", autofocus: true, prompt: "select", required: "true" %>              
+            </div>
+            <!-- <div class="col-md-4">
+              <label class="form-control-label" for="formGroupExampleInput">Select Manufacturer<span class="required">*</span></label>
+              <!%= select_tag "manufacturer_id", options_for_select(@manufacturers.map { |obj| [obj['manufacturer_name'], obj['id']] },:selected=>@appointment["manufacturer_id"]), class: "fold1 manu", autofocus: true, prompt: "select", required: "true" %>              
+            </div>
+            -->
+
+            
+            <div class="col-md-6">
+              <div id="CarsDivision" class="desc" >
+                 <label class="form-control-label" for="formGroupExampleInput">Select Division<span class="required">*</span></label>
+
+                  <%= select_tag "division_id", options_for_select(@divisions.map { |obj| [obj['div_name'], obj['id']] },:selected=>@appointment["division_id"]), class: "fold1 divi",autofocus: true, prompt: "select"%>              
+                 </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>          
+    <div class="card row_mrgn">
+      <div class="col-md-12 row_mrgn2">
+        <div class="row">
+          <div class="col-md-6 row_mrgn">
+            <label class="form-control-label" for="">On:<span class="required">*</span></label>
+           <!--  <!%= f.text_field :appoint_date, type: "date", class: "form-control", id: "example-date-input", required: "true" ,:value=>@appointment["appoint_date"]%> -->
+
+           <input name="appoint_date" type="text" id="dt1" class="form-control date" placeholder="dd-M-yy" value="<%=@appointment["appoint_date"].to_date.strftime('%d-%m-%Y') if @appointment["appoint_date"].present?%>">
+
+          </div>
+          <div class="col-md-6 row_mrgn">
+            <label class="form-control-label" for="">At:<span class="required">*</span></label>
+            <div class="col-md-12 col_pad">
+            <% if @appointment["appoint_time"].present?%>
+              <% hr = @appointment["appoint_time"].split(":").first %>
+              <% mm = @appointment["appoint_time"].split(":").last %>
+            <%else%>
+               <%hr = "00" %><%mm = "00"%>
+            <%end%>
+              <%= time_select :appoint_time, {}, { default: {hour: hr, minute: mm}, minute_step: 15 }, { style: "width: 40%;" } %>
+            </div>
+          </div>
+        </div>
+      </div>          
+      <div class="col-md-12 contacts">
+        <div class="table_bg table_mrgn">
+          <table class="table table_front table-striped">
+            <thead>
+              <tr>
+                <th class="th_sno">#</th>
+                <th class="th_appointment_name">Contact</th>
+                <th class="th_appointment_title">Title</th>
+                <th class="th_appointment_phno">Phone no</th>
+                <th class="th_appointment_email">Email</th>
+                <th class="th_appointment_check" style="text-align: inherit;">Select</th>
+              </tr>
+            </thead>
+            <tbody class="scroll">
+              <% s_no = 1 %>
+              <% @contacts.each do |contact| %>
+             <%(@appointment["contacts_ids"].present?) ? @contact_in=@appointment["contacts_ids"].split(",") : @contact_in=[]%>
+              <tr>              
+                <th class="td_sno" scope="row"><%= s_no %></th>
+                <td class="td_appointment_name"><%= contact["name"] %></td>
+                <td class="td_appointment_title"><%=contact["jobs_name"]["job_name"] if contact["jobs_name"].present?%></td>
+                <td class="td_appointment_phno"><%= contact["phone_number"] %></td>
+                <td class="td_appointment_email"><%= contact["email"] %></td>
+                <td class="td_appointment_check">
+                <%if @contact_in.include?(contact["id"].to_s).to_s == "true"%>
+                     <%= check_box_tag 'contacts_ids[]', contact["id"],true %>
+                <%else%>
+                      <%= check_box_tag 'contacts_ids[]', contact["id"]%>
+                <%end%>
+                </td>
+              </tr>
+              <% s_no = s_no+1 %>
+              <% end %>                    
+            </tbody>
+          </table>                
+        </div>           
+      </div>            
+    </div>
+    <div class="row row_mrgn">
+      <div class="col-md-12 history">
+        <h3 class="collapse_tbl" data-toggle="collapse" href="#history" aria-expanded="false" aria-controls="collapseExample1">History
+        <i class="fa fa-chevron-down" aria-hidden="true"></i></h3>
+        <div class="collapse" id="history">
+        <div class="card card_bg history-list">
+          <div class="table_height table_mrgn">
+            <table class="table table_front table-striped table-list-search">
+              <thead>
+                <tr>
+                  <th class="th_apo">Type of Contact</th>
+                  <th class="th_apo">Contact Name</th>
+                  <th class="th_apo_with">With</th>
+                  <th class="th_apo_dt">Date & Time</th>
+                  <th class="th_apo_note">Notes</th>
+                </tr>
+              </thead>
+              <tbody class="scroll">
+              <%@history.each do |i| %>
+                <tr>
+                  <td class="td_apo"><%= i["appointment"]["app_contact_type"]%></td>
+                  <td class="td_apo"><%= i["appointment"]["app_contact"]["div_name"]%></td>
+                  <td class="td_apo"><% i["contacts"].map do |j|%><%= j["name"]%></td><%end%>
+                  <td class="td_apo_dt"><%=i["appointment"]["appoint_date"]%>,<%=i["appointment"]["appoint_time"] %></td>    
+                  <td class="td_apo_dt"><%= i["appointment"]["appoint_note"]%></td>                 
+                </tr>
+                <% end %>
+              </tbody>
+            </table>         
+          </div>
+       
+    </div>
+    </div> 
+    </div>
+    </div>
+
+    <div class="row  row_mrgn">
+      <div class="col-md-12">
+        <div class="">
+          <label class="form-control-label" for="" style="font-size: medium;">Notes</label>
+          <%= f.text_area :appoint_note, class: "text_hg", style: "font-size: initial;",value: @appointment["appoint_note"] %>
+        </div>
+      </div>          
+    </div>
+    <div class="row row_mrgn">
+      <div class="col-md-12">
+        <h3 class="collapse_tbl" data-toggle="collapse" href="#collapseExample2" aria-expanded="true" aria-controls="collapseExample2">Operating Terms
+        <i class="fa fa-chevron-up" aria-hidden="true"></i></h3>
+        <div class="collapse in show" id="collapseExample2">
+          <div class="card card_bg">
+          <div class="row">
+            <div class="col-md-6 pending_claims">
+              <label class="form-control-label" for="formGroupExampleInput">PENDING CLAIMS</label>
+               <div class="card card_height table_mrgn">
+                    <div class="card-block">
+                      <table class="table table_front table-striped" id="claimstable">
+                        <thead>
+                          <tr>
+                            <th>Claim No</th>
+                            <th>Claim Date</th>
+                            <th>Claim Type</th>
+                            <th>Amount</th>
+                            <th>Settled Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody class="scroll">
+                        <%claim_total=[]%>
+                          <%settled_total=[]%>
+                              <%if @claims["free"].present?%>
+                                <% @claims["free"].each do |claim| %>
+                                <tr>
+                                  <th class="td_pnd_no" scope="row"><%= claim["claim_no"] %></th>
+                                  <td class="td_pnd_desp"><%= claim["claim_date"].to_date.strftime('%d-%m-%Y') if claim["claim_date"].present? %></td>
+                                  <td class="td_pnd_desp">FreeDiscount</td>
+                                  <td class="td_pnd_qty"><%claim_total << claim["claim_amount"].to_i%><%= claim["claim_amount"].to_i.round(2) %></td>
+                                  <td class="td_pnd_qty"><%settled_total << claim["settled_amount"].to_i%><%= claim["settled_amount"].to_i.round(2) %></td>
+                                </tr>
+                                <% end %>
+                              <% end %>
+                              <%if @claims["expiry"].present?%>
+                                <% @claims["expiry"].each do |claim| %>
+                                <tr>
+                                  <th class="td_pnd_no" scope="row"><%= claim["claim_no"] %></th>
+                                  <td class="td_pnd_desp"><%= claim["claim_date"].to_date.strftime('%d-%m-%Y') if claim["claim_date"].present? %></td>
+                                  <td class="td_pnd_desp">ExpiryDamage</td>
+                                  <td class="td_pnd_qty"><%claim_total << claim["claim_amount"].to_i%><%= claim["claim_amount"].to_i.round(2) %></td>
+                                  <td class="td_pnd_qty"><%settled_total << claim["settled_amount"].to_i%><%= claim["settled_amount"].to_i.round(2) %></td>
+                                </tr>
+                                <% end %>
+                              <% end %>
+                              <%if @claims["purchase"].present?%>
+                                <% @claims["purchase"].each do |claim| %>
+                                <tr>
+                                  <th class="td_pnd_no" scope="row"><%= claim["claim_no"] %></th>
+                                  <td class="td_pnd_desp"><%= claim["claim_date"].to_date.strftime('%d-%m-%Y') if claim["claim_date"].present? %></td>
+                                  <td class="td_pnd_desp">PurchaseReturn</td>
+                                  <td class="td_pnd_qty"><%claim_total << claim["claim_amount"].to_i%><%= claim["claim_amount"].to_i.round(2) %></td>
+                                  <td class="td_pnd_qty"><%settled_total << claim["settled_amount"].to_i%><%= claim["settled_amount"].to_i.round(2) %></td>
+                                </tr>
+                                <% end %>
+                              <% end %>
+                              <%if @claims["rate"].present?%>
+                                <% @claims["rate"].each do |claim| %>
+                                <tr>
+                                  <th class="td_pnd_no" scope="row"><%= claim["claim_no"] %></th>
+                                  <td class="td_pnd_desp"><%= claim["claim_date"].to_date.strftime('%d-%m-%Y') if claim["claim_date"].present? %></td>
+                                  <td class="td_pnd_desp">RateChange</td>
+                                  <td class="td_pnd_qty"><%claim_total << claim["claim_amount"].to_i%><%= claim["claim_amount"].to_i.round(2) %></td>
+                                  <td class="td_pnd_qty"><%settled_total << claim["settled_amount"].to_i%><%= claim["settled_amount"].to_i.round(2) %></td>
+                                </tr>
+                                <% end %>
+                              <% end %>
+                            <!--   <!%if claim_total.present? and settled_total.present?%>
+                              <tr class="total">
+                              <th class="text-left" scope="row">&nbsp;TotalAmount</th>
+                              <th class="text-right">&nbsp;&#8377;<!%= claim_total.sum.round(2)%></th>
+                              <th class="text-right">&nbsp;&#8377;<!%= settled_total.sum.round(2)%></th>
+                              <th></th>
+                              <th></th>
+                              
+                              </tr>
+                            <!%end%>
+                             -->  
+                              
+                              </tbody>
+                      </table>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-md-6 claim_issues">
+              <label class="form-control-label" for="formGroupExampleInput">ISSUES</label>
+              <div class="card card_height table_mrgn">
+                <div class="card-block">
+              <table class="table table_front table-striped">
+                    <thead>
+                      <tr>
+                        <th>Description</th>
+                        <th>Cut-off Date</th>
+                        <th>Resolved_by</th>
+                        <th>Status</th>
+                      
+                      </tr>
+                    </thead>
+                    <tbody class="scroll">
+                  <% @claim_issues.each do |issue| %>                  
+                      <tr>
+                        <td scope="row"><%= issue["description"] %></td>
+                        <td><%= issue["cut_off_date"].to_date.strftime('%d-%m-%Y') %></td>
+                        <td><%= issue["contact"]["name"] %></td>
+                        <td><%= issue["status"] %></td>
+                      </tr>
+                      <% end %>
+                </tbody>
+                  </table>                           
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>        
+      </div>
+    </div>    
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card_padding_inner">
+          <a id="add-spec" class="btn btn-link add-btn">
+            <i class="fa fa-plus" aria-hidden="true"></i>Add Issue
+          </a>          
+         <div class="table-responsive">
+  <table class="spec-table table">
+    <thead>
+    <tr>
+      <th class="th_description">Description</th>
+      <th class="th_resolvedby">Resolved By</th>
+      <th class="th_cut_off">By Cut-Off Date</th>
+      <th class="th_issues_status">Status</th>
+      <th class="th_issues_notes">Notes</th>
+      <th class="th_resolvedby">Assign To</th>
+       <th class="th_delete">Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+    <%if @current_claim.present?%>
+      <%@current_claim.each_with_index.map do |claim_edit,index_i|%>
+
+          <tr class="sm">
+              <%= hidden_field_tag 'issue_ids[]', claim_edit["id"] %>
+              <td><input type="text" name="description[]" class="form-control input_pad" id="" placeholder="Description" value="<%=claim_edit["description"]%>"></td>
+              <%if index_i == 0%>
+              <td><%= select_tag "contact_id[]", options_for_select(@contacts.map { |obj| [obj['name'], obj['id']] },:selected=>claim_edit["contact_id"]),prompt: "select",class: "claim_contact drop_val" %></td>
+              <%else%>
+               <td><%= select_tag "contact_id[]", options_for_select(@contacts.map { |obj| [obj['name'], obj['id']] },:selected=>claim_edit["contact_id"]),prompt: "select",class: "claim_contact drop_val" , required: "true"%></td>
+              <%end%>
+              <td><input name="cut_off_date[]" class="form-control" value="<%=claim_edit["cut_off_date"].to_date.strftime('%d-%m-%Y')%>" id="dt2" placeholder="By Cut-Off Date"></td>
+              <td><select name="status[]"><option value="" selected disabled>Please select</option><option value="Open" <%if claim_edit["status"]== "Open"%> selected <%end%>>Open</option><option value="Closed" <% if claim_edit["status"]=="Closed"%> selected<%end%>>Closed</option><option value="Re-open" <%if claim_edit["status"]== "Re-open"%> selected <%end%>>Re-open</option></select></td>
+
+<!--11.11.20-->
+	      <td><%= select_tag "user_id[]", option_for_select(@users.map { |obj| [obj['user_name'], obj['id'] }, :selected=>claim_edit["user_id"]),prompt: "select", class: "claim_contact drop_val" %></td>
+
+		<!--<td><input type="text" name="description[]" class="form-control input_pad" id="" placeholder="Description" value="<%=claim_edit["description"]%>"></td>-->
+		<%#= hidden_field_tag 'user_ids[]', user_edit["id"] %>
+		 <%#= select_tag "assign to", options_for_select(@users.map { |obj| [obj['user_name'], obj['id']] },:selected=>@user["user_id"]), class: "fold1 se1", autofocus: true, prompt: "select", required: "true" %>
+
+
+<!--11.11.20-->
+
+              <td><input type="textarea" name="notes[]" class="form-control" value="<%=claim_edit["notes"]%>"></td>
+              <%unless index_i == 0%>
+                <td class="text-center"><input type="hidden" name="spec_delete[]" value="" /><span style="cursor: pointer;" class="remove-spec"><i class="fa fa-minus" aria-hidden="true"></i></span></td>
+              <%end%>  
+            </tr>
+      <%end%>
+    <%else%>
+          <tr class="sm">
+              <td><input type="text" name="description[]" class="form-control input_pad" id="" placeholder="Description" ></td>
+              <td><%= select_tag "contact_id[]", options_for_select(@contacts.map { |obj| [obj['name'], obj['id']] }),prompt: "select",class: "claim_contact drop_val" %></td>
+              <td><input name="cut_off_date[]" class="form-control" id="dt2" placeholder="By Cut-Off Date" ></td>
+              <td><select name="status[]"><option value="Open">Open</option><option value="Closed">Closed</option><option value="Re-open">Re-open</option></select></td>
+              <td><input type="textarea" name="notes[]" class="form-control"></td>
+	     <!--11.11.20-->
+	       <td><input type="text" name="assign_to[]" class="form-control input_pad" ></td>
+		 <%#= select_tag "assign to", options_for_select(@users.map { |obj| [obj['user_name'], obj['id']] },:selected=>@user["user_id"]), class: "fold1 se1", autofocus: true, prompt: "select", required: "true" %>
+<!--11.11.20-->
+          </tr>
+    <%end%>
+    </tbody>
+  </table>
+</div>
+<script>
+$(document).on('click', '#add-spec', function (e) {
+  var data = $('table.spec-table tbody tr.sm .drop_val').html();
+  var html = '<tr>';
+  html += '<td><input type="text" name="description[]" class="form-control input_pad" id="" placeholder="Description" ></td>';
+  html += '<td><select name="contact_id[]" class="vall" required>'+data+'</select></td>';
+  html += '<td><input name="cut_off_date[]" class="form-control" value="" id="dt2" placeholder="By Cut-Off Date"></td>';
+  html += '<td><select name="status[]"><option value="" selected disabled>Please select</option><option value="Open">Open</option><option value="Closed">Closed</option><option value="Re-open">Re-open</option></select></td>';
+  html += '<td><input type="textarea" name="notes[]" class="form-control" style="font-size: initial;"></td>';
+  html += '<td class="text-center"><input type="hidden" name="spec_delete[]" value="" /><span class="remove-spec"><i class="fa fa-minus" aria-hidden="true"></i></span></td>';
+  html += '</tr>';
+  $('table.spec-table tbody').append(html);
+});
+$(document).on('click', '.remove-spec', function (e) {
+  $(this).closest('tr').remove();
+});
+</script> 
+        </div>
+      </div>
+    </div>
+    
+    <footer class="table-footer">
+      <%= f.submit "Schedule Appointment" , class: "btn btn-one", id: "app1"%>
+      <%= link_to "Cancel", appointments_path, class: "btn btn-primary", id: "app2" %>
+    </footer>
+
+    <% end %>
+
+  </div>
+
+</section>
+
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+ sele();
+      $("input[name$='cars']").click(function() {
+        var test = $(this).val();
+        $("div.desc").hide();
+        $("#Cars" + test).show();
+    });
+   
+});
+function sele(){
+  <%if @appointment["division_id"].present?%>
+       var test = "Division";
+  <%else%>
+       var test = "Manufacturer";
+   <%end%>    
+       $("div.desc").hide();
+       $("#Cars" + test).show();
+   }
+</script>
+
+
+<script type="text/javascript">
+      $(document).ready(function () {
+        $('.collapse_tbl[aria-controls="collapseExample1"]').click(function (){
+            $('.collapse_tbl[aria-controls="collapseExample1"] i').toggleClass("fa-chevron-down fa-chevron-up");
+        });        
+        $('.collapse_tbl[aria-controls="collapseExample2"]').click(function (){
+            $('.collapse_tbl[aria-controls="collapseExample2"] i').toggleClass("fa-chevron-up fa-chevron-down");
+        });
+      });
+</script>
+
+
+<script type="text/javascript">
+select_function()
+$(document).ready(function(){
+  $(".fold1").change(function(){
+    $(".overlay").show();
+    var id=($(this).val());
+
+    var value=($(this).attr("id"));
+    
+     $.ajax({
+        url: '/appointments/fetch_manufacturer',
+        data: {format: id, type: value},
+        dataType: 'script',
+         success: function(data) {
+
+            // setTimeout added to show loading
+            setTimeout(function () {
+$(".overlay").hide();
+               // $('#loading').html('');
+                            
+            });
+        }
+    })
+  });
+});
+
+function select_function(){
+  <%if @appointment["division_id"].present?%>
+      var id=<%=@appointment["division_id"]%>;
+      var value="division_id";
+   <%else%>
+      var id=<%=@appointment["manufacturer_id"]%>;
+      var value="manufacturer_id";
+  <%end%>
+     $.ajax({
+        url: '/appointments/pending_claim_issue',
+        data: {format: id, type: value},
+        dataType: 'script',
+         success: function(data) {
+
+            // setTimeout added to show loading
+            setTimeout(function () {
+$(".overlay").hide();
+               // $('#loading').html('');
+                            
+            });
+        }
+    })
+
+}
+
+
+</script>
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.se1').select2().select2('val','<%=@appointment["supplier_id"] if@appointment.present?%>')
+});
+
+</script>
+
+
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css"/>
+<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript">
+
+</script>
+ -->
+<script type="text/javascript">
+  $(document).ready(function () {
+        $('#dt1').datepicker({
+            dateFormat: "dd-mm-yy"
+        });
+         $('#dt2').datepicker({
+            dateFormat: "dd-mm-yy"
+        });
+    });
+
+
+</script>
+<script type="text/javascript">
+  $(document).ready(function(){ 
+    $("#dt1").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "dd-mm-yy");
+    }
+    });
+    $("#dt2").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "dd-mm-yy");
+    }
+    });
+    
+      
+  });  
+
+
+</script>
+
+<script type="text/javascript">
+$('#claimstable').dataTable({
+    // display everything
+    "bLengthChange": false,
+    //"iDisplayLength": -1,
+    "aaSorting": [[ 0, "asc" ]] // Sort by first column descending
+});
+</script>

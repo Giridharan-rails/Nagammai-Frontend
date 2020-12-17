@@ -1,0 +1,248 @@
+
+        <div class="container-fluid">
+          <header>
+            <h3>Edit <%=params["identify"]%> Contact</h3>
+          </header>
+        </div>
+        <div class="container">
+          <div class="">
+              <from class="edit-form">
+
+
+        <%= form_for(:contacts, :url => {:controller => 'contacts',:action => 'contact_edit_update',:identify=>params[:identify], method: :put}) do |f| %> 
+          <%=f.hidden_field 'id',:value=>@contact["id"]  %>
+           <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                 <label for="">Name<span class="required">*</span></label>  <%= f.text_field :name,:value=>@contact["name"],class: "form-control", required: "true",placeholder: "Contact Name"%>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email<span class="required">*</span></label>
+                   <%= f.text_field :email,:value=>@contact["email"],class: "form-control", required: "true", pattern: "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$",placeholder: "altius@gmail.com"%>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="formGroupExampleInput">Mobile Number<span class="required">*</span></label>
+                   <%= f.text_field :phone_number,:value=>@contact["phone_number"],class: "form-control", required: "true", id: "quantity",maxlength:"10",placeholder: "Mobile Number"%></div><div id="errmsg"></div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Permanent Address</label>
+                    <%= f.text_field :address,:value=>@contact["address"],class: "form-control",placeholder: "Address"%>
+                </div>
+              </div>
+              <% if @contact["jobs_name_type"]=="CfaTitle"%>
+                <div class="col-md-4">
+                  <label>Promo Type<span class="required">*</span></label>                
+                  <div class="form-group">
+                     <div class="col-md-6">
+                      <div class="d-inline-flex">  
+                       <%= f.radio_button :jobs_name_type, 'CfaTitle',class: "radio_cfa" ,  checked: true %>&nbsp;CFA
+                     </div>
+                   </div>
+                   <div class="col-md-6">
+                     <div class="d-inline-flex">
+                       <%= f.radio_button :jobs_name_type, 'MarketingTitle',class: "radio_cfa" %> Marketing
+                    </div>
+                   </div>
+                  </div>
+                  </div>
+
+                   <div class="col-md-4">
+                     <div class="form-group">
+                      <label class="form-control-label" for="formGroupExampleInput">Cfa/Marketing</label>
+                         <%=select("contacts", "jobs_name_id", @cfa_data.collect {|p| [ p["job_name"], p["id"] ] },{:include_blank => "Please select",:selected=>@contact["jobs_name_id"]}, {class: "cfa_radio_button", required: "true"})%>
+                     </div>
+                   </div>                  
+                   <%else%>
+                    <div class="col-md-4">
+                      <label>Promo Type<span class="required">*</span></label>                
+                      <div class="form-group">
+                        <div class="col-md-6">
+                          <div class="d-inline-flex">
+                           <%= f.radio_button :jobs_name_type, 'CfaTitle',class: "radio_cfa" %>&nbsp;Cfa
+                          </div>
+                         </div>
+                       <div class="col-md-6">
+                        <div class="d-inline-flex">
+                           <%= f.radio_button :jobs_name_type, 'MarketingTitle',class: "radio_cfa" ,checked: true %>&nbsp;Marketing
+                         </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                      <div class="form-group">
+                          <label class="form-control-label" for="formGroupExampleInput">Cfa/Marketing</label>
+                          <%=select("contacts", "jobs_name_id", @marketing_data.collect {|p| [ p["job_name"], p["id"] ] },{:include_blank => "Please select",:selected=>@contact["jobs_name_id"]}, {class: "cfa_radio_button", required: "true"})%>
+                      </div>
+                    </div>
+                  
+                    <%end%>
+                   </div>
+          
+  
+
+          <div class="row">
+                <div id="ddmf" class="col-md-12 form-group">
+                  <label class="form-control-label" for="formGroupExampleInput">Mail Allocation<span class="required">*</span></label>
+                  <br>
+                  <div class="col-sm-6 col-md-3 form-group">
+                    <div class="d-inline-flex">
+                      <input type="checkbox" name="mail[]" value="purchase_order" <%unless @contact["mail_allocation"].nil?%><%if @contact["mail_allocation"].split(",").include?("purchase_order").to_s == "true"%> checked <%end%><%end%>>&nbsp;Purchase Order
+                    </div>                    
+                  </div>
+                  <div class="col-sm-6 col-md-3 form-group">
+                    <div class="d-inline-flex">
+                      <input type="checkbox" name="mail[]" value="excess_stock" <%unless @contact["mail_allocation"].nil?%><%if @contact["mail_allocation"].split(",").include?("excess_stock").to_s == "true"%> checked <%end%><%end%>>&nbsp;Excess Stock
+                    </div>                    
+                  </div>
+                  <div class="col-sm-6 col-md-3 form-group">
+                    <div class="d-inline-flex">
+                      <input type="checkbox" name="mail[]" value="rate_change" <%unless @contact["mail_allocation"].nil?%> <%if @contact["mail_allocation"].split(",").include?("rate_change").to_s == "true"%> checked <%end%><%end%>>&nbsp;Claims(Rate Change) 
+                    </div>                    
+                  </div>
+                  <div class="col-sm-6 col-md-3 form-group">
+                    <div class="d-inline-flex">
+                      <input type="checkbox" name="mail[]" value="free_and_discounts" <%unless @contact["mail_allocation"].nil?%><%if @contact["mail_allocation"].split(",").include?("free_and_discounts").to_s == "true"%> checked <%end%><%end%>>&nbsp;Claims(Free and Discounts) 
+                    </div>                    
+                  </div>
+                  <div class="col-sm-6 col-md-3 form-group">
+                    <div class="d-inline-flex">
+                      <input type="checkbox" name="mail[]" value="expiry"<%unless @contact["mail_allocation"].nil?%><%if @contact["mail_allocation"].split(",").include?("expiry").to_s == "true"%> checked <%end%> <%end%>>&nbsp;Claims (Expiry/Broken) 
+                    </div>                    
+                  </div>
+                  <div class="col-sm-6 col-md-3 form-group">
+                    <div class="d-inline-flex">
+                      <input type="checkbox" name="mail[]" value="purchase_return"<%unless @contact["mail_allocation"].nil?%><%if @contact["mail_allocation"].split(",").include?("purchase_return").to_s == "true"%> checked <%end%> <%end%>>&nbsp;Claims (Purchase Return)
+                    </div>                    
+                  </div>
+                  <div class="col-sm-6 col-md-3 form-group">
+                    <div class="d-inline-flex">
+                      <input type="checkbox" name="mail[]" value="po_gr"<%unless @contact["mail_allocation"].nil?%><%if @contact["mail_allocation"].split(",").include?("po_gr").to_s == "true"%> checked <%end%> <%end%>>&nbsp;PO-GR Mismatch
+                    </div>                    
+                  </div>
+<!--                     <ul class="list-unstyled"> -->
+<!--                       <li>
+                        <div class="d-flex">
+                          <input type="checkbox" name="mail[]" value="purchase_order" <%#unless @contact["mail_allocation"].nil?%><%#if @contact["mail_allocation"].split(",").include?("purchase_order").to_s == "true"%> checked <%#end%><%#end%>>&nbsp;Purchase Order
+                        </div>
+                      </li> -->
+<!--                       <li>
+                        <div class="d-flex">
+                          <input type="checkbox" name="mail[]" value="excess_stock" <%#unless @contact["mail_allocation"].nil?%><%#if @contact["mail_allocation"].split(",").include?("excess_stock").to_s == "true"%> checked <%#end%><%#end%>>&nbsp;Excess Stock
+                        </div>
+                      </li> -->
+
+<!--                       <li>
+                        <div class="d-flex">
+                          <input type="checkbox" name="mail[]" value="rate_change" <%#unless @contact["mail_allocation"].nil?%> <%#if @contact["mail_allocation"].split(",").include?("rate_change").to_s == "true"%> checked <%#end%><%#end%>>&nbsp;Claims(Rate Change) 
+                        </div>
+                      </li> -->
+<!--                       <li>
+                        <div class="d-flex">
+                          <input type="checkbox" name="mail[]" value="free_and_discounts" <%#unless @contact["mail_allocation"].nil?%><%#if @contact["mail_allocation"].split(",").include?("free_and_discounts").to_s == "true"%> checked <%#end%><%#end%>>&nbsp;Claims(Free and Discounts) 
+                        </div>
+                      </li> -->
+
+<!--                       <li>
+                        <div class="d-flex">
+                          <input type="checkbox" name="mail[]" value="expiry"<%#unless @contact["mail_allocation"].nil?%><%#if @contact["mail_allocation"].split(",").include?("expiry").to_s == "true"%> checked <%#end%> <%#end%>>&nbsp;Claims (Expiry/Broken) 
+                        </div>
+                      </li> -->
+
+<!--                         <li>
+                        <div class="d-flex">
+                          <input type="checkbox" name="mail[]" value="purchase_return"<%#unless @contact["mail_allocation"].nil?%><%#if @contact["mail_allocation"].split(",").include?("purchase_return").to_s == "true"%> checked <%#end%> <%#end%>>&nbsp;Claims (Purchase Return)
+                        </div>
+                      </li> -->
+
+<!--                       <li>
+                        <div class="d-flex">
+                          <input type="checkbox" name="mail[]" value="po_gr"<%#unless @contact["mail_allocation"].nil?%><%#if @contact["mail_allocation"].split(",").include?("po_gr").to_s == "true"%> checked <%#end%> <%#end%>>&nbsp;PO-GR Mismatch
+                        </div>
+                      </li>
+ --><!--                     </ul> -->
+                </div>  
+          </div>
+          <footer class="form-footer">
+            <%=f.submit "Update" , class: "btn btn-primary btn-one load"%>
+              <% if params["data"]=="Supplier"%>
+                <%=link_to "Cancel",contacts_sup_man_div_based_contacts_path(:data=>params["data"],:supplier_id=>params["supplier_id"]), class: "btn btn-primary load", id: "con4"%>
+              <% elsif params["data"]== "Manufacturer" %>
+                <%=link_to "Cancel",contacts_sup_man_div_based_contacts_path(:data=>params["data"],:manufacturer_id=>params["manufacturer_id"]), class: "btn btn-primary load", id: "con4"%>
+              <%else%>
+                <%=link_to "Cancel",contacts_sup_man_div_based_contacts_path(:data=>params["data"],:division_id=>params["division_id"]), class: "btn btn-primary load", id: "con4"%>
+          
+              <%end%>
+          </footer>
+         <% end %>
+        </from>
+      </div>
+    </div>
+
+          
+
+
+
+
+
+
+ <script type="text/javascript">
+$(document).ready(function(){
+    $(".fold").change(function(){
+             var id=($(this).val());
+                   $.ajax({
+                     type: "GET",
+                     url: "/contacts/dynamic_manufacturer."+id
+                  })
+            });
+    $(".fold1").change(function(){
+             var id=($(this).val());
+                   $.ajax({
+                     type: "GET",
+                     url: "/contacts/dynamic_division."+id
+                  })
+            });
+    });
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".radio_cfa").change(function(){
+      var value=($(this).val());
+        $.ajax({
+              type: "GET",
+              url: "/contacts/cfa_radio_dropdown."+value
+             })
+        });
+  });
+
+</script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+  //called when key is pressed in textbox
+  $("#quantity").keypress(function (e) {
+     //if the letter is not digit then display error and don't type anything
+     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+        //display error message
+        $("#errmsg").html("Digits Only").show().fadeOut("slow");
+               return false;
+    }
+   });
+});
+
+</script>
+<style type="text/css">
+  #errmsg
+{
+color: red;
+}
+</style>
+

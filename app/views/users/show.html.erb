@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<section class="users_admin">
+        <div class="container-fluid">
+          <header>
+          <ol class="breadcrumb">
+    <%= render_breadcrumbs :tag => :li, :separator => "" %>
+  </ol>
+            <h3>Users</h3>
+          </header>
+          
+          <div class="card_hg">
+              <table class="table table_front table-striped">
+                <thead>
+                  <tr>
+                    <th class="th_sno">#</th>
+                    <th class="th_user">User Name</th>
+                    <th class="th_email">Email ID</th>
+                    <th class="th_role">Role</th>
+                   </tr>
+                </thead>
+                <tbody class="scroll">
+                  <tr> <% @user.map do |i| %>
+                    <% puts i["Username"] %>
+                    <th class="td_sno" scope="row"><%= i["ID"] %></th>
+                    <td class="td_user"><%= i["Username"] %> </td>
+                    <td class="td_email"><%= i["Email"] %> </td>
+                    <td class="td_role"><%= i["Role"] %>
+                                                   
+                    <%end %>
+                  
+                                  
+                </tbody>
+              </table>
+          </div>          
+        </div>
+
+</body>
+</html>
+

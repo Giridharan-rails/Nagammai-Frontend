@@ -1,0 +1,63 @@
+ <section>
+        <div class="container-fluid user-assign">
+          <header>
+              <ol class="breadcrumb">
+    <%= render_breadcrumbs :tag => :li, :separator => "" %>
+  </ol>
+            <h3>Issues Report<span class="float-right">
+            <!-- <input placeholder="Search" id="system-search" name="q" class="" type="text"> --></span>
+            </h3>
+          </header>
+          <div class="card_height">
+            <table class="table table_front table-striped table-list-search">
+              <thead>
+                <tr>
+                  <th class="th_issue_description">Description</th>
+                  <th class="th_issue_cut_off_date">Cut-off Date </th>
+                  
+                  <th class="th_issue_resolved_by">Resolved By</th>
+                  <th class="th_issue_status">Status</th>
+                  <th class="th_issue_approval">Approval</th>
+                  
+                </tr>
+              </thead>
+              <tbody class="scroll">
+              <%=form_for "issue_update",:url=>{:controller=>"sops",:action=>"issue_update"} do |j|%>
+
+              <%@issues.map do |i|%>
+                <tr>
+                  <%=hidden_field_tag "ids[]" ,i["id"] %>
+                  <td class="td_issue_description"><%=i["description"]%></td>
+                  <td class="td_issue_cut_off_date"><%=i["cut_off_date"].to_date.strftime("%d-%m-%Y")%></td>
+                  
+                  <td class="td_issue_resolved_by"><%=i["contact"]["name"]%></td>
+                  <td class="td_issue_status">
+                     
+                    <%= select_tag "status[]", options_for_select([['Open'],['Closed']],:selected=>i["status"]),include_blank: "Select" %>
+                     </td>                
+                     
+                     <td class="td_issue_approval"> <input type="checkbox" name="approval[]" value="<%=i["id"]%>"<% if i["approval"].to_s=="true"%> checked<%end%>></td>
+                                  
+                 </tr>
+                 <%end%>
+			                 
+              </tbody>
+            </table>
+
+
+
+            
+
+             
+          </div>
+            <footer class="table-footer">
+          <%=j.submit "Save" , class: "btn btn-one", id: "sopissue1"%>
+          <%=link_to "Cancel", users_dashboard_path , class: "btn btn-primary", id: "sopissue2"%>
+          </footer>
+          <%end%>
+        </div>
+             
+      </section>
+
+
+

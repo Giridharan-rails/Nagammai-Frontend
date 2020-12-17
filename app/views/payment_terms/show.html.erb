@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+          <header>
+                      <ol class="breadcrumb">
+    <%= render_breadcrumbs :tag => :li, :separator => "" %>
+  </ol>
+          	<h3>payment_term </h3>
+          </header>
+          
+          
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="th_user">Job Name</th>
+                  </tr>
+                </thead>
+                <tbody class="scroll">
+                  <tr> 
+                    <td class="td_user"><%= @payment_term["job_name"] %> </td>
+          </tr>
+                                                    
+                </tbody>
+              </table>
+</body>
+</html>
+
+

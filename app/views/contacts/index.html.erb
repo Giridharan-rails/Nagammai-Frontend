@@ -1,0 +1,153 @@
+  <section class="users_admin">
+
+  <% if flash[:notice] %>
+    <div class="notice"><%= flash[:notice] %></div>
+  <% end %>
+  <div class="container-fluid contact-index ">
+
+  <header>
+      <ol class="breadcrumb">
+        <%= render_breadcrumbs :tag => :li, :separator => "" %>
+      </ol>
+      <h3>Contacts<span class="float-right">
+       <a href="contacts/new" class="btn_add" data-toggle="tooltip" title="Add Contacts"><i class="fa fa-plus" aria-hidden="true"></i></a>
+       </span>
+      </h3>
+    </header>
+    
+    <div class="date-search">
+      
+        <div class= "row">
+          <div class="col-md-3">
+            <%= link_to 'Sample CSV Format', contacts_path(:file =>"/home/nagammaialtius/Nagammai/Nagammai-Frontend/app/assets/images/CONTACTS.csv"), class: "btn-link" %>
+          </div>
+          <%= form_for(:sheet, url: contacts_csv_sheet_path(format: "csv")) do |f| %>
+            <div class="col-md-3">
+              <%= f.submit 'Download Contacts', class: "btn-link", "data-disable-with": false%>
+            </div>
+          <% end %>    
+        </div>
+      
+    </div>
+    
+      
+    
+
+      <table id="example" class="display" width="100%" cellspacing="0">
+        <thead>
+          <tr>            
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile No</th>
+            <th>Contact Type</th>
+            <th>Supplier/Manufacturer/Division Name</th>
+            <th>Edit</th>
+            <%if @user["role"]=="Admin"%><th>Delete</th><%end%>
+          </tr>
+        </thead>
+        <tbody>               
+            <% @contacts.map do |i| %>
+            <tr>
+              <td><%= i["name"]%> </td>
+              <td><%= i["email"] %> </td>
+              <td><%= i["phone_number"] %> </td>
+              <td><%= i["sub_contact_type"] %> </td>
+              <td> <%if i["sub_contact_type"] =="Supplier"%>
+              <%= i["sub_contact"].present? ? i["sub_contact"]["supplier_name"] : "no records" %>
+              <%elsif i["sub_contact_type"]=="Manufacturer"%>
+              <%= i["sub_contact"].present? ? i["sub_contact"]["manufacturer_name"] : "no records"%>
+              <%elsif i["sub_contact_type"]=="Division"%>
+              <%= i["sub_contact"]["div_name"] if i["sub_contact"].present?%>
+              <%end%> 
+              </td>
+              <td><%= link_to '', edit_contact_path(i["id"]), class:"fa fa-pencil-square-o icon_clr load" %></td>
+              
+              <%if @user["role"]=="Admin"%>
+              <td><%= link_to '', contacts_contact_delete_path(i["id"]), method: :delete, data: { confirm: 'Are you sure?' }, class:"fa fa-trash-o icon_clr load" %></td><%end%>                
+          </tr>             
+         <% end %>   
+    </tbody>                
+      </table> 
+      <%= form_for(:contacts, :url => {:controller => 'contacts',:action => 'file_download'}) do |f| %>  
+
+      <div class="card">
+      <div class="row">
+        <div class="col-md-3">
+          <label>File Upload</label>
+          <!--input type="file" name="file"-->
+          <%=f.file_field :file%>
+        </div>
+         <div class="col-md-3">
+          <label></label>
+             <%=f.submit "Save" , class: "btn btn-primary btn-one load", id: "c3"%>
+
+        </div>
+      </div>  
+      <%end%>     
+    </div>
+    </div>
+  </section>  
+  <script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+          dom: 'Bfrtip',
+          bSort:true,
+          "pageLength": 13,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2, 3, 4 ]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2, 3, 4 ]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2, 3, 4 ]
+                }
+              }
+          ],
+
+           
+        "bLengthChange": false
+
+      } );
+  } );
+
+  </script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+
+</script>
+<style type="text/css">
+  .card
+  {
+    width: 100%;
+    height: 106px;
+    background-color: white;
+    margin-top: 26px;
+    /*border: 1px solid rgba(0,0,0,.125);*/
+  }
+  .btn-primary
+  {
+margin-top:26px;
+  }
+</style>

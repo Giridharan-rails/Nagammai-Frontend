@@ -1,0 +1,226 @@
+<%=form_for @receive_setting,:url=>{:controller=>"receivemails",:action=>"receivemail_update",:id=>1} do |i|%>
+
+
+      <section class="user-edit">
+        <div class="container-fluid">
+          <header>
+            <ol class="breadcrumb">
+    <%= render_breadcrumbs :tag => :li, :separator => "" %>
+  </ol>
+            <h3>Receive Mail Settings</h3>
+          </header>
+        </div>
+   <%select_schedule=@data_json["schedule"] if @data_json.present? %>
+        <div class="container cont_pad">
+          <div class="card card_edit">
+          <!--   <a class="btn_add btn_edit" id='btnAdd' ng-click="addInput()"><i class="fa fa-plus" aria-hidden="true"></i></a>  -->
+             <div class="edit-form">
+                <div class="form-group">
+
+          <div class="row mrgn_add">
+            <div class="col-md-6">
+              <label>Email1</label>
+              <input type="text" name="email1" class="form-control" <%if @data_json.present?%> value="<%=@data_json["email1"]%>"<%end%>>
+            </div>
+            <div class="col-md-6">
+              <label>Password1</label>
+              <input type="text" name="password1" class="form-control"  <%if @data_json.present?%> value="<%=@data_json["password1"]%>"<%end%>>
+            </div>
+          </div>
+            <div class="row mrgn_add">
+            <div class="col-md-6">
+              <label>Email2</label>
+              <input type="text" name="email2" class="form-control"  <%if @data_json.present?%> value="<%=@data_json["email2"]%>"<%end%>>
+            </div>
+            <div class="col-md-6">
+              <label>Password2</label>
+              <input type="text" name="password2" class="form-control"  <%if @data_json.present?%> value="<%=@data_json["password2"]%>"<%end%>>
+            </div>
+          
+          </div>
+          <div class="row d-flex align-items-center mrgn_add" id="settings">
+
+            <div id="myRadioGroup" class="col-md-12 col_pad">
+                <div class="col-md-6">
+                  <label class="form-control-label" for="formGroupExampleInput">Attachment Path<span class="required">*</span></label>
+                      <input type="text" <%if @data_json.present?%>value="<%=@data_json["path_setting"]%>"<%end%> name="path_setting" class="form-control">
+                </div>
+
+
+            <div class="col-md-6">
+              <label class="form-control-label" for="formGroupExampleInput">Schedule Period<span class="required">*</span></label>
+              <br>
+              <div class="col-md-3 d-flex col_pad">
+                <input type="radio" name="cars" value="Manual"<%if select_schedule=="Maual"%> checked="checked" <%end%>/>&nbsp;Manual
+              </div>
+              <div class="col-md-3 d-flex col_pad">
+                <input type="radio" name="cars" value="Daily" <%if select_schedule=="Daily"%> checked="checked" <%end%>/>&nbsp;Daily
+              </div>
+              <div class="col-md-3 d-flex col_pad">
+                <input type="radio" name="cars" value="Weekly" <%if select_schedule=="Weekly"%> checked="checked" <%end%>/>&nbsp;Weekly
+              </div>
+              <div class="col-md-3 d-flex col_pad">
+                <input type="radio" name="cars" value="Monthly"<%if select_schedule=="Monthly"%> checked="checked" <%end%>/>&nbsp;Monthly
+              </div>
+            </div>
+
+            </div>
+            </div>
+            <div class="row d-flex align-items-center ">
+              <div class="col-md-12">
+
+                   <div id="CarsManual" class="desc mrgn_add" style="display: none;">
+                    
+                   </div>
+
+                   <div id="CarsDaily" class="desc">
+                   </div>
+       
+                   <div id="CarsWeekly" class="desc mrgn_add" style="display: none;">
+                    <label class="form-control-label">Weekly</label>
+                    <%if @data_json.present?%>
+                    <%= select_tag "week_data", options_for_select([['Monday'],['Tuesday'],['Wednesday'],['Thursday'],['Friday'],['Saturday'],['Sunday']],:selected=>@data_json["schedule_period"] ),include_blank: "Select Date" %>
+                    <%else%>
+                    <%= select_tag "week_data", options_for_select([['Monday'],['Tuesday'],['Wednesday'],['Thursday'],['Friday'],['Saturday'],['Sunday']]),include_blank: "Select Date" %>
+                    <%end%>
+                   </div>
+                   
+                   <div id="CarsMonthly" class="desc mrgn_add" style="display: none;">
+                    <label class="form-control-label">Monthly</label>
+                    <%if @data_json.present?%>
+                    <%= select_tag "month_data", options_for_select([['1st'],['2nd'],['3rd'],['4th'],['5th'],['6th'],['7th'],['9th'],['10th'],['11th'],['12th'],['13th'],['14th'],['15th'],['16th'],['17th'],['18th'],['19th'],['20th'],['21st'],['22nd'],['23rd'],['24th'],['25th'],['26th'],['27th'],['28th'],['29th'],['30th'],['31st']],:selected=>@data_json["schedule_period"] ),include_blank: "Select Date"%>
+                    <%else%>
+                      <%= select_tag "month_data", options_for_select([['1st'],['2nd'],['3rd'],['4th'],['5th'],['6th'],['7th'],['9th'],['10th'],['11th'],['12th'],['13th'],['14th'],['15th'],['16th'],['17th'],['18th'],['19th'],['20th'],['21st'],['22nd'],['23rd'],['24th'],['25th'],['26th'],['27th'],['28th'],['29th'],['30th'],['31st']]),include_blank: "Select Date"%>
+                    <%end%>
+                   </div>
+              </div>              
+            </div>            
+<script type="text/javascript">
+
+$(document).ready(function() {
+ sele();
+      $("input[name$='cars']").click(function() {
+        var test = $(this).val();
+        $("div.desc").hide();
+        $("#Cars" + test).show();
+        if(test=="Manual"){
+           $("#pop").hide();
+         }
+         else{
+           $("#pop").show();
+         }
+
+    });
+   
+});
+function sele(){
+       var test = "<%=select_schedule%>";
+       if (test=="Manual")
+       {
+       $("div.desc").hide();
+       $("#Cars" + test).show();
+       $("#pop").hide();
+   }
+   else{
+
+    $("div.desc").hide();
+       $("#Cars" + test).show();
+       $("#pop").show();
+
+   }
+ }
+
+</script>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+
+
+<div ng-app="myApp" ng-controller="MyCtrl" id="pop">
+
+<label class="form-control-label syc_time" for="formGroupExampleInput">Sync Time<span class="required">*</span>
+  <span class="btn_add" ng-click="addInput()"><i class="fa fa-plus" aria-hidden="true"></i></span>
+</label>
+
+               <div ng-repeat="input in values">
+               
+                <div class="d-flex align-items-center mrgn_add">
+               <select class="form-control field_width"  name="schedule_time[]" ng-model="input.name">
+                  <option value="08:00">08:00</option>
+                    <option value="08:30">08:30</option>
+                    <option value="9:00">9:00 </option>
+                    <option value="9:30">9:30 </option>
+                    <option value="10:00">10:00</option>
+                    <option value="10:30">10:30</option>
+                    <option value="11:00">11:00</option>
+                    <option value="11:30">11:30</option>
+                    <option value="12:00">12:00</option>
+                    <option value="12:30">12:30</option>
+                    <option value="13:00">13:00</option>
+                    <option value="13:30">13:30</option>
+                    <option value="14:00">14:00</option>
+                    <option value="14:30">14:30</option>
+                    <option value="15:00">15:00</option>
+                 
+                  </select>
+               
+               <label ng-click="removeInput($index)" class="remove btn btn_pad"><i class="fa fa-minus-circle pad" aria-hidden="true"></i></label>
+              </div>
+            </div>
+             <!-- <label class="btn btn-info" ng-click="addInput()"><i class="fa fa-plus" aria-hidden="true"></i></label> -->
+
+        </div>
+
+
+   <div id="TextBoxContainer"></div>
+
+              </div>
+
+
+
+
+              <footer class="form-footer">
+                <button type="submit" class="btn btn-one btn-lg" onclick="window.location.href=''">Save</button>
+                <%= link_to 'Cancel', pages_dashboard_path, class: "btn btn-primary btn-lg" %>                
+              </footer>
+            </div>
+          </div>
+        </div>
+      </section>
+
+  
+      <%end%>
+
+<script type="text/javascript">
+
+var app = angular.module('myApp', []);
+
+app.controller('MyCtrl', ['$scope', function ($scope) {
+$scope.values=[]
+  var first_data = "<%=@schedule_time.uniq.join(",") if @schedule_time.present? %>";
+  $scope.inputs = first_data.split(",");
+for(var i in $scope.inputs){
+  var id=i*1+1
+  $scope.values.push({"name":$scope.inputs[i],"id":id});
+}
+
+ $scope.addInput = function(){
+    $scope.count=$scope.values.length+1
+     $scope.values.push({"id":$scope.count})
+
+  }
+$scope.removeInput = function(index){
+    $scope.values.splice(index,1);
+   
+}
+}]);
+</script>
+<!-- <style type="text/css">
+      
+      .form-control-label{
+          font-size: 20px;
+          margin-bottom: 10px;
+      }
+    </style> -->

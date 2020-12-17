@@ -1,0 +1,20 @@
+<table class="table table_front table-striped table-list-search sops">
+              <thead>
+                <tr>
+                  <th class="th_sno2">Special Offers</th>
+                  <th class="th_supplier_name">Claim Extra Offers</th>
+                </tr>
+              </thead>
+              <tbody class="scroll">
+              
+              <%@sops.map do |i|%>
+                <tr>
+                  <th class="td_issueno2" scope="row"><%=i["special_offer"]%>%</th>
+                  <td class="td_issue_name"><%=i["claims_offer"]%>%</td>
+                               
+                 </tr>
+              <%end%>
+              
+                       
+              </tbody>
+            </table>

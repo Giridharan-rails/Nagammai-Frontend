@@ -1,0 +1,114 @@
+<div class="container cont_pad">
+          <div class="card card_edit">
+            <div class="edit-form">
+              <div class="form-group">
+              
+   <% if @sync["id"].present? %>
+
+      <%= form_for(@sync, :url => {:controller => 'syncsettings',:action => 'cfa_update', method: :put}) do |f| %> 
+
+          <%=f.hidden_field 'id',:value=>@cfa["id"]  %>
+           <div class="form-group"><label for="exampleInputName">Job Name<span class="required">*</span></label> <%= f.text_field :job_name,:value=>@cfa["job_name"], class:"form-control" ,name: "job_name", required: "true",placeholder: "Job Name"%></div>
+            <footer class="form-footer">
+          <%=f.submit "Update" , class: "btn btn-one", id: "syn1"%>
+          <%=link_to "Cancel",syncsettings_path , class: "btn btn-primary", id: "syn2"%>
+           </footer>
+      <% end %>
+   <% else %>
+
+               
+      <%= form_for(@sync, :url => {:controller => 'syncsettings', :action => 'create'}) do |f| %>
+        <div class="row d-flex align-items-center mrgn_add" id="settings">
+       <div class="col-md-6">
+        <label class="form-control-label" for="formGroupExampleInput">Sync Jobs<span class="required">*</span></label>
+        <%= f.text_field :job_name , class:"form-control" ,name: "job_name", required: "true",placeholder: "Sync Jobs Name"%>
+       </div>
+       <div class="col-md-6">
+          <label class="form-control-label" for="formGroupExampleInput">Schedule Period<span class="required">*</span></label>
+          <div id="myRadioGroup">
+              <div class="col-md-3 d-flex col_pad">
+                <input type="radio" name="cars" value="Manual"/>&nbsp;Manual
+              </div>
+              <div class="col-md-3 d-flex col_pad">
+                <input type="radio" name="cars" value="Daily" checked="checked" />&nbsp;Daily
+              </div>
+              <div class="col-md-3 d-flex col_pad">
+                <input type="radio" name="cars" value="Weekly"/>&nbsp;Weekly
+              </div>
+              <div class="col-md-3 d-flex col_pad">
+                <input type="radio" name="cars" value="Monthly"/>&nbsp;Monthly
+              </div>
+          </div>
+          </div>
+          
+  </div>
+
+
+<!--           <div class="col-md-6">
+                 <div id="CarsDaily" class="desc">
+                 </div>
+                 
+                 <div id="CarsManual" class="desc"  style="display: none;">
+                 Sechuled Frequency <input type="text" name="manual" class="form-control">
+                 </div>
+                 
+
+                 <div id="CarsWeekly" class="desc " style="display: none;">
+                 <%#= select_tag "week_data", options_for_select([['Monday'],['Tuesday'],['Wednesday'],['Thursday'],['Friday'],['Saturday'],['Sunday']]),include_blank: "Select Days" %>
+                 </div>
+                 
+                 <div id="CarsMonthly" class="desc" style="display: none;">
+                 <%#= select_tag "month_data", options_for_select([['1st'],['2nd'],['3rd'],['4th'],['5th'],['6th'],['7th'],['9th'],['10th'],['11th'],['12th'],['13th'],['14th'],['15th'],['16th'],['17th'],['18th'],['19th'],['20th'],['21st'],['22nd'],['23rd'],['24th'],['25th'],['26th'],['27th'],['28th'],['29th'],['30th'],['31st']]),include_blank: "Select Date" %>
+
+                 </div>
+                 </div> -->  
+
+       <div class="row mrgn_add">
+          <div class="col-md-12">
+                 <div id="CarsDaily" class="desc">
+                 </div>
+                 
+                 <div id="CarsManual" class="desc"  style="display: none;">
+                 <!-- <label>Sechuled Frequency</label>
+                 <input type="text" name="manual" class="form-control">
+                  --></div>
+                 
+
+                 <div id="CarsWeekly" class="desc" style="display: none;">
+                 <label>Weekly</label>
+                 <%= select_tag "week_data", options_for_select([['Monday'],['Tuesday'],['Wednesday'],['Thursday'],['Friday'],['Saturday'],['Sunday']]),include_blank: "Select Days" %>
+                 </div>
+                 
+                 <div id="CarsMonthly" class="desc" style="display: none;">
+                  <label>Monthly</label>
+                 <%= select_tag "month_data", options_for_select([['1st'],['2nd'],['3rd'],['4th'],['5th'],['6th'],['7th'],['9th'],['10th'],['11th'],['12th'],['13th'],['14th'],['15th'],['16th'],['17th'],['18th'],['19th'],['20th'],['21st'],['22nd'],['23rd'],['24th'],['25th'],['26th'],['27th'],['28th'],['29th'],['30th'],['31st']]),include_blank: "Select Date" %>
+
+                 </div>
+          </div>         
+       </div>
+
+           <footer class="form-footer">
+          <%=f.submit "Save" , class: "btn btn-primary btn-one load", id: "syn3"%>
+          <%=link_to "Cancel",syncsettings_path , class: "btn btn-primary load", id: "syn4"%>
+          </footer>
+      <% end %>
+    
+   <% end %>
+
+</div>
+</div></div></div>
+<script type="text/javascript">
+
+$(document).ready(function() {
+      $("input[name$='cars']").click(function() {
+        var test = $(this).val();
+        $("div.desc").hide();
+        $("#Cars" + test).show();
+    });
+   
+});
+</script>
+
+
+
+

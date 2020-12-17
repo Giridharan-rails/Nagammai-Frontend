@@ -1,0 +1,32 @@
+<div class="container cont_pad">
+          <div class="card">
+            <from class="edit-form">
+             
+   <% if marketing["id"].present? %>
+
+      <%= form_for(:marketings, :url => {:controller => 'marketings',:action => 'marketing_update', method: :put}) do |f| %> 
+
+          <%=f.hidden_field 'id',:value=>@marketing["id"] %>
+           <div class="form-group"><label for="exampleInputName">Job Name<span class="required">*</span></label><%= f.text_field :job_name,:value=>@marketing["job_name"], class: "form-control",name: "job_name" , required: "true",placeholder: "Job Name"%></div>
+          
+            <footer class="form-footer">
+          <%=f.submit "Update" , class: "btn btn-primary btn-one btn-lg", id: "mar1"%>
+          <%=link_to "Cancel",marketings_path , class: "btn btn-primary btn-lg", id: "mar2"%>
+          </footer>
+      <% end %>
+   <% else %>
+      <%= form_for(marketing, :url => {:controller => 'marketings', :action => 'create'}) do |f| %>
+          <div class="form-group"><label for="exampleInputName">Job Name<span class="required">*</span></label><%= f.text_field :job_name, class:"form-control" ,name: "job_name", required: "true",placeholder: "Job Name"%></div>
+          <footer class="form-footer">      
+          <%=f.submit "Save" , class: "btn btn-primary btn-one btn-lg load", id: "mar3"%>
+          <%=link_to "Cancel",marketings_path , class: "btn btn-primary btn-lg load", id: "mar4"%>
+          </footer>
+      <% end %>
+   <% end %>
+
+
+
+
+</from>
+</div>
+</div>

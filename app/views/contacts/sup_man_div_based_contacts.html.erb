@@ -1,0 +1,125 @@
+<section class="user-edit">
+        <div class="container-fluid">
+          <header>
+             <h3><%=params["data"]%> contacts</h3>
+             <%if @name.present?%>
+             <h4><%=@name.capitalize%></h4>
+             <%end%>
+          </header>
+          <div class="">
+                <table class="table table-striped" id="example">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email ID</th>
+                    <th>Phone Number</th>
+                    <th>Edit</th>
+                  </tr>
+                </thead>
+            <% if @contact_data.present? %>    
+                <tbody class="scroll">                  
+                  <% @contact_data.map do |i| %>
+                   <tr>
+                    <td><%= i["name"] %> </td>
+                    <td><%= i["email"] %> </td>
+                    <td><%= i["phone_number"] %> </td>
+                    <%if params["data"]=="Supplier"%>
+                    <td><%= link_to '', contacts_contact_edit_path(:format=>i["id"],:identify=>@identify,:data=>params["data"],:supplier_id=> params["supplier_id"]), class: "fa fa-pencil-square-o icon_clr" %></td>
+                    
+                    <%elsif params["data"]=="Manufacturer"%>
+                    <td><%= link_to '', contacts_contact_edit_path(:format=>i["id"],:identify=>@identify,:data=>params["data"],:manufacturer_id=> params["manufacturer_id"]), class: "fa fa-pencil-square-o icon_clr" %></td>
+                    <%else%>
+
+                    <td><%= link_to '', contacts_contact_edit_path(:format=>i["id"],:identify=>@identify,:data=>params["data"],:division_id=> params["division_id"]), class: "fa fa-pencil-square-o icon_clr" %></td>
+                    <%end%>
+               </tr>
+                   <% end %>                                             
+                </tbody>
+
+             <%end%>
+                
+              </table>            
+          </div>
+          </div>          
+        
+
+             <div class="container-fluid">
+          <nav aria-label="Page navigation example" id="page_slider">
+           <h1><ul class="pagination">
+                
+               </ul>
+           </h1> 
+          </nav>          
+        </div>             
+             
+</body>
+</html>
+
+
+
+<script src="/assets/datatablejquery.js"></script>
+  <link rel="stylesheet" href="/assets/datatable.css">
+  <link rel="stylesheet" href="/assets/datatablebutton.css">
+  <script src="/assets/datatablejquery1.js"></script>
+  <script src="/assets/datatablebuttons.js"></script>
+  <script src="/assets/datatablejszip.js"></script>
+  <script src="/assets/datatablepdf.js"></script>
+  <script src="/assets/datatablefont.js"></script>
+  <script src="/assets/datatablehtml.js"></script>
+  <script src="/assets/datatableprint.js"></script>
+  
+
+
+  <script type="text/javascript">
+/*  $(document).ready(function() {
+      $('#example').DataTable( {
+          dom: 'Bfrtip',
+          bSort:true,
+          "pageLength": 13,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2 ]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2]
+                }
+              }
+          ]
+      } );
+  } );
+*/$(document).ready(function() {
+    $('#example').DataTable( {
+ 
+ "bLengthChange": false
+    } );
+} );
+  </script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+
+</script>
+
+

@@ -1,0 +1,10 @@
+Name,Email,Phone Number,Address,Title(CfaTitle/MarkettingTitle),Title Name(eg. AreaManager),"Contact Type(Supplier,Manufacturer,Division)","Code(supplier_code,mfr_code,div_code)","Mail Allocation(""purchase_order,excess_stock,rate_change,free_and_discounts,expiry,purchase_return,po_gr"")",,,,,,,,,,,,,,,,,,Title(CfaTitle/MarkettingTitle),Title Name(eg. AreaManager),"Contact Type(Supplier,Manufacturer,Division)"
+BHUWANESHWAREN,bhuvaneshseeni@gmail.com,9952995132,MADURAI,MARKETINGTITLE,REGIONAL SALES MANAGER,DIVISION,99,,,,,,,,,,,,,,,,,,,MARKETINGTITLE,REGIONAL SALES MANAGER,DIVISION
+JAYA KUMAR,maduraibioceuticals@yahoo.com,9942726777,MADURAI,CFATITLE,CFA MANAGER,SUPPLIER,94,,,,,,,,,,,,,,,,,,,CFATITLE,AREA MANAGER,SUPPLIER
+,,,,,,,,,,,,,,,,,,,,,,,,,,,LOCAL FIELD FORCE,MANUFACTURER
+,,,,,,,,,,,,,,,,,,,,,,,,,,,CFA MANAGER,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,STORES INCHARGE,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,BILLING INCHARGE,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,ACCOUNTS INCHARGE,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,CLAIMS INCHARGE,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,ZONAL SALES MANAGER,

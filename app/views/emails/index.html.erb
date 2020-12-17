@@ -1,0 +1,126 @@
+ 
+
+  <link rel="stylesheet" href="/assets/user-assign.css">
+
+<section id="mail-box">
+        <div class="container-fluid user-assign">
+          <header>
+                 <ol class="breadcrumb">
+    <%= render_breadcrumbs :tag => :li, :separator => "" %>
+  </ol>
+            <h3>Inbox <span class="float-right d-inline-flex">
+                   
+            <%= select("supplier", "supplier_id", @suppliers.collect {|p| [ p["supplier_name"], p["id"] ] },:id=>"combobox", class: "selectpicker")%>
+            
+                <input placeholder="Search" id="system-search" name="q" class="selectpicker" type="text">
+
+              </span>
+
+            </h3>
+          </header> 
+         <div class="mail_tbl_bg emails">
+
+
+            <table id="example" class="table table-hover table_front table-striped table-list-search">
+              <tbody class="scroll">
+            
+              <%@emails.map do |i|%>
+            
+                  <tr>
+                  <td class="mailbox-name"><h4><%=i["from_mail"]%></h4></td>
+                   <td class="mailbox-subject"><%=link_to  i["subject"], emails_email_assign_path(:id=>i["id"])%>
+                    <%if i["message"].present?%>
+                    <p><%=i["message"]%></p><%end%></td>
+                  <td class="mailbox-attachment"><%if i["attachment"].present?%><img src="/assets/atchm.png" width="32px"><%end%></td>
+                   <td class="mailbox-date"><%=i["date"].to_date.strftime("%d-%m-%Y")  if i["date"].present?%></td>
+
+                </tr>
+                <%end%>
+                </tbody>
+                </table>
+                </div>
+                </div>
+   </section>
+
+<style type="text/css">
+  select{
+    width: 192px;
+  }
+</style>
+
+
+
+   <script type="text/javascript">$(document).ready(function(){
+    $('select').change(function(){
+         var value=($(this).val());
+        
+         
+        $.ajax({
+              type: "GET",
+              url: "/emails/suppliers_list?id="+value
+             })
+        });        
+    });
+
+   </script>
+
+
+
+    
+  <script type="text/javascript">
+      $(document).ready(function() {
+    var activeSystemClass = $('.list-group-item.active');
+
+    //something is entered in search form
+    $('#system-search').keyup( function() {
+       var that = this;
+        // affect all table rows on in systems table
+        var tableBody = $('.table-list-search tbody');
+        var tableRowsClass = $('.table-list-search tbody tr');
+        $('.search-sf').remove();
+        tableRowsClass.each( function(i, val) {
+        
+            //Lower text for case insensitive
+            var rowText = $(val).text().toLowerCase();
+            var inputText = $(that).val().toLowerCase();
+            if(inputText != '')
+            {
+                $('.search-query-sf').remove();
+                tableBody.prepend('<tr class="search-query-sf"><td colspan="3"><strong>Searching for: "'
+                    + $(that).val()
+                    + '"</strong></td></tr>');
+            }
+            else
+            {
+                $('.search-query-sf').remove();
+            }
+
+            if( rowText.indexOf( inputText ) == -1 )
+            {
+                //hide rows
+                tableRowsClass.eq(i).hide();
+                
+            }
+            else
+            {
+                $('.search-sf').remove();
+                tableRowsClass.eq(i).show();
+            }
+        });
+        //all tr elements are hidden
+        if(tableRowsClass.children(':visible').length == 0)
+        {
+            tableBody.append('<tr class="search-sf"><td class="text-muted" colspan="3">No entries found.</td></tr>');
+        }
+    });
+});
+
+ $('#example tr').click(function() {
+        var href = $(this).find("a").attr("href");
+        if(href) {
+            window.location = href;
+        }
+    });
+    </script>
+    
+

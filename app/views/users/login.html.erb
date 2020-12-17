@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>Login</title>
+
+  <!-- Bootstrap CSS CDN -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <!-- Our Custom CSS -->
+  <link rel="stylesheet" href="/assets/login.css">
+  <!-- Font Awesome CDN-->
+  <!-- you can replace it by local Font Awesome-->
+  <script src="https://use.fontawesome.com/99347ac47f.js"></script>
+  <!-- Rubik Font -->
+ <link href="https://fonts.googleapis.com/css?family=Rubik:400,500,500i,700,700i" rel="stylesheet"> 
+</head>
+
+<body>
+<div class="login-page">
+<div class="container">
+<div class="login row">
+<div class="col-md-12">
+<div class="logo">
+<h3>NP</h3>
+</div>
+  <h4 class="head">NAGAMMAI PHARMA</h4>
+  <%= form_for :user, :url => {:controller => 'users', :action =>'login_create'}, html: { class: "from-inner"} do |f| %> 
+  <div class="form-group">
+    <%=f.text_field :email, class: "form-control", placeholder: "Email", name: "email", required: "true", pattern: "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"%>
+  </div>
+  <div class="form-group">
+    <%=f.password_field :password, class: "form-control", placeholder: "Password", name: "password", required: "true" %>
+  </div>
+
+  <%=f.submit "Log In" , class: "btn btn-primary" %>
+  <!-- <div class="forgot-pass">
+  <a href="#">Forgot Password?</a>
+  </div> -->
+<%end%>
+
+</div>
+</div>
+<footer>
+     <%= js add_gritter(flash[:notice],  :nodom_wrap  => true) %>
+    
+
+
+<p> © Copyright 2013 Nagammai Pharma<br>
+(Division of Kalyani Distribution Services)</p>
+</footer>
+</div>
+</div>
+
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+ --></body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     
+
+      
+
+
+
+
+
+
+      
+    
+         
+    
+  
+
+
+
+
+
+
+
+
+
+
+
+
+

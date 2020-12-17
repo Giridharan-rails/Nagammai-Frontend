@@ -1,0 +1,368 @@
+<section>
+
+	<div class="container-fluid">
+	  <header>	 
+	    <h3>Dashboard</h3>
+	  </header> 
+	</div>
+
+	<div class="wrapper dashboard">
+	    <div class="container-fluid">
+
+	   
+	       <%= js add_gritter(flash[:notice], :sticky => true) %>
+	<!--         <h1 style="font-size: 36px;color: #8c8c8e;">Nagammai Pharma</h1>
+			<p style="color: #b9b9b9;font-size: 16px;"> © Copyright 2013 Nagammai Pharma<br>
+			(Division of Kalyani Distribution Services)</p> -->
+<!-- 			<div class="row">
+				<div class="col-md-4">
+					<div class="card text-center link-card">
+						<div class="card-block">
+							<span><i class="fa fa-calendar"></i></span>
+							<h1>Appointments</h1>
+							<%#= link_to appointments_path, { :class => "btn btn-primary load"} do %>
+								<i class="fa fa-long-arrow-right"></i>
+							<%#end %>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card text-center link-card">
+						<div class="card-block">
+							<span><i class="fa fa-envelope-o"></i></span>
+							<h1>Inbox</h1>
+							<%#= link_to emails_path, { :class => "btn btn-primary load"} do %>
+								<i class="fa fa-long-arrow-right"></i>
+							<%# end %>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card text-center link-card">
+						<div class="card-block">
+							<span><i class="fa fa-send"></i></span>
+							<h1>Send Mail</h1>
+							<%#= link_to sendmails_path, { :class => "btn btn-primary load"} do %>
+								<i class="fa fa-long-arrow-right"></i>
+							<%# end %>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="card text-center link-card">
+						<div class="card-block">
+							<span><i class="fa fa-percent"></i></span>
+							<h1>SOP Report</h1>
+							<%#= link_to sop_reports_index_path, { :class => "btn btn-primary load"} do %>
+								<i class="fa fa-long-arrow-right"></i>
+							<%# end %>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card text-center link-card">
+						<div class="card-block">
+							<span><i class="fa fa-file-text-o"></i></span>
+							<h1>Claims</h1>
+							<%#= link_to pending_claims_path, { :class => "btn btn-primary load"} do %>
+								<i class="fa fa-long-arrow-right"></i>
+							<%# end %>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card text-center link-card">
+						<div class="card-block">
+							<span><i class="fa fa-exclamation"></i></span>
+							<h1>Issue Audit Report</h1>
+							<%#= link_to issues_index_path, { :class => "btn btn-primary load"} do %>
+								<i class="fa fa-long-arrow-right"></i>
+							<%# end %>
+						</div>
+					</div>
+				</div>
+			</div> -->
+			<div class="row">
+				<div class="col-md-4">
+					<div class="card link-card">
+						<div class="card-header">
+							<h2>Quick Links</h2>
+						</div>
+						<div class="card-body">
+							<ul class="list-unstyled">
+								<li>
+									Appointments
+									<%= link_to appointments_path, { :class => "btn btn-primary load float-right"} do %>
+										<i class="fa fa-long-arrow-right"></i>
+									<% end %>									
+								</li>
+								<li>
+									Inbox
+									<%= link_to emails_path, { :class => "btn btn-primary load float-right"} do %>
+										<i class="fa fa-long-arrow-right"></i>
+									<% end %>
+								</li>
+								<li>
+									Send Mail
+									<%= link_to sendmails_path, { :class => "btn btn-primary load float-right"} do %>
+										<i class="fa fa-long-arrow-right"></i>
+									<% end %>
+								</li>
+								<li>
+									POGR-Compare
+									<%= link_to pogrs_path, { :class => "btn btn-primary load float-right"} do %>
+										<i class="fa fa-long-arrow-right"></i>
+									<% end %>
+								</li>
+							</ul>
+						</div>						
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card link-card">
+						<div class="card-header">
+							<h2>Reports</h2>
+						</div>
+						<div class="card-body">
+							<ul class="list-unstyled">
+								<li>
+									Issues Audit
+									<%= link_to issues_index_path, { :class => "btn btn-primary load float-right"} do %>
+										<i class="fa fa-long-arrow-right"></i>
+									<% end %>									
+								</li>
+								<li>
+									SOP
+									<%= link_to sop_reports_index_path, { :class => "btn btn-primary load float-right"} do %>
+										<i class="fa fa-long-arrow-right"></i>
+									<% end %>
+								</li>
+								<li>
+									PO
+									<%= link_to sendmails_purchase_order_report_path, { :class => "btn btn-primary load float-right"} do %>
+										<i class="fa fa-long-arrow-right"></i>
+									<% end %>
+								</li>
+								<li>
+									Excess Stock
+									<%= link_to sendmails_excess_stock_report_path, { :class => "btn btn-primary load float-right"} do %>
+										<i class="fa fa-long-arrow-right"></i>
+									<% end %>
+								</li>
+							</ul>
+						</div>						
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card link-card">
+						<div class="card-header">
+							<h2>Claims</h2>
+						</div>
+						<div class="card-body">
+							<ul class="list-unstyled">
+								<li>
+									Expriy/Broken
+									<%= link_to sendmails_expiry_damage_claims_path, { :class => "btn btn-primary load float-right"} do %>
+										<i class="fa fa-long-arrow-right"></i>
+									<% end %>									
+								</li>
+								<li>
+									Free Discount
+									<%= link_to sendmails_free_discount_claims_path, { :class => "btn btn-primary load float-right"} do %>
+										<i class="fa fa-long-arrow-right"></i>
+									<% end %>
+								</li>
+								<li>
+									Purchase Return
+									<%= link_to sendmails_purchase_return_claims_path, { :class => "btn btn-primary load float-right"} do %>
+										<i class="fa fa-long-arrow-right"></i>
+									<% end %>
+								</li>
+								<li>
+									Rate Change
+									<%= link_to sendmails_rate_change_claims_path, { :class => "btn btn-primary load float-right"} do %>
+										<i class="fa fa-long-arrow-right"></i>
+									<% end %>
+								</li>
+							</ul>
+						</div>						
+					</div>
+				</div>
+			</div>
+			    <div class="row">
+
+<!--       <div class="w3-panel w3-card w3-yellow" style="width:100%!important;height:100px!important;background:#fff !important;"><p><font style="color: black;"> Pending Claim</font><br>Count : <%#=@dashboards["claim_count"]%> <br>Amt &nbsp;&nbsp;: <%#=@dashboards["claim_amount"]%></p></div>
+
+<br>
+      <div class="w3-panel w3-card-2 w3-yellow" style="width:100%!important;height:100px!important;background:#fff !important;"><p><font style="color: black;">Adjusted Claim</font><br>Count : <%#=@dashboards["adjustment_count"]%><br>Amt &nbsp;&nbsp;:  <%#=@dashboards["adjustment_amount"]%></p></div></div> -->
+      
+      <div class="col-md-9 col-lg-8">
+
+
+<!-- 
+<script>
+window.onload = function () {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+  theme: "light2", // "light1", "light2", "dark1", "dark2"
+  animationEnabled: true,
+  title:{
+    text: "Pending Claims"   
+  },
+  axisX: {
+    interval: 1,
+    intervalType: "month",
+    valueFormatString: "MMM"
+  },
+  axisY:{
+    title: "Amount",
+    valueFormatString: "#0L"
+  },
+  data: [{        
+    type: "line",
+    markerSize: 12,
+    xValueFormatString: "MMM, YYYY",
+    yValueFormatString: "###.#L",
+    dataPoints: [        
+      { x: new Date(2017, 00, 1), y: 61, indexLabel: "", markerType: "triangle",  markerColor: "#6B8E23" },
+      { x: new Date(2017, 01, 1), y: 71, indexLabel: "", markerType: "triangle",  markerColor: "#6B8E23" },
+      { x: new Date(2017, 02, 1) , y: 55, indexLabel: "", markerType: "triangle", markerColor: "tomato" },
+      { x: new Date(2017, 03, 1) , y: 50, indexLabel: "", markerType: "triangle", markerColor: "tomato" },
+      { x: new Date(2017, 04, 1) , y: 65, indexLabel: "", markerType: "triangle", markerColor: "#6B8E23" },
+      { x: new Date(2017, 05, 1) , y: 85, indexLabel: "", markerType: "triangle", markerColor: "#6B8E23" },
+      { x: new Date(2017, 06, 1) , y: 68, indexLabel: "", markerType: "triangle", markerColor: "tomato" },
+      { x: new Date(2017, 07, 1) , y: 28, indexLabel: "", markerType: "triangle", markerColor: "tomato" },
+      { x: new Date(2017, 08, 1) , y: 34, indexLabel: "", markerType: "triangle", markerColor: "#6B8E23" },
+      { x: new Date(2017, 09, 1) , y: 24, indexLabel: "", markerType: "triangle", markerColor: "tomato" },
+      { x: new Date(2017, 10, 1) , y: 44, indexLabel: "", markerType: "triangle", markerColor: "#6B8E23" },
+      { x: new Date(2017, 11, 1) , y: 34, indexLabel: "", markerType: "triangle", markerColor: "tomato" }
+    ]
+  }]
+});
+chart.render();
+
+}
+</script>
+<div id="chartContainer" style="height: 200px; width: 100%;"></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> -->
+<div class="card">
+	<div class="card-header">
+		<h2>Pending Claims</h2>
+	</div>
+	<div class="card-body">
+		<canvas id="myChart" width="200px" height="75px"></canvas>
+	</div>	
+</div>
+
+
+      </div>
+      <div class="col-md-3 col-lg-4">
+      	<div class="row">
+      		<div class="col-md-12">
+      			<div class="card">
+      				<div class="card-body">
+		      			<h3>Pending Claims</h3>
+		      			<h4>Count:&nbsp;<span><%=@dashboards["claim_count"]%></span></h4>
+		      			<h4>Amount:&nbsp;<span>&#8377;&nbsp;<%="#{@dashboards["claim_amount"].to_f.round().to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}"%>
+		      				
+		      			</span></h4>
+      				</div>
+      			</div>
+      		</div>
+      		<div class="col-md-12">
+      			<div class="card">
+      				<div class="card-body">
+		      			<h3>Adjusted Claims For Current Month</h3>
+		      			<h4>Count:&nbsp;<span><%=@dashboards["adjustment_count"]%></span></h4>
+		      			<h4>Amount:&nbsp;<span>&#8377;&nbsp;
+		      			<%= "#{@dashboards["adjustment_amount"].to_f.round().to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}"%></span></h4>
+      				</div>
+      			</div>
+      		</div>
+      		<div class="col-md-12">
+      			<div class="card">
+      				<div class="card-body">
+		      			<h3>Today's PO</h3>
+		      			<h4>Total POs:&nbsp;<span><%=@dashboards["POs"]%></span></h4>
+		      			<h4>Total Quantity:&nbsp;<span><%=@dashboards["total_quantity"]%></span></h4>
+		      			<h4>Total Products:&nbsp;<span><%=@dashboards["total_products"]%></span></h4>
+		      			
+      				</div>
+      			</div>
+      		</div>
+      		<div class="col-md-12">
+      			<div class="card">
+      				<div class="card-body">
+      				<a><%=link_to "Data Report",pages_reports_path%></a>
+      				</div>
+      				</div>
+      				</div>
+      	</div>
+      </div>      
+
+     </div>
+	    </div>
+    </div>
+    <!--%= hidden_field_tag(name, value = nil,) %-->
+    <%=hidden_field_tag "chart",@month_names,id: "chart" %>
+<!--input type="hidden" name="chart" value= [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ] id="chart"-->
+</section>
+<!--  -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+	<script>
+		var ctx = document.getElementById("myChart").getContext('2d');
+		var cty =($("#chart").val());
+		//cty = [cty]
+		//console.log(typeof(cty));
+		//alert(cty.split(" ").count);
+		var myChart = new Chart(ctx, {
+		    type: 'line',	    
+		    data: {
+		        labels: cty.split(" "),
+		        datasets: [{
+		            label: 'Pending Claims',
+
+		            data: <%=@dashboards["amount"]%>,
+		            backgroundColor: [
+		                'rgb(253, 192, 6)'
+		            ],
+		            borderColor: [
+		                'rgb(253, 192, 6)'
+		            ],
+					pointBorderColor: "rgb(253, 192, 6)",
+					pointBackgroundColor: "rgb(253, 192, 6)",
+					pointBorderWidth: 1,		            
+					pointHoverBackgroundColor: "rgb(31, 74, 142)",
+					pointHoverBorderColor: "rgb(31, 74, 142)",
+					pointHoverBorderWidth: 2,
+		            borderWidth: 2,
+		            
+		            fill: false
+		        }]
+		    },
+		    options: {
+		        legend: {
+		            display: false
+		        },    	
+		        scales: {
+		            xAxes: [{
+		                 gridLines: { drawBorder: true, display: false }
+		            }],        	
+		            yAxes: [{
+		                ticks: {
+		                	stepSize: 20000000,
+							max: <%=@dashboards["amount"].max + 50000000%>,		                	
+		                    beginAtZero:true
+		                },
+		                gridLines: { drawBorder: true, display: false }
+		            }]
+		        }
+		    }
+		});
+		Chart.defaults.global.defaultColor = "rgb(88, 88, 88)";
+		Chart.defaults.global.defaultFontColor = "rgb(88, 88, 88)";
+		// Chart.defaults.global.defaultFontSize = 11;
+		// Chart.defaults.global.elements.rectangle.borderColor = 'rgb(31, 74, 142)';		
+	</script>

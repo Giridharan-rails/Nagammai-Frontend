@@ -1,0 +1,92 @@
+       <section class="users_admin">
+        <div class="container-fluid cfa-index">
+          <header class="table-header">
+            <ol class="breadcrumb">
+              <%= render_breadcrumbs :tag => :li, :separator => "" %>
+            </ol>
+            <h3>CFA Titles</h3>
+          </header>
+          <a href="cfas/new" class="btn_add" data-target="#exampleModalLabel"><i class="fa fa-plus" aria-hidden="true"></i></a>
+          <div class="">
+              <table id="example" class="table table-striped">
+                <thead>
+                  <tr>
+                    
+                    <th class="th_titles">Jobs</th>
+                    <th class="th_edit">Edit</th>
+                    <% if @user["role"] == "Admin" %><th class="th_delete">Delete</th><%end%>
+                  </tr>
+                </thead>
+                <tbody>
+                   
+              <% @cfas.map do |i| %>
+                   <tr>
+                   
+                    <td><%= i["job_name"] %> </td>
+                    <td><%= link_to '', edit_cfa_path(i["id"]), class:"fa fa-pencil-square-o icon_clr load"%></td>
+                    <% if @user["role"] == "Admin" %><td><%= link_to '', cfas_cfa_delete_path(i["id"]), method: :delete,data: { confirm: 'Are you sure?' },class:"fa fa-trash-o icon_clr load" %></td><%end%>
+                    </tr>
+                   
+                   <% end %>
+        
+                </tbody>
+                
+              </table>
+          </div>   
+          </div>
+          </section> 
+
+
+
+
+  
+
+
+  <script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+         /* dom: 'Bfrtip',
+          bSort:true,
+          "pageLength": 13,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2, 3, 4 ]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2, 3, 4 ]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2, 3, 4 ]
+                }
+              }
+          ]*/
+           "bLengthChange": false
+
+      } );
+  } );
+
+  </script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+
+</script>

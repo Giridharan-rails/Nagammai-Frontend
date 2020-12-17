@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+    <link rel="stylesheet" href="/assets/user-assign.css">
+   </head>
+<body>
+      <section>
+        <div class="container-fluid user-assign">
+          <header>
+              <h3>Rate Change
+                  <%if params["data"].present?%>
+                    <a href="/sendmails/rate_change_claims" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a>              
+                  <%elsif params["id"]=="pendingreport"%>
+                  <a href="/sendmails/pending_claims_report" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a>              
+                 <%elsif params["id"]=="settledreport"%>
+                    <a href="/sendmails/settled_claims_report" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a>
+            
+                 <%else%>
+                    <a href="/sendmails/sendmails_claims_rate_change" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a>              
+                  <%end%>
+                 <!--  <span class="float-right">         
+                    <input placeholder="Search" class="" id="system-search" name="q" type="text" autofocus>
+                  </span> -->
+              </h3>
+          </header>   
+          
+          <div class="card manufacturer purschase-order">
+              <% if @emails.present?%>
+                  <div class="mail-span">
+                <label>To: </label>
+                  <%@emails.map do |i|%>
+                  <span><%= i["email"]%></span>
+                  <%end%>
+                </div>
+              <%end%>            
+              <div class="row order-address">
+                <div class="col-md-4">
+                  <label> Claim Number: <span><%=@rate_change_claims[0]["claim_number"] if @rate_change_claims.present?%></span></label>
+                </div> 
+                <div class="col-md-4">
+                  <label>Claim Date: <span><%=@rate_change_claims[0]["ack_date"].to_date.strftime("%d-%m-%Y") if @rate_change_claims.present?%></span></label>                  
+                </div> 
+
+                <div class="col-md-4">
+                  <label> Supplier Code: <span><%=@rate_change_claims[0]["supplier_code"] if @rate_change_claims.present?%></span></label>
+                </div> 
+              </div>
+              <table class="table table-responsive rate-preview">
+                <thead>
+                  <tr>
+                   
+                    <th style="width: 60%;">Description</th>
+                    <th style="width: 25%;" class="text-right">Discount Amount</th>
+                    <th style="width: 25%;" class="text-right">Claim Amount</th>
+                    <th style="width: 25%;">GST</th>
+                    <th style="width: 25%;" class="text-right">Settled Amount</th>
+
+                    
+                  </tr>
+                </thead>
+                <tbody class="scroll">
+              
+                  <% @rate_change_claims.map do |i| %>
+                    <tr class="content">             
+                      <td style="width: 60%;"><p><%= i["remarks"] %></p></td>
+                     
+                      <td style="width: 25%;" class="text-right"><%= i["disc_amount"].to_f.round(2) %> </td>  
+                      <td style="width: 25%;" class="text-right"><%= i["claim_amount"].to_f.round(2) %> </td>
+                      <td style="width: 25%;"><%= i["gst"].to_f.round(2) %> </td>
+                      <td style="width: 25%;" class="text-right"><%= i["settled_amount"].to_f.round(2) %> </td>                             
+                                               
+                    </tr>
+                  <% end %>
+
+                 
+
+
+                </tbody>
+              </table>
+              <div class="row">
+                <div class="col-md-6">
+                  <label style="float: right;font-weight: bold;">Total Amount: <span><%@rate_change_claims.map{|i| @total<<i["claim_amount"].to_f}%>&#8377;&nbsp;<%= ActionController::Base.helpers.number_to_currency(@total.sum, unit: "")%></span>
+                 </label>
+                 </div>
+                 <div class="col-md-6">
+                  <label style="float: right;font-weight: bold;">Settled Amount: <span><%@set_total=[]%><%@rate_change_claims.map{|i| @set_total<< i["settled_amount"].to_f}%>&#8377;&nbsp;<%= ActionController::Base.helpers.number_to_currency(@set_total.sum, unit: "")%></span>
+                  </label>
+                </div>
+                </div>
+            </div>
+          </div>
+      </section>
+<!--         <div class="container-fluid">
+          <nav aria-label="Page navigation example" id="page_slider">
+           <h1><ul class="pagination">
+               
+               </ul>
+           </h1> 
+          </nav>          
+        </div> -->             
+        
+
+</body>
+</html>
+<style type="text/css">
+  select{
+    width: 192px;
+  }
+</style>
+
+  <script type="text/javascript">$(document).ready(function(){
+    $('select').change(function(){
+         var value=($(this).val());
+        
+         
+        $.ajax({
+              type: "GET",
+              url: "/manufacturers/manufacturer_list?id="+value
+             })
+        });        
+    });
+
+   </script>

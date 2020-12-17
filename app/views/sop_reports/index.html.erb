@@ -1,0 +1,91 @@
+<section>
+        <div class="container-fluid sop-report">
+          <header class="table-header">
+              <ol class="breadcrumb">
+                <%= render_breadcrumbs :tag => :li, :separator => "" %>
+              </ol>
+              <h3>SOP Report<span class="float-right"></h3>
+          </header>
+          <table id="example" class="display" width="100%" cellspacing="0">
+                  <thead>
+                      <tr>
+                          <th>Division code</th>
+                          <th>Division</th>
+                          <th class="text-right">Special Offers</th>
+                          <th class="text-right">Claim Extra Offers</th>
+                          <th class="text-center">Appointment Date</th>
+                          <th class="text-left">Delivery Order Schedule</th>
+                          <th class="text-left">Order Format</th>
+                  
+                      </tr>
+                  </thead>                 
+                  <tbody>
+                    <% @sops.map do |i| %>                    
+                      <tr>
+                        <td><%= i["division"]["div_code"] if i["division"].present? && i["division"]["div_code"].present? %></td>
+                        <td><%= i["division"]["div_name"] if i["division"].present? && i["division"]["div_name"].present? %></td>
+                        <td class="text-right"><%= i["special_offer"] if i["special_offer"].present? %></td>
+                        <td class="text-right"><%= i["claims_offer"] if i["claims_offer"].present? %></td> 
+                        <td class="text-center" data-order="<%= i["monthly_appoinment1"].to_date.strftime("%Y-%m-%d") if i["monthly_appoinment1"].present?%>"><%= i["monthly_appoinment1"].to_date.strftime("%d-%m-%Y") if i["monthly_appoinment1"].present?%>,<%= i["monthly_appoinment2"].to_date.strftime("%d-%m-%Y") if i["monthly_appoinment2"].present?%>,<%= i["monthly_appoinment2"].to_date.strftime("%d-%m-%Y") if i["monthly_appoinment3"].present?%></td>
+                        <td class="text-left"><%= i["delivery_order_schedule"] if i["delivery_order_schedule"].present? %></td>
+                        <td class="text-left"><%= i["order_type"] if i["order_type"].present? %></td>
+                                                       
+                       </tr>
+                    <%end%>                     
+                  </tbody>
+              </table>
+            
+            </div>   
+             
+      </section>
+
+ <script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+          dom: 'Bfrtip',
+          bSort:true,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2,3,4,5,6]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2,3,4,5,6 ]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2,3,4,5,6]
+                }
+              }
+          ],
+             "order": [[ 4, "asc" ]]
+          
+      } );
+  } );
+
+  </script>
+
+
+
+      
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+
+</script> 

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+          <header>
+                 <ol class="breadcrumb">
+    <%= render_breadcrumbs :tag => :li, :separator => "" %>
+  </ol>
+            <h3>Manufacturer Details</h3>
+          </header>
+          
+          
+              <table class="table">
+                <thead>
+                  <tr>
+                  <th class="th_user">Supplier Name</th>
+                    <th class="th_user">Name</th>
+                    <th class="th_email">Email</th>
+                    <th class="th_role">Phone Number</th>
+                    <th class="th_email">Address</th>
+                   </tr>
+                </thead>
+                <tbody class="scroll">
+                  <tr> <%@manufacturer.map do |i| %>
+                  <td class="td_user"><%= i["suppliername"] %> </td>
+                    <td class="td_user"><%= i["name"] %> </td>
+                    <td class="td_email"><%= i["email"] %> </td>
+                    <td class="td_role"><%= i["phone_number"] %>
+                     <td class="td_role"><%= i["address"] %>                                                   
+                    <%end %>
+                                                    
+                </tbody>
+              </table>
+</body>
+</html>

@@ -1,0 +1,119 @@
+
+
+ <section>
+        <div class="container-fluid approved-claims">
+          <header class="table-header">
+              <ol class="breadcrumb">
+                <%= render_breadcrumbs :tag => :li, :separator => "" %>
+              </ol>
+            <h3>Approved Issues
+              <input type="date" name="date" class="form-control float-right table-filter" placeholder="select date" id="datefilter" data-toggle="tooltip" title="Date Filter" autofocus>
+            </h3>
+
+          </header>
+
+
+            <table id="example" class="display approval" width="100%" cellspacing="0" >
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th class="text-center">Cut-off Date </th>                  
+                  <th class="text-left">Resolved By</th>
+<!--                 <th class="text-center">Status</th> -->
+           
+                  
+                </tr>
+              </thead>
+              <tbody>
+              
+
+              <%@issues.map do |i|%>
+                <tr>
+                  <%=hidden_field_tag "ids[]" ,i["id"] %>
+                  <td><span style="width: 400px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" title="<%=i["description"]%>"><%=link_to i["description"], appointment_path(i["appointment_id"]),class: "btn btn-link"%></span></td>
+                  <td class="text-center"><%=i["cut_off_date"].to_date.strftime("%d-%m-%Y") unless i["cut_off_date"].nil? %></td>
+                  
+                  <td class="text-left"><%=i["contact"]["name"]%></td>
+           <!--        <td class="td_issue_status">
+                     
+                    <!%= select_tag "status[]", options_for_select([['Open'],['Closed'],['Re-open']],:selected=>i["status"]),include_blank: "Select" %>
+                     </td>                
+            -->        
+                 </tr>
+                           <%end%>
+                 
+              </tbody>
+            </table>         
+
+
+          </div>
+
+        
+             
+      </section>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#datefilter').change(function(){
+
+         var id=($(this).val());
+          $.ajax({
+            type: "GET",
+            url: "/issues/approved_claims_filter?date="+id
+          });
+         
+      });
+
+});
+
+</script>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+
+</script>
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+          dom: 'Bfrtip',
+            bSort:true,
+              buttons: [
+                 'excelHtml5',
+                 'pdfHtml5',
+                 'print'
+               ]
+       } );
+} );
+
+        </script>
+
+
+
+
+      
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+
+</script> 

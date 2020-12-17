@@ -1,0 +1,34 @@
+     <div class="container-fluid user-assign">
+          <header>
+             
+            <h3>SOP Report
+            </h3>
+          </header>
+          <div class="card_hg">
+              <table class="table table_front table-striped table-list-search sops">
+              <thead>
+                <tr>
+                  <th class="th_sop_code">Division code</th>
+                  <th class="th_sop_division">Division</th>
+                  <th class="th_sop_offer">Special Offers</th>
+                  <th class="th_sop_extra_off">Claim Extra Offers</th>
+                </tr>
+              </thead>
+              <tbody class="scroll">
+              
+              <%@sops.map do |i|%>
+            
+                <tr>
+                  <td class="td_sop_code" scope="row"><%=i["division"]["div_code"]%></td>
+                  <td class="td_sop_division" scope="row"><%=i["division"]["div_name"]%></td>
+                  <td class="td_sop_offer" scope="row"><%=i["special_offer"]%>%</td>
+                  <td class="td_sop_extra_off"><%=i["claims_offer"]%>%</td>
+                               
+                 </tr>
+              <%end%>
+              
+                       
+              </tbody>
+            </table>            
+          </div>
+          </div>

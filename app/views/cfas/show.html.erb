@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+          <header>
+          	<h3>Cfa Title</h3>
+          </header>
+          
+          
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="th_user">Job Name</th>
+                  </tr>
+                </thead>
+                <tbody class="scroll">
+                  <tr> 
+                  <% if @cfa.present?%>
+                    <td class="td_user"><%= @cfa["job_name"] %> </td>
+                    <%else%>
+                    <td><h3> "No Records found "</h3></td>
+
+                        <%end%>                                              
+                    </tr>
+                                                    
+                </tbody>
+              </table>
+</body>
+</html>
+
+

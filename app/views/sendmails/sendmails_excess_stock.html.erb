@@ -1,0 +1,183 @@
+<head>
+<link rel="stylesheet" href="/assets/user-assign.css">
+</head>
+
+<section class="users_admin">
+        <div class="container-fluid user-assign">
+          <header class="table-header">
+            <ol class="breadcrumb">
+              <%= render_breadcrumbs :tag => :li, :separator => "" %>
+            </ol>
+          
+          </header>
+          
+         
+              <div class="date-search">
+                 <%=form_for "filter",:url=>{:controller=>"sendmails",:action=>"excess_stock_supplier_filter"} do |i|%>
+              <div class="row">
+                <div class="col-md-3">
+                  <label></label>
+                  <br>
+                  <%= select_tag 'supplier_id', options_for_select(@supplier.collect{ |u| [u["supplier_name"], u["id"]] }),  {:include_blank =>"select",class: "form-control"}%>
+                </div>
+                <div class="col-md-2">
+                     <label></label>
+                    <br>
+                    <%=i.submit "Show", class: "btn btn-full btn-primary"%>
+                </div>  
+              </div>   
+           <%end%>
+   
+          </div>
+            <h3>Send mail - Claims(Excess Stock)<span class="float-right">   <input placeholder="Search" id="system-search" class="" type="text"></span></h3>
+            <br>
+          <%= form_for(@excess, :url =>{:controller => 'sendmails',:action => 'excess_stock_assign'}) do |f| %>  
+           <div class="claims_radio">
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div class="tab-pane active card_hg" id="subject1" role="tabpanel">
+                <table class="table table-striped table_front table-list-search filter">
+                  <thead class="tbl-header">
+                  <th>Supplier</th>
+                  <th>Product Code</th>
+                  <th>Item Description</th>
+                  <th>Quantity</th>
+                  <th>Free Quantity</th>
+                     <th>Excess stock</th>
+                        <th>Current Stock</th>                 
+                  <th class="th_sno" style="text-align: center;"><input class="form-check-input" name="foo" type="checkbox" id="checkAll"></th>
+             
+              </thead>
+              <%if @excess_stock.present?%>
+              <tbody>
+              
+              <%@excess_stock.map do |i|%>
+                <tr>
+                  <td><%=i["supplier_code"]%></td>
+                  <td><%=i["product_code"]%></td>
+                  <td><%=i["product_name"]%></td>
+                  <td><%=i["quantity"]%></td>
+                  <td><%=i["free_quantity"]%></td>
+                  <td><%=i["excess_stock"]%></td>
+                  <td><%=i["current_stock"]%></td>
+                  <td style="text-align: center;" scope="row"><input class="form-check-input" name="order_id[]" type="checkbox" value="<%=i["product_code"]%>"></td>
+                </tr>
+              <%end%>
+
+              </tbody>
+              <%end%>
+            </table>
+          </div>
+</div>
+               </div>     
+          <footer class="table-footer table-footer-brd">
+              <% if @excess_stock.present?%>
+                  <%=f.submit "Send" , class: "btn btn-one load"%> 
+                    <%else%>
+                      <%=f.submit "Send" , class: "btn btn-one", disabled:true%>
+                    <%end%> 
+                  <%=link_to "Cancel",sendmails_path , class: "btn btn-primary"%>
+          </footer>        
+        <%end%>
+                    
+        </div>
+</section>
+
+<script>
+$(document).ready(function(){
+   $("#checkAll").click(function () {
+     $('input:checkbox').not(this).prop('checked', this.checked);
+ }); 
+});
+</script>
+
+
+
+  <script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+         /* dom: 'Bfrtip',
+          bSort:true,
+          "pageLength": 13,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2 ]
+                }
+              }
+          ]*/
+           "bLengthChange": false
+
+      } );
+  } );
+
+  </script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type=search]").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+</script>
+
+  <script type="text/javascript">
+$(document).ready(function() {
+
+  var activeSystemClass = $('.list-group-item.active');
+
+  //something is entered in search form
+  $('#system-search').keyup(function() {
+    var that = this;
+    // affect all table rows on in systems table
+    var tableBody = $('.table-list-search tbody');
+    var tableRowsClass = $('.table-list-search tbody tr');
+    $('.search-sf').remove();
+    tableRowsClass.each(function(i, val) {
+
+      //Lower text for case insensitive
+      var rowText = $(val).text().toLowerCase();
+      var inputText = $(that).val().toLowerCase();
+      if (inputText != '') {
+        $('.search-query-sf').remove();
+        tableBody.prepend('<tr class="search-query-sf"><td colspan="6"><strong>Searching for: "' + $(that).val() + '"</strong></td></tr>');
+      } else {
+        $('.search-query-sf').remove();
+      }
+
+      if (rowText.indexOf(inputText) == -1) {
+        //hide rows
+        tableRowsClass.eq(i).hide();
+
+      } else {
+        $('.search-sf').remove();
+        tableRowsClass.eq(i).show();
+      }
+    });
+    //all tr elements are hidden
+    if (tableRowsClass.children(':visible').length == 0) {
+      tableBody.append('<tr class="search-sf"><td class="text-muted" colspan="6">No entries found.</td></tr>');
+    }
+  });
+});
+</script>

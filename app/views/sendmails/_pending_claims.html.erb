@@ -1,0 +1,326 @@
+           <table class="table table-striped table_front table-list-search filter" id="example">
+                  <thead class="tbl-header">
+                    <tr>
+                    <th>Supplier</th>
+                      <th>Claim Number</th>
+                      <th class="text-center">Claim Date</th>
+                      <th class="text-right">Total Quantity</th>
+                      <th class="text-right">Claim Amount</th>
+                      <th class="text-right">Settled Amount</th>
+                     <th>Claim Type</th>
+                      <th class="text-center">View Claim</th>
+                                            
+                    </tr>
+                  </thead>
+                  <tbody class="scroll">
+
+                  
+                              
+                    
+                      <% if @pending_claims["purchase_return"].present?%>
+
+                  
+                          
+                          <%@pending_claims["purchase_return"].map do |j|%>
+                              <%claim_amount=[]%>
+                              <%j["claim_amount"].map {|k|  claim_amount << k.to_f}%>
+                              <%settled_amount=[]%>
+                              <%j["settled_amount"].map {|k|  claim_amount << k.to_f}%>
+                                <%if settled_amount.sum.round(2) <= 0%>
+                                <%c=0%>
+                                    <tr>
+                          
+                                      <td style="color: black"><%=j["data"][c]["supplier"]["supplier_name"] if j["data"].present?%></td>
+                                      <td style="color: black"><%=j["claim_no"]%></td>
+				      <% claim_date = j["data"][c]["claim_date"].to_date.strftime("%d-%m-%Y") if j["data"][c]["claim_date"].present?%>
+                                      <td class="text-center" style="color: black" data-order="<%=j["data"][c]["claim_date"].to_date.strftime("%Y-%m-%d") if j["data"][c]["claim_date"].present?%>"><%=j["data"][c]["claim_date"].to_date.strftime("%d-%m-%Y") if j["data"][c]["claim_date"].present?%></td>
+                                      <%quantity=[]%>
+                                      <%j["total_quantity"].map {|k|  quantity << k.to_i}%>
+                                      
+                                      <td class="text-right" style="color: black"><%=quantity.sum%></td>
+                                      
+                                      <td class="text-right" style="color: black"><%=claim_amount.sum.round(2)%></td>
+                                      
+                                      <td class="text-right" style="color: black"><%=settled_amount.sum.round(2)%></td>
+                                      <td style="color: black">Purchase Return</td>
+                                      <td style="text-align: center;">
+                                      <%=link_to "Preview",claims_purchase_return_claim_path(claim_no:j["claim_no"], claim_date: claim_date, :id=>"pendingreport") ,class: "btn btn-link btn_pad"%></td>
+                                    </tr>
+                                    <%c=c+1%>
+                                <%elsif settled_amount.sum.round(2) >= claim_amount.sum.round(2)%>
+                                <%c=0%>
+                                      <tr>
+                          
+                                      <td style="color: blue"><%=j["data"][c]["supplier"]["supplier_name"]%></td>
+                                      <td style="color: blue"><%=j["claim_no"]%></td>
+				       <% claim_date = j["data"][c]["claim_date"].to_date.strftime("%d-%m-%Y") if j["data"][c]["claim_date"].present? %>
+                                      <td class="text-center" style="color: blue" data-order="<%=j["data"][c]["claim_date"].to_date.strftime("%Y-%m-%d") if j["data"][c]["claim_date"].present?%>"><%=j["data"][c]["claim_date"].to_date.strftime("%d-%m-%Y") if j["data"][c]["claim_date"].present?%></td>
+                                      <%quantity=[]%>
+                                      <%j["total_quantity"].map {|k|  quantity << k.to_i}%>
+                                      
+                                      <td class="text-right" style="color: blue"><%=quantity.sum%></td>
+                                      
+                                      <td class="text-right" style="color: blue"><%=claim_amount.sum.round(2)%></td>
+                                      
+                                      <td class="text-right" style="color: blue"><%=settled_amount.sum.round(2)%></td>
+                                      <td style="color: blue">Purchase Return</td>
+                                      <td style="text-align: center;">
+                                      <%=link_to "Preview",claims_purchase_return_claim_path(claim_no:j["claim_no"], claim_date: claim_date, :id=>"pendingreport") ,class: "btn btn-link btn_pad"%></td>
+                                    </tr>
+                                <%c=c+1%>
+                                    <%else%>
+                                    <%c=0%>
+                                      <tr>
+                          
+                                      <td style="color: green"><%=j["data"][c]["supplier"]["supplier_name"]%></td>
+                                      <td style="color: green"><%=j["claim_no"]%></td>
+				       <% claim_date = j["data"][c]["claim_date"].to_date.strftime("%d-%m-%Y") if j["data"][c]["claim_date"].present? %>
+                                      <td class="text-center" style="color: green" data-order="<%=j["data"][c]["claim_date"].to_date.strftime("%Y-%m-%d") if j["data"][c]["claim_date"].present?%>"><%=j["data"][c]["claim_date"].to_date.strftime("%d-%m-%Y") if j["data"][c]["claim_date"].present?%></td>
+                                      <%quantity=[]%>
+                                      <%j["total_quantity"].map {|k|  quantity << k.to_i}%>
+                                      
+                                      <td class="text-right" style="color: green"><%=quantity.sum%></td>
+                                      
+                                      <td class="text-right" style="color: green"><%=claim_amount.sum.round(2)%></td>
+                                      
+                                      <td class="text-right" style="color: green"><%=settled_amount.sum.round(2)%></td>
+                                      <td style="color: green">Purchase Return</td>
+                                      <td style="text-align: center;">
+                                      <%=link_to "Preview",claims_purchase_return_claim_path(claim_no:j["claim_no"], claim_date: claim_date, :id=>"pendingreport") ,class: "btn btn-link btn_pad"%></td>
+                                    </tr>
+                                <%c=c+1%>
+                                <%end%>
+                          
+                         <%end%>
+                      <%end%>
+                      <%if @pending_claims["expiry"].present?%>
+                      
+                        
+                            <%@pending_claims["expiry"].map do |j|%>
+                              <%claim_amount=[]%>
+                              <%j["claim_amount"].map {|k|  claim_amount << k.to_f}%>
+                              <%settled_amount=[]%>
+                              <%j["settled_amount"].map {|k| settled_amount << k.to_f}%>
+                          <%if settled_amount.sum.round(2) <= 0%>
+                          <%c=0%>
+                              <tr>
+                              <td style="color: black;"><%=j["data"][c]["supplier"]["supplier_name"]%></td>
+                              <td style="color: black;"><%=j["claim_no"]%></td>
+			      <% claim_date = j["data"][c]["ack_date"].to_date.strftime("%d-%m-%Y") if j["data"][c]["ack_date"].present? %>
+                              <td class="text-center" style="color: black;" data-order="<%=j["data"][c]["ack_date"].to_date.strftime("%Y-%m-%d") if j["data"][c]["ack_date"].present?%>"><%=j["data"][c]["ack_date"].to_date.strftime("%d-%m-%Y") if j["data"][c]["ack_date"].present?%></td>
+                              <%quantity=[]%>
+                              <%j["total_quantity"].map {|k|  quantity << k.to_i}%>
+                              
+                              <td class="text-right" style="color: black;"><%=quantity.sum.round(2)%></td>
+                              
+                              <td class="text-right" style="color: black;"><%=claim_amount.sum.round(2)%></td>
+                              
+                              <td class="text-right" style="color: black;"><%=settled_amount.sum.round(2)%></td>
+                              <td style="color: black;">ExpiryDamage</td>
+                              <td style="text-align: center;" style="color: black;">
+                              <%=link_to "Preview",claims_expiry_damage_claim_path(claim_no:j["claim_no"], claim_date: claim_date, :id=>"pendingreport") ,class: "btn btn-link btn_pad"%></td>
+                              </tr>
+                              <%c=c+1%>
+                          <%elsif settled_amount.sum.round(2) >= claim_amount.sum.round(2)%>
+                          <%c=0%>
+                              <tr>
+                              <td style="color: blue;"><%=j["data"][c]["supplier"]["supplier_name"]%></td>
+                              <td style="color: blue;"><%=j["claim_no"]%></td>
+			       <% claim_date = j["data"][c]["ack_date"].to_date.strftime("%d-%m-%Y") if j["data"][c]["ack_date"].present? %>
+                              <td class="text-center" style="color: blue;" data-order = "<%=j["data"][c]["ack_date"].to_date.strftime("%Y-%m-%d") if j["data"][c]["ack_date"].present?%>"><%=j["data"][c]["ack_date"].to_date.strftime("%d-%m-%Y") if j["data"][c]["ack_date"].present?%></td>
+                              <%quantity=[]%>
+                              <%j["total_quantity"].map {|k|  quantity << k.to_i}%>
+                              
+                              <td class="text-right" style="color: blue;"><%=quantity.sum.round(2)%></td>
+                              
+                              <td class="text-right" style="color: blue;"><%=claim_amount.sum.round(2)%></td>
+                              
+                              <td class="text-right" style="color: blue;"><%=settled_amount.sum.round(2)%></td>
+                              <td style="color: blue;">ExpiryDamage</td>
+                              <td style="text-align: center;" style="color: blue;">
+                              <%=link_to "Preview",claims_expiry_damage_claim_path(claim_no:j["claim_no"], claim_date: claim_date, :id=>"pendingreport") ,class: "btn btn-link btn_pad"%></td>
+                              </tr>
+                              <%c=c+1%>
+                          <%else%>
+                          <%c=0%>
+                              <tr>
+                              <td style="color: green;"><%=j["data"][c]["supplier"]["supplier_name"]%></td>
+                              <td style="color: green;"><%=j["claim_no"]%></td>
+			       <% claim_date = j["data"][c]["ack_date"].to_date.strftime("%d-%m-%Y") if j["data"][c]["ack_date"].present? %>
+                              <td class="text-center" style="color: green;" data-order="<%=j["data"][c]["ack_date"].to_date.strftime("%Y-%m-%d") if j["data"][c]["ack_date"].present?%>"><%=j["data"][c]["ack_date"].to_date.strftime("%d-%m-%Y") if j["data"][c]["ack_date"].present?%></td>
+                              <%quantity=[]%>
+                              <%j["total_quantity"].map {|k|  quantity << k.to_i}%>
+                              
+                              <td class="text-right" style="color: green;"><%=quantity.sum.round(2)%></td>
+                              
+                              <td class="text-right" style="color: green;"><%=claim_amount.sum.round(2)%></td>
+                              
+                              <td class="text-right" style="color: green;"><%=settled_amount.sum.round(2)%></td>
+                              <td style="color: green;">ExpiryDamage</td>
+                              <td style="text-align: center;" style="color: green;">
+                              <%=link_to "Preview",claims_expiry_damage_claim_path(claim_no:j["claim_no"], claim_date: claim_date, :id=>"pendingreport") ,class: "btn btn-link btn_pad"%></td>
+                              </tr>
+                              <%c=c+1%>
+                          <%end%>
+                      <%c=c+1%>
+                      <%end%>
+                      <%end%>
+
+
+                      <%if @pending_claims["free_discount"].present?%>
+                            
+                            
+                            <%@pending_claims["free_discount"].map do |j|%>
+
+                              <%claim_amount=[]%>
+                              <%j["claim_amount"].map {|k|  claim_amount << k.to_f}%>
+
+                              <%settled_amount=[]%>
+                              <%j["settled_amount"].map {|k|  settled_amount << k.to_f}%>
+                          <%if settled_amount.sum.round(2) <= 0%>
+                          <%c=0%>
+                                <tr>  
+                                    <td style="color: black;"><%=j["data"][c]["supplier"]["supplier_name"]%></td>
+                                    <td style="color: black;"><%=j["claim_no"]%></td>
+				    <% claim_date = j["data"][c]["ack_date"].to_date.strftime("%d-%m-%Y") if j["data"][c]["ack_date"].present? %>
+                                    <td class="text-center" style="color: black;" data-order="<%=j["data"][c]["ack_date"].to_date.strftime("%Y-%m-%d") if j["data"][c]["ack_date"].present?%>"><%=j["data"][c]["ack_date"].to_date.strftime("%d-%m-%Y") if j["data"][c]["ack_date"].present?%></td>
+                                    <%quantity=[]%>
+                                    <%j["total_quantity"].map {|k|  quantity << k.to_i}%>
+                                    
+                                    <td class="text-right" style="color: black;"><%=quantity.sum%></td>
+                                    <td class="text-right" style="color: black;"><%=claim_amount.sum.round(2)%></td>
+                                    
+                                    <td class="text-right" style="color: black;"><%=settled_amount.sum.round(2)%></td>
+                                    <td style="color: black;">FreeDiscount</td>
+                                    <td style="text-align: center;" style="color: black;">
+                                       <%=link_to "Preview", claims_free_discounts_claim_path(:claim_no=>j["claim_no"], claim_date: claim_date, :id=>"pendingreport"),class: "btn btn-link btn_pad"%></td>
+                                  </tr>
+                                  <%c=c+1%>
+                          <%else%>
+                                  <%c=0%>
+                                   <tr>  
+                                    <td style="color: green;"><%=j["data"][c]["supplier"]["supplier_name"]%></td>
+                                    <td style="color: green;"><%=j["claim_no"]%></td>
+				    <% claim_date = j["data"][c]["ack_date"].to_date.strftime("%d-%m-%Y") if j["data"][c]["ack_date"].present? %>
+                                    <td class="text-center" style="color: green;" data-order="<%=j["data"][c]["ack_date"].to_date.strftime("%Y-%m-%d") if j["data"][c]["ack_date"].present?%>"><%=j["data"][c]["ack_date"].to_date.strftime("%d-%m-%Y") if j["data"][c]["ack_date"].present?%></td>
+                                    <%quantity=[]%>
+                                    <%j["total_quantity"].map {|k|  quantity << k.to_i}%>
+                                    
+                                    <td class="text-right" style="color: green;"><%=quantity.sum%></td>
+                                    <td class="text-right" style="color: green;"><%=claim_amount.sum.round(2)%></td>
+                                    
+                                    <td class="text-right" style="color: green;"><%=settled_amount.sum.round(2)%></td>
+                                    <td style="color: green;">FreeDiscount</td>
+                                    <td style="text-align: center;" style="color: green;">
+                                       <%=link_to "Preview", claims_free_discounts_claim_path(:claim_no=>j["claim_no"], claim_date: claim_date,:id=>"pendingreport"),class: "btn btn-link btn_pad"%></td>
+                                  </tr>
+                                  <%c=c+1%>
+                          <%end%>
+                        
+
+                      <%end%>
+                      <%end%>
+
+                      <%if @pending_claims["ratechange"].present?%>
+                            
+                            
+                            <%@pending_claims["ratechange"].map do |j|%>
+                              <%claim_amount=[]%>
+                              <%j["claim_amount"].map {|k|  claim_amount << k.to_f}%>
+                              <%settled_amount=[]%>
+                              <%j["settled_amount"].map {|k|  settled_amount << k.to_f}%>
+                             
+                             <%if settled_amount.sum.round(2) <= 0%>
+
+                             <%c=0%>
+                                <tr>
+                                    <td style="color: black;"><%=j["data"][0]["supplier"]["supplier_name"]%></td>
+                                    <td style="color: black;"><%=j["claim_no"]%></td>
+				    <% claim_date = j["data"][0]["ack_date"].to_date.strftime("%d-%m-%Y") if j["data"][0]["ack_date"].present? %>
+                                    <td class="text-center" style="color: black;" data-order="<%=j["data"][0]["ack_date"].to_date.strftime("%Y-%m-%d") if j["data"][0]["ack_date"].present?%>"><%=j["data"][0]["ack_date"].to_date.strftime("%d-%m-%Y") if j["data"][0]["ack_date"].present?%></td>
+                                      <%quantity=[]%>
+                                      <%j["total_quantity"].map {|k|  quantity << k.to_i}%>
+                                    <td class="text-right" style="color: black;"><%=quantity.sum%></td>
+                                    <td class="text-right" style="color: black;"><%=claim_amount.sum.round(2)%></td>
+                                    <td class="text-right" style="color: black;"><%=settled_amount.sum.round(2)%></td>
+                                    <td style="color: black;">RateChange</td>
+                                    <td style="text-align: center;" style="color: black;">
+                                     <%=link_to "Preview", claims_rate_change_claim_path(:claim_no=>j["claim_no"], claim_date: claim_date,:id=>"pendingreport"),class: "btn btn-link btn_pad"%></td>
+                                </tr>
+                                <%c=c+1%>
+                                <%else%>
+                                    <%c=0%>
+                                     <tr>
+                                      <td style="color: green"><%=j["data"][0]["supplier"]["supplier_name"]%></td>
+                                      <td style="color: green"><%=j["claim_no"]%></td>
+				      <% claim_date = j["data"][0]["ack_date"].to_date.strftime("%d-%m-%Y") if j["data"][0]["ack_date"].present? %>
+                                      <td class="text-center" style="color: green" data-order="<%=j["data"][0]["ack_date"].to_date.strftime("%Y-%m-%d") if j["data"][0]["ack_date"].present?%>"><%=j["data"][0]["ack_date"].to_date.strftime("%d-%m-%Y") if j["data"][0]["ack_date"].present?%></td>
+                                      <%quantity=[]%>
+                                      <%j["total_quantity"].map {|k|  quantity << k.to_i}%>
+                                      <td class="text-right" style="color: green"><%=quantity.sum%></td>
+                                      <td class="text-right" style="color: green"><%=claim_amount.sum.round(2)%></td>
+                                      <td class="text-right" style="color: green"><%=settled_amount.sum.round(2)%></td>
+                                      <td style="color: green">RateChange</td>
+                                      <td style="text-align: center;" style="color: green">
+                                      <%=link_to "Preview", claims_rate_change_claim_path(:claim_no=>j["claim_no"], claim_date: claim_date, :id=>"pendingreport"),class: "btn btn-link btn_pad"%></td>
+                                </tr>
+                                <%c=c+1%>
+                               <%end%>
+                      
+                      <%end%>
+                      <%end%>
+                      
+                      
+                      
+          
+
+                     </tbody>
+                </table>
+
+ <script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+          dom: 'Bfrtip',
+          bSort:true,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2,3,4,5,6]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2,3,4,5,6 ]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2,3,4,5,6]
+                }
+              }
+          ],
+             "order": [[ 2, "asc" ]]
+          
+      } );
+  } );
+
+  </script>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type=search]").focus();
+  });
+
+  $(document).ready(function(){
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+</script>

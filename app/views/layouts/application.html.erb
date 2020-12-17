@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Nagammai</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+ <style type="text/css">
+ 
+#loading-img {
+    background-color: #ffffff94;
+    height: 100%;
+}
+
+.loader{
+    background: url(/assets/loader1.gif) center center no-repeat;
+    background-size: 400px;
+    width: 100%;
+    height: 100%;
+}
+
+.overlay {
+    background:grey;
+    display: none;
+    position: absolute;
+    top: 35%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 1;
+}
+
+    </style>
+  </head>
+<!-- <style type="text/css">
+  .hameid-loader-overlay {
+    width: 100%;
+    height: 100%;
+    background: url(../assets/spin1.gif) center;
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    z-index: 99999;
+    position: absolute;
+    top: 70px;
+}
+.hameid-loader-overlay { display: none; }
+</style>
+<style>
+#snackbar {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+}
+
+#snackbar.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;} 
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;} 
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+</style> -->
+  
+
+  <body>
+
+  
+  <%= render 'layouts/sidebar'%>
+  
+<%= render 'layouts/header'%>
+ <div class="overlay">
+    <div id="loading-img">
+      <div class="loader"></div>
+    </div>
+</div>
+    <%= yield %>
+   
+   
+    <%= render 'layouts/footer'%>
+
+
+
+
+    
+     <%= js add_gritter(flash[:notice], :image => :success, :nodom_wrap  => true) %>
+<!-- <!%= render 'layouts/footer'%> -->
+<style type="text/css">
+.required {
+  color: red;
+  font-size: 15px;
+}
+ 
+ </style>
+
+
+<script type="text/javascript">
+
+
+$(document).ready(function(){
+    $(".load").click(function(){
+       
+       $(".overlay").show();
+    });
+
+    });
+
+   /*   $("a[href]").click(function(){
+          if ($(this).prop("href").indexOf("#") == -1 ){
+
+           $(".overlay").show();
+          }else{
+$(".overlay").hide();
+          }
+  
+*/
+window.onhashchange = function() {
+ //blah blah blah
+
+ $(".overlay").hide();
+}
+
+// switch (document.readyState) {
+//   case "loading":
+  
+//      $(".overlay").show();
+     
+//         break;
+// }
+
+
+    document.onreadystatechange = function(){
+
+
+       // if(document.readyState === 'loading'){
+       //    $(".overlay").show();
+       // }     
+
+       if(document.readyState === 'interactive'){
+        
+          $(".overlay").show();
+       }
+
+       if(document.readyState === 'complete'){
+          $(".overlay").hide();
+       }
+    }
+</script>
+
+<script>
+function myFunction() {
+  
+    var x = document.getElementById("snackbar")
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+</script>
+
+
+  </body>
+</html>

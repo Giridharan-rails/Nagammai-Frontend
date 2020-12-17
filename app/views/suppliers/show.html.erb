@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+          <header>
+          	<h3>Supplier Details</h3>
+          </header>
+          
+          
+              <table class="table">
+                <thead>
+                  <tr>
+                  <th class="th_supplier_name">Supplier Name</th>
+                  <th class="th_supplier_code">Supplier Code</th>
+                  <th class="th_supplier_abb">Supplier_abb</th>
+                  <th class="th_address_one">Address One</th>
+                  <th class="th_address_two">Address Two</th>
+                  <th class="th_address_three">Address Three</th>
+                  <th class="th_gst_no">GST Number</th>            
+                  <th class="th_phone_number">Phone Number</th>
+                  <th class="th_order_copy_format">Order Copy Format</th>
+                  <th class="th_city">City</th>
+                  <th class="th_state">State</th>
+                  <th class="th_country">Country</th>
+                  <th class="th_supplier_edit">Edit</th>
+                  <th class="th_supplier_cnt">Contacts</th>
+                  <th class="th_supplier_mnf">Manufacturer</th>
+                  </tr>
+                </thead>
+                <tbody class="scroll">
+                  <tr> <%@supplier.map do |i| %>
+
+                    <td class="td_supplier_name"><%= i["supplier_name"] %> </td>
+                    <td class="supplier_code"><%= i["supplier_code"] %> </td>
+                    <td class="supplier_abb"><%= i["supplier_abb"] %> </td>
+                     <td class="address_one"><%= i["address_one"] %> </td>
+                     <td class="address_two"><%= i["address_two"] %> </td>
+                     <td class="address_three"><%= i["address_three"] %> </td>
+                     <<td class="gst_no"><%= i["gst_no"] %> </td>
+                     <td class="order_copy_format"><%= i["order_copy_format"] %> </td>
+                     <td class="phone_number"><%= i["phone_number"] %> </td>
+                     <td class="city"><%= i["city"] %> </td>
+                     <td class="state"><%= i["state"] %> </td>
+                     <td class="country"><%= i["country"] %> </td>
+
+                                                        
+                    <%end %>
+                                                    
+                </tbody>
+              </table>
+</body>
+</html>
+
+

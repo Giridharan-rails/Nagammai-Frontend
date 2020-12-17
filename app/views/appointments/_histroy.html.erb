@@ -1,0 +1,35 @@
+ <div class="col-md-12">
+        <h3 class="collapse_tbl" data-toggle="collapse" href="#history" aria-expanded="false" aria-controls="collapseExample1">History
+        <i class="fa fa-chevron-down" aria-hidden="true"></i></h3>
+        <div class="collapse" id="history">
+        <div class="card card_bg">
+          <div class="table_height table_mrgn histroy">
+            <table class="table table_front table-striped table-list-search">
+        <thead>
+          <tr>
+            <th class="th_apo">Type of Contact</th>
+            <th class="th_apo">Contact Name</th>
+            <th class="th_apo">With</th>
+            <th class="th_apo_dt">Date & Time</th>
+            <th class="th_apo_note">Notes</th>
+          </tr>
+        </thead>
+        <tbody class="scroll">
+        <%if @history.present?%>
+         <%@history.map do |i| %>
+               
+          <tr>
+            <td class="td_apo"><%= i["appointment"]["app_contact_type"]%></td>
+            <td class="td_apo"><%if i["appointment"]["app_contact"] == "Division"%><%= i["appointment"]["app_contact"]["div_name"]%><%else%><%= i["appointment"]["app_contact"]["manufacturer_name"]%><%end%></td>
+            <td class="td_apo"><% i["contacts"].map do |j|%><%= j["name"]%><%end%></td>
+            <td class="td_apo_dt"><%=i["appointment"]["appoint_date"]%>,<%=i["appointment"]["appoint_time"] %></td>              
+            <td class="td_apo_dt"><%= i["appointment"]["appoint_note"]%></td>                 
+          </tr>
+          <% end %>
+          <%end%>
+        </tbody>
+      </table>         
+          </div>
+          </div>
+        </div>
+      </div>            

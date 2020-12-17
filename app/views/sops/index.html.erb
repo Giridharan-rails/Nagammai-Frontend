@@ -1,0 +1,101 @@
+<head>
+<link rel="stylesheet" href="/assets/user-assign.css">
+</head>
+  <section>
+        <div class="container-fluid sop-index">
+          <header class="table-header">
+            <ol class="breadcrumb">
+              <%= render_breadcrumbs :tag => :li, :separator => "" %>
+            </ol>
+            <h3>SOP</h3>
+          </header>
+          <a href="sops/new" class="btn_add load" data-target="#exampleModalLabel"><i class="fa fa-plus" aria-hidden="true"></i></a>
+           <div class="">
+            <table id="example" class="table table_front table-striped table-list-search">
+              <thead>
+                <tr>
+                 
+                  <th class="text-left">Supplier/Division</th>
+                  <th class="text-center">Appointment Date</th>
+                  <th class="text-left">Delivery Order Schedule</th>
+                  <th class="text-left">Order Format</th>
+                  <th class="th_sop_view">View</th>
+                  <th class="th_sop_edit">Edit</th>
+                </tr>
+              </thead>
+              <tbody class="scroll">
+              <%unless @sops.nil?%>
+                <%@sops.map do |i| %>
+                   <tr> 
+
+                   <td class="text-left"><%= i["supplier"]["supplier_name"] if i["supplier"].present?%>/<%=i["division"]["div_name"] if i["division"].present?%></td>
+
+                   <td class="text-center"><%= i["monthly_appoinment1"].to_date.strftime("%d") if i["monthly_appoinment1"].present?%>,<%= i["monthly_appoinment2"].to_date.strftime("%d") if i["monthly_appoinment2"].present?%>,<%= i["monthly_appoinment3"].to_date.strftime("%d") if i["monthly_appoinment3"].present?%></td>
+                   <td class="text-left"><%=i["delivery_order_schedule"]%></td>
+                   <td class="text-left"><%=i["order_type"]%></td>
+                    <td><%= link_to 'View', sop_path(:id=>i["id"],:division_id=>i["division_id"]),class: "btn btn-link btn_pad load" %></td>
+                    
+                    <td><%= link_to '', edit_sop_path(:id=>i["id"],:division_id=>i["division_id"]), class: "fa fa-pencil-square-o icon_clr load" %></td>
+                    <!-- <td><!%= link_to 'download', root_path << i["image"]["url"]  if i["image"]["url"].present? %></td> -->
+                    <!-- <td><!%= link_to 'Destroy', sops_sop_delete_path(i["id"]), method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
+                 </tr>
+                        <% end %>
+                        <% end %>
+                </tbody>
+              </table>
+          </div>    
+          </div>
+          </section>
+
+
+
+
+  <script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+          /*dom: 'Bfrtip',
+          bSort:true,
+          "pageLength": 13,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2, 3, 4 ]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2, 3, 4 ]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2, 3, 4 ]
+                }
+              }
+          ]
+     */
+        "bLengthChange": false
+
+      } );
+  } );
+
+  </script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+
+</script>  

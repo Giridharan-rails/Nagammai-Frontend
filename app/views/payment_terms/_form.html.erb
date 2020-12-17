@@ -1,0 +1,38 @@
+<div class="container cont_pad">
+          <div class="card">
+            <from class="edit-form">
+             
+
+
+
+   <% if payment_term["id"].present? %>
+
+      <%= form_for(:payment_terms, :url => {:controller => 'payment_terms',:action => 'payment_term_update', method: :put}) do |f| %> 
+
+         <%=f.hidden_field 'id',:value=>@payment_term["id"]  %>
+          <div class="form-group"><label for="exampleInputName">Job Name<span class="required">*</span></label>  <%= f.text_field :job_name,:value=>@payment_term["job_name"], class: "form-control" ,name: "job_name", required: "true",placeholder: "Job Name"%> </div>
+    
+          <footer class="form-footer">
+          <%=f.submit "Save" , class: "btn btn-primary btn-one btn-lg", id: "pay1"%>
+          <%=link_to "Cancel",payment_terms_path , class: "btn btn-primary btn-lg", id:"pay2"%>
+          </footer>
+      <% end %>
+   <% else %>
+
+      <%= form_for(payment_term, :url => {:controller => 'payment_terms', :action => 'create'}) do |f| %>
+                 <div class="form-group"><label for="exampleInputName">Job Name<span class="required">*</span></label>
+           <%= f.text_field :job_name, class: "form-control" ,name: "job_name", required: "true" ,placeholder: "Job Name"%></div>
+
+        <footer class="form-footer">
+          <%=f.submit "Save" , class: "btn btn-primary btn-one btn-lg", id: "pay3"%>
+          <%=link_to "Cancel",payment_terms_path , class: "btn btn-primary btn-lg", id: "pay4"%>
+          </footer>
+      <% end %>
+      
+    
+    
+   <% end %>
+
+</from>
+</div>
+</div>

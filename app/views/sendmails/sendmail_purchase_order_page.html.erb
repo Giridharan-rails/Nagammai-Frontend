@@ -1,0 +1,114 @@
+
+        <div class="container-fluid user-assign">
+          <header class="table-header">
+            <ol class="breadcrumb">
+              <%= render_breadcrumbs :tag => :li, :separator => "" %>
+            </ol>
+            <h3>Send mail - PO
+           </h3>
+          </header>
+          <%= form_for(@purchase_orders, :url =>{:controller => 'sendmails',:action => 'purchase_order_assign'}) do |f| %>  
+          <div class="">
+            <table id="example" class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Order No</th>
+                  <th class="text-center">Order Date</th>
+                  <th class="text-left">Supplier</th>
+                  <th class="text-right">Total Item</th>
+                  <th class="text-right">Item Qty</th>
+                  <th class="text-right">Amount</th>
+                  <th class="th_send-preview">Preview</th>
+                  <th class="th_sno" style="text-align: center;"><input class="form-check-input" name="foo" type="checkbox" id="checkAll"></th>
+                </tr>
+              </thead>
+              <tbody>
+              <% if @purchase_order.present?%>
+              <%@purchase_order.map do |i|%>
+                <tr>
+                  <td><%=i["order_no"]%></td>
+                  <td class="text-center" data-order="<%=i["order_date"].to_date.strftime("%Y-%m-%d")%>"><%=i["order_date"].to_date.strftime("%d-%m-%Y")%></td>
+                  <td class="text-left"><%=i["supplier_code"]%></td>
+                  <td class="text-right"><%=i["total_item"]%></td>
+                  <td class="text-right"><%=i["total_quantity"]%></td>
+
+                  <td class="text-right">
+                  &#8377;&nbsp;<%= ActionController::Base.helpers.number_to_currency(i["amount"], unit: "")%></td>
+                  <td class="td_send-preview"><!-- <a href="read-mail.html" class="btn btn-link btn_pad">Preview</a> --><%=link_to "Preview",sendmails_order_details_path(order_no:i["order_no"]),class: "btn btn-link btn_pad"%></td>
+                  <th class="td_sno" style="text-align: center;" scope="row"><input name="order_no[]" type="checkbox" value="<%=i["order_no"]%>"></th>
+
+                </tr>
+                 <%end%>
+              </tbody>
+            </table>
+            <%end%>
+          </div>
+                 <footer class="table-footer table-footer-brd">
+                   <% if @purchase_order.present?%>
+                   <%=f.submit "Send" , class: "btn btn-one", disabled: false%> 
+                   <%else%>
+                   <%=f.submit "Send" , class: "btn btn-one", disabled: true%> 
+                   <%end%>
+                   <%=link_to "Cancel",sendmails_path , class: "btn btn-primary"%>
+                 </footer>        
+                 <%end%>
+                    
+        </div>
+
+
+<script>
+$(document).ready(function(){
+   $("#checkAll").click(function () {
+     $('input:checkbox').not(this).prop('checked', this.checked);
+ }); 
+});
+</script>
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+          dom: 'Bfrtip',
+          bSort:true,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2,3,4,5]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2,3,4,5 ]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2,3,4,5]
+                }
+              }
+          ],
+             "order": [[ 1, "asc" ]]
+          
+      } );
+  } );
+
+  </script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+</script>
+

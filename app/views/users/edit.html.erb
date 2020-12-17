@@ -1,0 +1,13 @@
+ <section class="user-edit">
+	  <div id="addcon" class="container-fluid">
+          <header>
+          <ol class="breadcrumb">
+    <%= render_breadcrumbs :tag => :li, :separator => "" %>
+  </ol>
+		    <h3>Edit User</h3>
+          </header>
+        </div>
+
+<%= render 'form', user: @user %>
+</section>
+

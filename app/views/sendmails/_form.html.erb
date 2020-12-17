@@ -1,0 +1,97 @@
+<div class="container cont_pad">
+          <div class="card card_edit">
+            <div class="edit-form">
+              <div class="form-group">
+               <div class="row">
+ <div class="col-sm-3"><input  style="position: inherit;top: 0;left: 0;" type="checkbox"> Supplier</div>
+ <div class="col-sm-3"><input  style="position: inherit;top: 0;left: 0;" type="checkbox"> Manufacture</div>
+ <div class="col-sm-3"><input  style="position: inherit;top: 0;left: 0;" type="checkbox"> Division</div>
+</div><br><br>
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="form-control-label" for="formGroupExampleInput">Sendm Mail Job</label>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-control-label" for="formGroupExampleInput">Schedule Period</label>
+                </div>
+              </div>
+              
+   <% if @sendmail["id"].present? %>
+
+      <%= form_for(@sendmail, :url => {:controller => 'syncsettings',:action => 'cfa_update', method: :put}) do |f| %> 
+
+          <%=f.hidden_field 'id',:value=>@cfa["id"]  %>
+           <div class="form-group"><label for="exampleInputName">Job Name</label> <%= f.text_field :job_name,:value=>@cfa["job_name"], class:"form-control" ,name: "job_name"%></div>
+            <footer class="form-footer">
+          <%=f.submit "Update" , class: "btn btn-primary btn-one", id: "send1"%>
+          <%=link_to "Cancel",cfas_path , class: "btn btn-primary", id: "send2"%>
+           </footer>
+      <% end %>
+   <% else %>
+
+               
+      <%= form_for(@sendmail, :url => {:controller => 'sendmails', :action => 'create'}) do |f| %>
+  
+
+        <div class="row d-flex align-items-center mrgn_add" id="settings">
+       <div class="col-md-6">
+        <%= f.text_field :job_name , class:"form-control" ,name: "job_name", required: "true" %>
+
+<!-- , pattern: "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" -->
+
+        
+       </div>
+       <div class="col-md-6">
+          <div id="myRadioGroup">
+          <div class="col-md-6">
+               <input type="radio" name="cars" value="Manual"/>Manual
+               <input type="radio" name="cars" value="Daily" checked="checked" />Daily
+               <input type="radio" name="cars" value="Weekly"/>Weekly
+               <input type="radio" name="cars" value="Monthly"/>Monthly
+          </div>
+          <div class="col-md-6">
+                 <div id="CarsManual" class="desc" style="display: none;">
+                  Sechuled Frequency <input type="text" name="manual" class="form-control"%>
+                 </div>
+
+                 <div id="CarsDaily" class="desc">
+                 </div>
+     
+                 <div id="CarsWeekly" class="desc" style="display: none;">
+                 <%= select_tag "week_data", options_for_select([['Monday'],['Tuesday'],['Wednesday'],['Thursday'],['Friday'],['Saturday'],['Sunday']]),include_blank: "Select Days" %>
+                 </div>
+                 
+                 <div id="CarsMonthly" class="desc" style="display: none;">
+                 <%= select_tag "month_data", options_for_select([['1st'],['2nd'],['3rd'],['4th'],['5th'],['6th'],['7th'],['9th'],['10th'],['11th'],['12th'],['13th'],['14th'],['15th'],['16th'],['17th'],['18th'],['19th'],['20th'],['21st'],['22nd'],['23rd'],['24th'],['25th'],['26th'],['27th'],['28th'],['29th'],['30th'],['31st']]),include_blank: "Select Date" %>
+
+                 </div>
+                 </div>
+          </div>
+          </div>
+          
+  </div>
+           <footer class="form-footer">
+          <%=f.submit "Save" , class: "btn btn-primary btn-one", id:"send3"%>
+          <%=link_to "Cancel",sendmails_path , class: "btn btn-primary", id: "send4"%>
+          </footer>
+      <% end %>
+    
+   <% end %>
+
+</div>
+</div></div></div>
+<script type="text/javascript">
+
+$(document).ready(function() {
+      $("input[name$='cars']").click(function() {
+        var test = $(this).val();
+        $("div.desc").hide();
+        $("#Cars" + test).show();
+    });
+   
+});
+</script>
+
+
+
+

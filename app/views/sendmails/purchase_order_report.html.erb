@@ -1,0 +1,264 @@
+
+<head>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+
+</head>
+
+        <div class="container-fluid user-assign">
+          <header class="table-header">
+            <ol class="breadcrumb">
+             <li> PO Report<!--%=link_to "PO Report", sendmails_purchase_order_report_path,class: "load"%--></li>
+              
+            </ol>
+          </header>
+          <div class="date-search">
+          <%=form_for "filter",:url=>{:controller=>"sendmails",:action=>"po_date_filter"} do |i|%>
+
+            <div class="row">
+
+              <div class="col-md-3">
+                <label>From Date</label>
+                <br>
+                <input name="from_date" type="text" id="dt1" class="form-control date" value="<%=params["from_date"]%>" placeholder="dd-mm-yy">
+              </div>
+              
+              <div class="col-md-3">
+                <label>To Date</label>
+                <br>                  
+                <input name="to_date" type="text" id="dt2" class="form-control date1" value="<%=params["to_date"]%>" placeholder="dd-mm-yy">
+              </div>              
+              <div class="col-md-3">
+                <label>Supplier</label>
+                <br>       
+                <%= select_tag "supplier_id", options_for_select(@supplier.map { |obj| [obj['supplier_name'], obj['id']] }, selected: params["supplier_id"]), class: "form-control", autofocus: true, prompt: "select" %>
+              </div>              
+              
+              <div class="col-md-2">
+               <label></label>
+                <br>
+                  <button class="date_submit btn btn-full btn-primary">Show</button>
+              </div>
+            </div>
+            <%end%>            
+          </div>
+          <h3 class="page-title d-inline-flex">PO Report
+          </h3>
+          
+          <div class="display">
+            <table  id="example" class="table table-striped date">
+              <thead>
+                <tr>
+                  <th>Order No</th>
+                  <th class="text-center">Order Date</th>
+                  <th class="text-left">Supplier</th>
+                  <th class="text-right">Total Quantity</th>
+                  <th class="text-right">Amount</th>
+                  <th class="th_send-preview">Preview</th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+              <%@purchase_order.map do |i|%>
+                <tr>
+                  <td><%=i["order_no"]%></td>
+                  <td class="text-center" data-order="<%=i["order_date"].to_date.strftime("%Y-%m-%d")%>"><%=i["order_date"].to_date.strftime("%d-%m-%Y")%></td>
+                  <td class="text-left"><%=i["supplier_code"]%></td>
+                  <%total_item=[]%>
+                  <%i["total_quantity"].map {|k| total_item << k.to_i}%>
+                  <td class="text-right"><%=total_item.sum%></td>
+                  <%amount=[]%>
+                  <%i["amount"].map {|i|amount << ((i[0].to_i*i[1].to_f)+i[2].to_f)}%>
+                  <td class="text-right">&#8377;&nbsp;<%= ActionController::Base.helpers.number_to_currency(amount.sum, unit: "")%></td>
+                  <td class="td_send-preview"><!-- <a href="read-mail.html" class="btn btn-link btn_pad">Preview</a> --><%=link_to "Preview",sendmails_order_details_path(order_no:i["order_no"],data:"po-report"),class: "btn btn-link btn_pad"%></td>
+                </tr>
+                 <%end%>
+              </tbody>
+            </table>
+          </div>
+                     
+        </div>
+
+
+
+
+<!--   <script type="text/javascript">
+  $(document).ready(function(){
+    $('.supplier').change(function(){
+
+         var id=($(this).val());
+         if(id != "")
+         {
+          $.ajax({
+            type: "GET",
+            url: "/sendmails/datewisefilter?supplier_id="+id
+          });
+         }
+      
+
+});
+  });
+
+
+</script>
+ -->
+
+ <!-- <script type="text/javascript">
+   $(".date_submit").click(function() {
+    //$("#dt1").datepicker();
+    //$("#dt1").on("change",function(){
+         var id1= $('#dt1').val();
+         var id2 = $('#dt2').val();
+          
+          $.ajax({
+           
+          url: "/sendmails/datewisefilter",
+          data: {date1: id1,date2: id2},
+          dataType: 'script'
+          });
+
+    
+        
+     });
+ </script>
+ -->
+
+
+
+
+ <script type="text/javascript">
+  $(document).ready(function () {
+
+        $("#dt1").datepicker({
+            
+            dateFormat: "dd-mm-yy",
+            /*setDate: ,*/
+
+            //minDate: 0,
+            onSelect: function (date) {
+                var dt2 = $('#dt2');
+                var startDate = $(this).datepicker('getDate');
+                var minDate = $(this).datepicker('getDate');
+                dt2.datepicker('setDate', minDate);
+                startDate.setDate(startDate.getDate() + 720);
+                //sets dt2 maxDate to the last day of 30 days window
+                dt2.datepicker('option', 'maxDate', startDate);
+                dt2.datepicker('option', 'minDate', minDate);
+                //$(this).datepicker('option', 'minDate', minDate);
+            }
+        });
+        $('#dt2').datepicker({
+            dateFormat: "dd-mm-yy"
+        });
+    });
+
+
+</script>
+
+
+<script type="text/javascript">
+$( document ).ready(function() {
+    var d = new Date();
+    var curr_date = d.getDate();
+    var curr_month = d.getMonth() + 1;
+    var curr_year = d.getFullYear();
+    var date=(curr_date + "-" + curr_month + "-" + curr_year);
+   $("#dt1").attr("placeholder",date);
+   $("#dt2").attr("placeholder",date);
+});
+</script>
+
+
+
+
+  <link rel="stylesheet" href="/assets/datatable.css">
+  <link rel="stylesheet" href="/assets/datatablebutton.css">
+  <script src="/assets/datatablejquery.js"></script>
+  <script src="/assets/datatablejquery1.js"></script>
+  <script src="/assets/datatablebuttons.js"></script>
+  <script src="/assets/datatablejszip.js"></script>
+  <script src="/assets/datatablepdf.js"></script>
+  <script src="/assets/datatablefont.js"></script>
+  <script src="/assets/datatablehtml.js"></script>
+  <script src="/assets/datatableprint.js"></script>
+
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+          dom: 'Bfrtip',
+          bSort:true,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2,3,4]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2,3,4]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2,3,4]
+                }
+              }
+          ],
+             "order": [[ 1, "asc" ]]
+          
+      } );
+  } );
+
+  </script>
+
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+</script>
+
+
+
+
+  <!--  <script type="text/javascript">
+  $(document).ready(function(){
+    $('.supplier').change(function(){
+
+         var id=($(this).val());
+         if(id != "")
+         {
+         alert(id);
+          $.ajax({
+            type: "GET",
+            url: "/sendmails/datewisefilter?supplier_id="+id
+          });
+         }
+      
+
+});
+  });
+
+
+</script>
+-->

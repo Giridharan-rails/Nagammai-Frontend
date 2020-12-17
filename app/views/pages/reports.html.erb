@@ -1,0 +1,274 @@
+
+<head>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+
+</head>
+
+        <div class="container-fluid user-assign">
+          <header class="table-header">
+            <ol class="breadcrumb">
+             <li> Data Reports<!--%=link_to "PO Report", sendmails_purchase_order_report_path,class: "load"%--></li>
+              
+            </ol>
+          </header>
+          <div class="date-search">
+       
+          <%=form_for "filter",:url=>{:controller=>"pages",:action=>"reports"} do |i|%>
+
+               <div class="row">
+
+              <div class="col-md-3">
+                <label>From Date</label>
+                <br>
+                <input name="from_date" type="text" id="dt1" class="form-control date" value="<%=params["from_date"]%>" placeholder="dd-mm-yy">
+              </div>
+              
+              <div class="col-md-3">
+                <label>To Date</label>
+                <br>                  
+                <input name="to_date" type="text" id="dt2" class="form-control date1" value="<%=params["to_date"]%>" placeholder="dd-mm-yy">
+              </div>              
+                     
+              
+              <div class="col-md-2">
+               <label></label>
+                <br>
+                  <button type="submit" class="date_submit btn btn-full btn-primary">Show</button>
+              </div>  </div>
+               <%end%>  
+          
+             
+          
+          
+              
+          </div>
+          <h3 class="page-title d-inline-flex">Data Reports   <%=@date.to_date.strftime("%d-%m-%Y")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <span style="float: right;"><%=button_to "Previous",pages_reports_path(date:@date.to_date - 1.day), class: "date_submit btn btn-full btn-primary"%></span> &nbsp;| &nbsp;<span style="float: right;"><%=button_to "Next",pages_reports_path(date:@date.to_date + 1.day),class: "date_submit btn btn-full btn-primary"%></span>
+          </h3>
+          <br>
+           <br>
+          <div class="display">
+          <%=form_for "filter",:url=>{:controller=>"pages",:action=>"edit_reports"} do |edit|%>
+            <table   class="table table-striped date">
+              <thead>
+                <tr>
+                  <th>Module</th>
+                  <th>Wondersoft</th>
+                  <th class="text-right">Data Save Count</th>
+                  <th class="text-right">Data Failed Count</th>
+                  <th class="text-right">Data Failed Reason</th>
+                  <th class="text-right">Success Email Count</th>
+                  <th class="text-right">Failed Email Count</th>
+                  <th class="text-right">Email Failed Reason</th>
+                            
+                </tr>
+              </thead>
+              <tbody>
+                  
+                    <%@data.map do|report|%>
+                    <tr>
+                        <td style="width: 160px;"><%=report[0]%></td>
+                        <input type="hidden" name="report_date" value="<%=@date%>">
+                        
+                        <td style="width: 0px;"><input type="text" name="<%=report[6]%>" value="<%=report[1].to_i+report[2].to_i%>" class="form-control" ></td>
+                        <td class="text-right"><%=report[1]%></td>
+                        <td class="text-right"><%=report[2]%></td>
+                          <td style="width: 0px;"><input type="text" name="<%=report[7]%>" value="<%=report[3]%>" class="form-control" style="width: 242px;"></td>
+                     
+                        <td class="text-right"><%=report[4]%></td>
+                        <td class="text-right"><%=report[5]%></td>
+                            <td style="width: 0px;"><input type="text" name="<%=report[8]%>" value="<%=report[9]%>" class="form-control" style="width: 242px;"></td>
+                    </tr>
+                    <%end%>
+
+              </tbody>
+            </table>
+                <center><%=edit.submit 'Save', class: "btn btn-md btn-primary"%></center>
+                  <%end%>
+          </div>
+                     
+        </div>
+
+
+
+
+<!--   <script type="text/javascript">
+  $(document).ready(function(){
+    $('.supplier').change(function(){
+
+         var id=($(this).val());
+         if(id != "")
+         {
+          $.ajax({
+            type: "GET",
+            url: "/sendmails/datewisefilter?supplier_id="+id
+          });
+         }
+      
+
+});
+  });
+
+
+</script>
+ -->
+
+ <!-- <script type="text/javascript">
+   $(".date_submit").click(function() {
+    //$("#dt1").datepicker();
+    //$("#dt1").on("change",function(){
+         var id1= $('#dt1').val();
+         var id2 = $('#dt2').val();
+          
+          $.ajax({
+           
+          url: "/sendmails/datewisefilter",
+          data: {date1: id1,date2: id2},
+          dataType: 'script'
+          });
+
+    
+        
+     });
+ </script>
+ -->
+
+
+
+
+ <script type="text/javascript">
+  $(document).ready(function () {
+
+        $("#dt1").datepicker({
+            
+            dateFormat: "dd-mm-yy",
+            /*setDate: ,*/
+
+            //minDate: 0,
+            onSelect: function (date) {
+                var dt2 = $('#dt2');
+                var startDate = $(this).datepicker('getDate');
+                var minDate = $(this).datepicker('getDate');
+                dt2.datepicker('setDate', minDate);
+                startDate.setDate(startDate.getDate() + 720);
+                //sets dt2 maxDate to the last day of 30 days window
+                dt2.datepicker('option', 'maxDate', startDate);
+                dt2.datepicker('option', 'minDate', minDate);
+                //$(this).datepicker('option', 'minDate', minDate);
+            }
+        });
+        $('#dt2').datepicker({
+            dateFormat: "dd-mm-yy"
+        });
+    });
+
+
+</script>
+
+
+<script type="text/javascript">
+$( document ).ready(function() {
+    var d = new Date();
+    var curr_date = d.getDate();
+    var curr_month = d.getMonth() + 1;
+    var curr_year = d.getFullYear();
+    var date=(curr_date + "-" + curr_month + "-" + curr_year);
+   $("#dt1").attr("placeholder",date);
+   $("#dt2").attr("placeholder",date);
+});
+</script>
+
+
+
+
+  <link rel="stylesheet" href="/assets/datatable.css">
+  <link rel="stylesheet" href="/assets/datatablebutton.css">
+  <script src="/assets/datatablejquery.js"></script>
+  <script src="/assets/datatablejquery1.js"></script>
+  <script src="/assets/datatablebuttons.js"></script>
+  <script src="/assets/datatablejszip.js"></script>
+  <script src="/assets/datatablepdf.js"></script>
+  <script src="/assets/datatablefont.js"></script>
+  <script src="/assets/datatablehtml.js"></script>
+  <script src="/assets/datatableprint.js"></script>
+
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+          dom: 'Bfrtip',
+          bSort:true,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0,2,3,4,5]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0,2,3,4,5]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2,3,4]
+                }
+              }
+          ],
+             "order": [[ 1, "asc" ]]
+          
+      } );
+  } );
+
+  </script>
+
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+</script>
+
+
+
+
+  <!--  <script type="text/javascript">
+  $(document).ready(function(){
+    $('.supplier').change(function(){
+
+         var id=($(this).val());
+         if(id != "")
+         {
+         alert(id);
+          $.ajax({
+            type: "GET",
+            url: "/sendmails/datewisefilter?supplier_id="+id
+          });
+         }
+      
+
+});
+  });
+
+
+</script>
+-->

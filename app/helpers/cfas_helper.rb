@@ -1,0 +1,2 @@
+module CfasHelper
+end

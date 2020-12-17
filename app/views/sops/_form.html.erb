@@ -1,0 +1,481 @@
+ <center> <div id="loading"></div> </center>
+
+ <div class="container cont_pad">
+      <div class="card">
+            <from class="edit-form">
+
+   <% if sop["id"].present? %>
+
+      <%= form_for(:sops, :url => {:controller => 'sops',:action => 'sop_update'}) do |f| %> 
+
+         <%=f.hidden_field 'id',:value=>@sop["id"]  %>
+         <%=f.hidden_field 'appoint_id',:value=>params["appoint_id"]%>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-control-label" for="formGroupExampleInput">Supplier<span class="required">*</span></label>
+          <div class="supplier">
+            <!--    <!%= f.select :supplier_id, @supplier.collect { |car| [car["supplier_name"], car["id"]]},{:class=> "id1 supplier", required: "true",:selected=> @supplier_name["supplier"]["id"]}%> -->
+            <%if @supplier_name.present?%>
+                    <%= select_tag "supplier_id", options_for_select(@supplier.collect { |car| [car["supplier_name"], car["id"]]}),{:prompt => "select",class: "form-control ed1 supplier",:selected => @supplier_name["supplier"]["id"]}%>
+            <%else%>
+               <%= select_tag "supplier_id", options_for_select(@supplier.collect { |car| [car["supplier_name"], car["id"]]}),{:prompt => "select",class: "form-control ed1 supplier"}%>
+            <%end%>
+
+          </div>
+        </div>
+    </div>
+
+<!--<div class="col-md-4">
+      <div class="form-group">
+        <label class="form-control-label " for="formGroupExampleInput">Manufacturer<span class="required">*</span></label>
+        <div class="manufacturer">
+          <!%= select_tag "manufacturer_id", options_for_select(@manufacturer.collect {|p| [ p["manufacturer_name"], p["id"] ] },{:include_blank => "Please select", required: "true",class: "manufacturer", :selected=>@supplier_name["manufacturer"]["id"]})%>
+        </div>
+      </div>
+    </div>
+    -->
+    <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-control-label" for="formGroupExampleInput">Division<span class="required">*</span></label>
+          <div class="manufacturer">
+            <%= select_tag "division_id", options_for_select(@division.collect {|p| [ p["div_name"], p["id"] ] },{:include_blank => "Please select",class: "manufacturer", required: "true", :selected=>@sop["division_id"],required: "true"})%>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="exampleInputPassword1">Delivery & Order Schedule</label> 
+              <select id="example" multiple="multiple" style="width: 300px" name="delivery_order_schedule[]" >
+              <option value="sunday" <%if @sop["delivery_order_schedule"].present?%><%if @sop["delivery_order_schedule"].split(',').include? "sunday"%> selected <%end%><%end%>>Sunday</option>
+              <option value="monday" <%if @sop["delivery_order_schedule"].present?%><%if @sop["delivery_order_schedule"].split(',').include? "monday"%> selected <%end%><%end%>>Monday</option>
+              <option value="tuesday" <%if @sop["delivery_order_schedule"].present?%> <%if @sop["delivery_order_schedule"].split(',').include?"tuesday"%> selected <%end%><%end%>>Tuesday</option>
+              <option value="wednesday" <%if @sop["delivery_order_schedule"].present?%><%if @sop["delivery_order_schedule"].split(',').include? "wednesday"%> selected <%end%><%end%>>Wednesday</option>
+              <option value="thursday" <%if @sop["delivery_order_schedule"].present?%><%if @sop["delivery_order_schedule"].split(',').include?"thursday"%> selected <%end%><%end%>>Thursday</option>
+              <option value="friday" <%if @sop["delivery_order_schedule"].present?%> <%if @sop["delivery_order_schedule"].split(',').include? "friday"%> selected <%end%><%end%>>Friday</option>
+              <option value="saturday" <%if @sop["delivery_order_schedule"].present?%><%if @sop["delivery_order_schedule"].split(',').include?"saturday"%> selected <%end%><%end%>>Saturday</option>
+              </select>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+
+          <label class="form-control-label" for="formGroupExampleInput"> Order Format</label> <%= f.text_field :order_type, class:"form-control" ,name: "order_type", value: @sop["order_type"],placeholder: "Order Format"%>
+       </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+           <label class="form-control-label" for="formGroupExampleInput">Payment Terms</label> <%= f.text_field :payment_terms, class:"form-control" ,name: "payment_term", value: @sop["payment_term"],placeholder: "Payment Terms"%> 
+        </div>
+    </div>
+    <div class="col-md-4">
+          <div class="form-group">
+            <label for="exampleInputPassword1">Dispatch Mode</label> <%= f.text_field :dispatch_mode, class:"form-control" ,name: "dispatch_mode", value: @sop["dispatch_mode"],placeholder: "Dispatch Mode"%>
+          </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+           <label class="form-control-label" for="formGroupExampleInput">Special Offers</label> <%= f.text_area :special_offer,class:"form-control" ,name: "special_offer", value: @sop["special_offer"],placeholder: "Special Offers"%>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+           <label class="form-control-label" for="formGroupExampleInput">Claims Extra Offers / SOP</label> <%= f.text_area :claims_offer, class:"form-control" ,name: "claims_offer", value: @sop["claims_offer"],placeholder: "Claims Extra Offers"%>
+        </div>
+    </div>
+</div>
+    
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+          <label class="form-control-label" for="formGroupExampleInput">Expiry / Broken Settlement</label>  <%= f.text_area :expiry_broken_settlement, class:"form-control" ,name: "expiry", value: @sop["expiry_broken_settlement"],placeholder: "Expiry / Broken Settlement"%> 
+        </div>
+    </div>
+</div>
+              
+ <div class="row">
+    <div class="col-md-3">
+        <div class="form-group">
+          <label for="exampleInputPassword1"> Monthly appointment 1</label>
+          <select name="monthly_appointment1">
+             <option value="" selected>Select</option>
+                <%(1..31).map do |i|%>
+                <option value="<%=i%>" <% unless @sop["monthly_appoinment1"].nil?%><%if @sop["monthly_appoinment1"].to_date.strftime('%d').to_i==i %> selected <%end%><%end%>><%=i%></option>
+                <%end%>
+          </select> 
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+          <label for="exampleInputPassword1">AT</label><br>
+
+         <% if @sop["appoint_time1"].split(":").present?%>
+              <% hr = @sop["appoint_time1"].split(":").first %>
+              <% mm = @sop["appoint_time1"].split(":").last %>
+            <%else%>
+               <%hr = "00" %><%mm = "00"%>
+            <%end%>
+         <%= time_select :appoint_time1, {}, { default: {hour: hr, minute: mm}, minute_step: 5 }, { style: "width: 40%;" } %>
+     
+        </div>
+    </div>
+    
+              
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="exampleInputPassword1"> Monthly appointment2</label>
+              <select name="monthly_appointment2">
+                <option value="" selected>Select</option>
+                  <%(1..31).map do |i|%>
+                  <option value="<%=i%>" <%if @sop["monthly_appoinment2"].present?%> <%if @sop["monthly_appoinment2"].to_date.strftime('%d').to_i==i %> selected <%end%><%end%>><%=i%></option>
+                  <%end%>
+            </select> 
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+          <label for="exampleInputPassword1">AT</label><br>
+         <% if @sop["appoint_time2"].split(":").present?%>
+              <% hr = @sop["appoint_time2"].split(":").first %>
+              <% mm = @sop["appoint_time2"].split(":").last %>
+            <%else%>
+               <%hr = "00" %><%mm = "00"%>
+            <%end%>
+         <%= time_select :appoint_time2, {}, { default: {hour: hr, minute: mm}, minute_step: 5 }, { style: "width: 40%;" } %>
+    
+        </div>
+    </div>
+    </div>
+<div class="row">
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="exampleInputPassword1"> Monthly appointment3</label>
+              <select name="monthly_appointment3">
+                <option value="" selected>Select</option>
+                <%(1..31).map do |i|%>
+                <option value="<%=i%>" <%if @sop["monthly_appoinment3"].present?%> <%if @sop["monthly_appoinment3"].to_date.strftime('%d').to_i==i %> selected <%end%><%end%>><%=i%></option>
+                <%end%>
+              </select> 
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+          <label for="exampleInputPassword1">AT</label><br>
+          <% if @sop["appoint_time3"].split(":").present?%>
+              <% hr = @sop["appoint_time3"].split(":").first %>
+              <% mm = @sop["appoint_time3"].split(":").last %>
+            <%else%>
+               <%hr = "00" %><%mm = "00"%>
+            <%end%>
+         <%= time_select :appoint_time3, {}, { default: {hour: hr, minute: mm}, minute_step: 5 }, { style: "width: 40%;" } %>
+    
+        </div>
+    </div>
+
+            
+                
+
+   <%if @user["role"]=="Manager"%>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="exampleInputPassword1">Current N/S</label> <%= f.text_field :current_ns, class:"form-control" ,name: "current_ns", value: @sop["current_ns"],placeholder: "Current N/S"%>
+        </div>
+      </div>
+      <div class="col-md-3">
+          <div class="form-group">
+            <label for="exampleInputPassword1">Current M/S</label> <%= f.text_field :current_ms, class:"form-control" ,name: "current_ms", value: @sop["current_ms"],placeholder: "Current M/S"%>
+          </div>
+      </div>
+      <%end%>
+
+</div>
+<footer class="form-footer">
+    <%=f.submit "Update" , class: "btn btn-primary btn-one btn-lg load", id: "sop1"%>
+    <%=link_to "Cancel",sops_path , class: "btn btn-primary btn-lg load", id: "sop2"%>
+</footer>
+       
+<% end %>
+<% else %>
+    <%= form_for(sop, :url => {:controller => 'sops', :action => 'create',:appoint =>params["appoint"]}) do |f| %>
+      
+    <%= hidden_field_tag 'appoint_id', params["appoint_id"] %>
+  <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+               <label class="form-control-label" for="formGroupExampleInput">Supplier<span class="required">*</span></label>
+                <div class="supplier">
+                   <!-- 
+                  <!%= f.select :supplier_id, @supplier.collect { |car| [car["supplier_name"], car["id"]]}, class: "form-control supplier", required: "true", id: "supplier",include_blank: "Select"%> -->
+
+                <!--   <!%= select_tag "supplier_id", options_for_select(@supplier.collect { |car| [car["supplier_name"], car["id"]]}),{:prompt => "Select", class: "ed1 supplier"}%>
+ -->
+                  <%= select_tag "supplier_id", options_for_select(@supplier.map { |obj| [obj['supplier_name'], obj['id']] }), class: "supplier id1", autofocus: true, prompt: "select", required: "true" %>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="form-control-label " for="formGroupExampleInput">Division<span class="required">*</span></label>
+                <div class="manufacturer">
+                 <%= select_tag "schedule", options_for_select([]),{include_blank: "Select",required: "true",class: "id2"}  %>
+                </div>
+              </div>
+        </div>
+
+            <!-- <div class="col-md-4">
+                  <div class="form-group">
+            <label class="form-control-label " for="formGroupExampleInput">Division<span class="required">*</span></label><div class="division">
+                 <!%= select_tag "schedule", options_for_select([]),{include_blank: "Select",required: "true"}  %>
+            </div></div></div>
+ -->
+
+
+
+        <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputPassword1">Delivery & Order Schedule</label>  <select id="example" multiple="multiple" name="schedule[]">
+                <option value="sunday">Sunday</option>
+                <option value="monday">Monday</option>
+                <option value="tuesday">Tuesday</option>
+                <option value="wednesday">Wednesday</option>
+                <option value="thursday">Thursday</option>
+                <option value="friday">Friday</option>
+                <option value="saturday">Saturday</option>
+               </select>
+            </div>
+        </div>
+  </div>
+  <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+               <label class="form-control-label" for="formGroupExampleInput"> Order Format</label> <%= f.text_field :order_type, class:"form-control" ,name: "order_type",placeholder: "Order Format"%> </div></div>
+
+               <div class="col-md-4">
+                  <div class="form-group">
+                        <label class="form-control-label" for="formGroupExampleInput">Payment Terms</label> <%= f.text_field :payment_terms, class:"form-control" ,name: "payment_term",placeholder: "Payment Terms"%>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Dispatch Mode</label> <%= f.text_field :dispatch_mode, class: "form-control" ,name: "dispatch_mode",placeholder: "Dispatch Mode"%>
+                    </div>
+                </div>
+  </div>
+
+  <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label class="form-control-label" for="formGroupExampleInput">Special Offers</label> <%= f.text_area :special_offer,class:"form-control" ,name: "special_offer",placeholder: "Special Offers"%>
+        </div>
+      </div>
+      
+  </div> 
+  <div class="row">
+      <div class="col-md-12">
+          <div class="form-group">
+           <label class="form-control-label" for="formGroupExampleInput">Claims Extra Offers / SOP</label> <%= f.text_area :claims_offer, class:"form-control" ,name: "claims_offer",placeholder: "Claims Extra Offers"%>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label class="form-control-label" for="formGroupExampleInput">Expiry / Broken Settlement</label>  <%= f.text_area :expiry_broken_settlement, class: "form-control" ,name: "expiry",placeholder: "Expiry / Broken Settlement"%> 
+        </div>
+      </div>
+  </div>      
+
+  <div class="row">
+    <div class="col-md-3">
+        <div class="form-group">
+          <label for="exampleInputPassword1"> Monthly appointment 1<span class="required">*</span></label>
+            <select name="monthly_appointment1">
+              <option value="" selected>Select</option>
+                <%(1..31).map do |i|%>
+                <option value=<%=i%>><%=i%></option>
+               <%end%>
+            </select> 
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+          <label for="exampleInputPassword1">AT<span class="required">*</span></label><br>
+         <%= f.time_select :appoint_time1, { prompt: {hour: 'hh', minute: 'mm'}, minute_step: 5 }, { style: "width: 40%;",required: "true" } %> 
+        </div>
+    </div>
+    
+    
+              
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="exampleInputPassword1"> Monthly appointment2</label>
+             <select name="monthly_appointment2">
+                <option value="" selected>Select</option>
+                  <%(1..31).map do |i|%>
+                   <option value=<%=i%>><%=i%></option>
+                  <%end%>
+            </select> 
+        </div>
+    </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="exampleInputPassword1">AT</label><br>
+         <%= f.time_select :appoint_time2, { prompt: {hour: 'hh', minute: 'mm'}, minute_step: 5 }, { style: "width: 40%;" } %> 
+        </div>
+    </div>
+    </div>     
+    <div class="row">
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="exampleInputPassword1"> Monthly appointment3</label> 
+              <select name="monthly_appointment3">
+                <option value="" selected>Select</option>
+                <%(1..31).map do |i|%>
+                  <option value=<%=i%>><%=i%></option>
+                <%end%>
+              </select> 
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+          <label for="example">AT</label><br>
+         <%= f.time_select :appoint_time3, { prompt: {hour: 'hh', minute: 'mm'}, minute_step: 5 }, { style: "width: 40%;" } %> 
+        </div>
+
+                           
+</div>
+</div>
+
+<div class="row">
+      
+      <%if @user["role"]=="Manager"%>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="exampleInputPassword1">Current N/S</label> <%= f.text_field :current_ns, class: "form-control" ,name: "current_ns",placeholder: "Current N/S"%>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="exampleInputPassword1">Current M/S</label> <%= f.text_field :current_ms, class: "form-control" ,name: "current_ms",placeholder: "Current M/S"%>
+            </div>
+        </div>
+      <%end%>                  
+</div>
+
+
+
+  <footer class="form-footer">
+    <%=f.submit "Save" , class: "btn btn-primary btn-one btn-lg load", id: "sop3"%>
+    <%=link_to "Cancel",sops_path , class: "btn btn-primary btn-lg load", id: "sop4"%>
+  </footer>
+     
+<% end %>
+   <% end %>
+
+    </from>
+</div>
+</div>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+$('.id1').prepend('<option></option>').select2({placeholder: " Please Select"});
+$('.id2').prepend('<option></option>').select2({placeholder: " Please Select"});
+$('.ed1').select2().select2('val','<%=@supplier_name["supplier"]["id"] if @supplier_name.present?%>')
+$('#example').select2({
+    placeholder: "Please select"
+});
+});
+
+$(document).ready(function(){
+    $('.supplier').change(function(){
+      $(".overlay").show();
+        var id=$('.supplier option:selected').val();
+        var value=($('.supplier option:selected').attr("id"));
+      $.ajax({
+            type: "GET",
+            url: "/sops/div_supplier_manufacture?supplier_id="+id,
+            data: {format: id, type: value},
+        success: function(data) {
+
+            // setTimeout added to show loading
+            setTimeout(function () {
+
+                $(".overlay").hide();
+                            
+            });
+        }            
+
+          })
+        
+    });
+/*    $('.manufacturer').change(function(){
+   $(".overlay").show();
+      var id=$('.manufacturer option:selected').val();
+      var value=($('.manufacturer option:selected').attr("id"));
+      $.ajax({
+            type: "GET",
+            url: "/sops/div_supplier_manufacture?manufacturer_id="+id,
+            data: {format: id, type: value},
+        success: function(data) {
+
+            // setTimeout added to show loading
+            setTimeout(function () {
+$(".overlay").hide();
+                            
+            });
+        }            
+
+          })
+      
+
+      
+    })*/
+});
+
+
+</script>
+<!-- 
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $('.supplier').change(function(){
+    $('#loading').html('<img src="/assets/spin1.gif"> loading...');
+    var id=($(this).val());
+    var value=($(this).attr("id"));
+
+      $.ajax({
+            type: "GET",
+            url: "/sops/div_supplier_manufacture?supplier_id="+id,
+             data: {format: id, type: value},
+        dataType: 'script',
+
+        success: function(data) {
+
+            // setTimeout added to show loading
+            setTimeout(function () {
+
+                $('#loading').html('<img src="/assets/spin1.gif"> loading...').css('display','none');
+                            
+            });
+        }
+
+          })
+    });
+});
+</script> -->

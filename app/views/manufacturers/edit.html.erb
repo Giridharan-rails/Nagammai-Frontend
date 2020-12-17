@@ -1,0 +1,12 @@
+ <section class="user-edit">
+	  <div id="addcon" class="container-fluid">
+          <header>
+                 <ol class="breadcrumb">
+    <%= render_breadcrumbs :tag => :li, :separator => "" %>
+  </ol>
+		    <h3>Edit Manufacturer</h3>
+          </header>
+        </div>
+<!--%= render 'form', manufacturer: @manufacturer,supplier_data: @supplier_data %-->
+<%= render 'form', manufacturer: @manufacturer, supplier_data: @suppliers %>
+</section>

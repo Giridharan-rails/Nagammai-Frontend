@@ -1,0 +1,104 @@
+
+           <section class="users_admin">
+        <div class="container-fluid sendmail-index">
+          <header class="table-header">
+            <ol class="breadcrumb">
+              <%= render_breadcrumbs :tag => :li, :separator => "" %>
+            </ol>
+            <h3>Sendmails <!-- <a href="sendmails/new" class="btn_add" data-target="#exampleModalLabel"><i class="fa fa-plus" aria-hidden="true"></i></a> --></h3>
+          </header>
+          
+          <div class="">
+              <table id="example" class="table table-striped">
+                  <thead>
+                  <tr>
+                
+                    <th class="th_title">Jobs</th>
+                    <th class="th_scheduled_time">Scheduled Time</th>
+                    <th class="th_scheduled_frequency">Frequency</th>
+                    <th class="th_send">Send</th>
+                    <th class="th_setting">Setting</th>
+                 </tr>
+                </thead>
+                <tbody>
+                <% if @sendmail_data.present?%>
+              <% @sendmail_data.map do |i| %>
+                   <tr>
+                
+                    <td class="td_title"><%= i["job_name"] %> </td>
+                    <td class="td_scheduled_time"><span class="schedule_bg"><%=i["schedule_time"]%></span></td>
+                    <td class="td_scheduled_frequency"> <%= i["schedule"]%> <%= i["schedule_period"] %></td>
+                    <%if i["schedule"] =="Manual"%>
+                    <td class="td_send">
+ <%=link_to '<i class="fa fa-paper-plane" aria-hidden="true"></i> Send
+'.html_safe,sendmails_sendmail_redirect_page_path(:id=>i["job_name"]),class: "btn btn-link"%></td>
+                     <%else%>
+                      <td class="td_send"></td>
+                     <%end%>
+
+                    <!-- <a href="#"><img src="/assets/send_mail.png" alt="HTML tutorial" width="32px" height="30px"></a> --></td>
+     
+                   <td class="td_setting"><%=link_to '',sendmails_sendmail_setting_page_path(:id=>i["id"]),class: "fa fa-cog icon_clr"%></td>
+                 
+                 </tr>
+                
+                   <% end %>
+        
+                </tbody>
+                
+              </table>
+              <%end%>
+          </div>   
+          </div>
+          </section>       
+   
+
+
+
+  <script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+         /* dom: 'Bfrtip',
+          bSort:true,
+          "pageLength": 13,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2 ]
+                }
+              }
+          ]*/
+           "bLengthChange": false
+
+      } );
+  } );
+
+  </script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+</script>

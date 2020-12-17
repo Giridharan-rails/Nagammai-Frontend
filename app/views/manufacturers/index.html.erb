@@ -1,0 +1,125 @@
+   <head>
+    <link rel="stylesheet" href="/assets/user-assign.css">
+   </head>
+      <section>
+        <div class="container-fluid manifacturer-index">
+          <header class="table-header">
+            <ol class="breadcrumb">
+              <%= render_breadcrumbs :tag => :li, :separator => "" %>
+            </ol>
+            <h3>Manufacturers</h3>
+          </header>
+          <a href="manufacturers/new" class="btn_add load" data-toggle="tooltip" title="Add Contacts"><i class="fa fa-plus" aria-hidden="true"></i></a>          
+          <div class="manufacturer">
+              <table id="example" class="table table_front table-striped table-list-search">
+                <thead>
+                  <tr>
+                    <th>Manufacturer Name</th>
+                    <th>Manufacturer Code</th>
+                    <th>Manufacturer Abbr</th>
+                    
+                    <th>Address</th>
+                    <th>Edit</th>
+                    <th>Contacts</th>
+                    <th>Divisions</th>
+                  </tr>
+                </thead>
+              <tbody class="scroll">
+              <%unless @manufacturers.nil?%>
+                <% @manufacturers.map do |i| %>
+                  <tr class="content">             
+                    <td><%= i["manufacturer_name"] %> </td>
+                    <td><%= i["manufacturer_code"] %> </td>
+                    <td><%= i["manufacturer_abb"] %> </td>
+                    <td><%= i["address_one"] %>,<%= i["addrsss_two"] %>,<%= i["addrsss_three"] %> </td>            
+                    <td><%= link_to '', edit_manufacturer_path(i["id"]), class:"fa fa-pencil-square-o icon_clr load" %></td>
+                    <td><%= link_to 'Contacts', contacts_sup_man_div_based_contacts_path(:manufacturer_id=>i["id"],:data=>"Manufacturer"), :class=>"btn btn-link btn_pad load" %></td>
+                    
+                    <td><%= link_to 'Divisions', divisions_display_path(:manufacturer_id=>i["id"]), :class=>"btn btn-link btn_pad load" %></td>
+                 </tr>
+                <% end %>
+                <%end%>
+            </tbody>
+            </table>
+            
+          </div>
+          </div>
+      </section>
+     
+<style type="text/css">
+  select{
+    width: 192px;
+  }
+</style>
+
+
+  
+
+
+  <script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+/*          dom: 'Bfrtip',
+          bSort:true,
+          "pageLength": 13,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+                }
+              }
+          ]
+*/
+
+
+ "bLengthChange": false
+
+
+      } );
+  } );
+
+  </script>
+
+   <script type="text/javascript">$(document).ready(function(){
+    $('select').change(function(){
+         var value=($(this).val());
+        
+         
+        $.ajax({
+              type: "GET",
+              url: "/manufacturers/manufacturer_list?id="+value
+             })
+        });        
+    });
+
+   </script>
+
+
+ <script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+
+</script> 

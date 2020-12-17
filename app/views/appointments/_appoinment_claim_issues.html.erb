@@ -1,0 +1,30 @@
+<div class="col-md-12 claim_issues">
+          <label class="form-control-label" for="formGroupExampleInput">ISSUES</label>
+          <div class="card card_height table_mrgn">
+            <div class="card-block">
+          <table class="table table_front table-striped">
+                <thead>
+                  <tr>
+                    <th class="th_issue_no">Description</th>
+                    <th class="th_issue_date">Cut-off Date</th>
+                    <th class="th_issue_desp">Resolved_by</th>
+                    <th class="th_issue_desp">Status</th>
+                  
+                  </tr>
+                </thead>
+                <tbody class="scroll">
+                
+                  <% @claim_issues.each do |issue| %>                  
+                  <tr>
+
+                    <th class="td_issue_no" scope="row"><%= issue["description"] %></th>
+                    <td class="td_issue_date"><%= issue["cut_off_date"] %></td>
+                    <td class="td_issue_desp"><%= issue["contact"]["name"] %></td>
+                    <td class="td_issue_desp"><%= issue["status"] %></td>
+                  </tr>
+                  <% end %>
+                </tbody>
+              </table>                           
+            </div>
+          </div>
+        </div>

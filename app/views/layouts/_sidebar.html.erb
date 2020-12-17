@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>NAGAMMAI PHARMA</title>
+
+  <!-- Bootstrap CSS CDN -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <!-- Layout CSS -->
+  <link rel="stylesheet" href="/assets/layout-default.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/assets/custom.css">
+  <!-- Font Awesome CDN-->
+  <!-- you can replace it by local Font Awesome-->
+  <script src="https://use.fontawesome.com/99347ac47f.js"></script>
+  <!-- Rubik Font -->
+  <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/user-edit.css">
+  <script src="/assets/slimscroll.js"></script>
+  <script src="/assets/jquery.min.js"></script>  
+  <script src="/assets/bootstrap-select.js"></script>
+</head>
+
+<body>
+  <div class="wrapper">
+    <!-- Sidebar Holder -->
+     <nav id="sidebar">
+      <div class="sidebar-header">
+        <h3><span class="layout_logo1">NP</span>NAGAMMAI PHARMA</h3>
+        <strong class="layout_logo2">NP</strong>
+      </div>
+
+      <div class="list-group panel">
+        
+      <%= link_to pages_dashboard_path do %> <i class="fa fa-desktop"></i> <span class="hidden-sm-down">Dashboard</span><%end%>
+      
+      <%= link_to appointments_path do %><i class="fa fa-calendar"></i><span class="hidden-sm-down load">Appointments</span>
+          <% end %>
+        <!-- <a href="#menu3" id="collapse3" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-file-text-o"></i>  <span class="hidden-sm-down">Claims</span> <i class="fa fa-angle-right" aria-hidden="true"></i></a>-->
+        
+         <!--%= link_to pending_claims_path do%><i class="fa fa-file-text-o"></i> <span class="hidden-sm-down load">Claims</span><!%end%-->
+
+
+          <a href="#menu8" id="collapse8" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-exclamation-circle"></i>   <span class="hidden-sm-down">Issues</span> <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+      <div class="collapse" id="menu8">
+       <%=link_to "Issues Audit Report", issues_index_path,class: "list-group-item load"%>
+      <!--  <!%=link_to "Approved Issue Report", issues_approved_claims_path,class: "list-group-item load"%> -->
+      </div>
+
+          
+      <a href="#menu23" id="collapse23" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-percent"></i>   <span class="hidden-sm-down">SOP</span><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+      <div class="collapse" id="menu23">
+        <%=link_to "SOP", sops_path,class: "list-group-item load"%>
+        <%=link_to "SOP Report", sop_reports_index_path,class: "list-group-item load"%>    
+      </div>
+        
+      <a href="#menu13" id="collapse13" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-file-text-o"></i>   <span class="hidden-sm-down">Claims</span> <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+      <div class="collapse" id="menu13">
+        <%=link_to "Overall Claims", sendmails_pending_claims_report_path,class: "list-group-item load"%>
+        <%=link_to "Pending Claims", sendmails_today_adjustment_report_path,class: "list-group-item load"%>
+       <%=link_to "Settled Claims", sendmails_settled_claims_report_path,class: "list-group-item load"%>
+      </div>
+
+      <a href="#menu3" id="collapse3" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-list-ul"></i>   <span class="hidden-sm-down">PO</span> <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+      <div class="collapse" id="menu3">
+        <%=link_to "PO Report", sendmails_purchase_order_report_path,class: "list-group-item load"%>
+        <%=link_to "Send PO", sendmails_sendmail_purchase_order_page_path,class: "list-group-item load"%>
+      </div>
+
+      <a href="#menu4" id="collapse4" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-exclamation-triangle"></i>   <span class="hidden-sm-down">Expiry / Broken</span> <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+      <div class="collapse" id="menu4">
+        <%=link_to "Expiry Broken Claims", sendmails_expiry_damage_claims_path,class: "list-group-item load"%>
+        <%=link_to "Send Email", sendmails_sendmails_claims_broken_damage_path,class: "list-group-item load"%>
+      
+      </div>
+
+      <a href="#menu5" id="collapse5" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-tags"></i>   <span class="hidden-sm-down">Free Discount</span> <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+      <div class="collapse" id="menu5">
+        <%=link_to "Free Discount Claims", sendmails_free_discount_claims_path,class: "list-group-item load"%>
+        <%=link_to "Send Email", sendmails_sendmails_claims_discount_path,class: "list-group-item load"%>
+      </div>
+
+      <a href="#menu6" id="collapse6" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-exchange"></i>   <span class="hidden-sm-down">Purchase Return</span> <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+      <div class="collapse" id="menu6">
+        <%=link_to "Purchase Return Claims", sendmails_purchase_return_claims_path,class: "list-group-item load"%>
+        <%=link_to "Send Email", sendmails_sendmails_claims_purchase_return_path,class: "list-group-item load"%>
+
+      </div>
+      
+      <a href="#menu7" id="collapse7" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-money"></i>   <span class="hidden-sm-down">Rate Change</span> <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+      <div class="collapse" id="menu7">
+        <%=link_to "Rate Change Claims", sendmails_rate_change_claims_path,class: "list-group-item load"%>
+        <%=link_to "Send Email", sendmails_sendmails_claims_rate_change_path,class: "list-group-item load"%>
+      </div>
+      
+     <!--  <a href="#menu8" id="collapse8" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-exclamation-circle"></i>   <span class="hidden-sm-down">Issues</span> <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+      <div class="collapse" id="menu8">
+       <%#=link_to "Issues Audit Report", issues_index_path,class: "list-group-item load"%>
+      </div> -->
+
+      <a href="#menu9" id="collapse9" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-stack-overflow"></i>   <span class="hidden-sm-down">Non-Moving Stock</span> <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+      <div class="collapse" id="menu9">
+        <%=link_to "Non-Moving Stock", sendmails_excess_stock_report_path,class: "list-group-item load"%>
+        <%=link_to "Send Email", sendmails_sendmails_excess_stock_path,class: "list-group-item load"%>
+      </div>
+
+
+      <a href="#menu1" id="collapse1" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-user-o"></i>  <span class="hidden-sm-down">Admin</span> <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+      <div class="collapse" id="menu1">
+          <%=link_to "WonderSoft Connection", wondersofts_wondersoft_path,class: "list-group-item load"%>
+          <%=link_to "Users", users_path,class: "list-group-item load"%>
+          <%=link_to "Sync Jobs", syncsettings_path,class: "list-group-item load"%>
+          <%= link_to "Receive Mail Jobs",receivemails_receive_setting_page_path, class: "list-group-item load" %>          
+      </div>
+
+      <a href="#menu2" id="collapse2" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><i class="fa fa-table"></i>   <span class="hidden-sm-down">Masters</span> <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+      <div class="collapse" id="menu2">
+          <%=link_to "Suppliers", suppliers_path,class: "list-group-item load"%>
+          <%=link_to "Manufacturers", manufacturers_path,class: "list-group-item load"%>
+          <%=link_to "Divisions", divisions_display_path,class: "list-group-item load"%>
+          <%=link_to "Contacts", contacts_path,class: "list-group-item load"%>
+          <%=link_to "Products", products_index_path,class: "list-group-item load"%>
+          <%=link_to "CFA Titles", cfas_path,class: "list-group-item load"%>
+          <%=link_to "Marketing Titles", marketings_path,class: "list-group-item load"%>
+          <%=link_to "Payment Terms", payment_terms_path,class: "list-group-item load"%>
+      </div>
+        
+      <%= link_to emails_path do %><i class="fa fa-envelope-o"></i> <span class="hidden-sm-down load">Inbox</span><% end %>
+      
+      <%= link_to sendmails_path do%><i class="fa fa-paper-plane "></i> <span class="hidden-sm-down load">Send Mail Jobs</span><%end%>
+      
+      <%= link_to pogrs_path do %> <i class="fa fa-files-o"></i> <span class="hidden-sm-down load">PO-GR Compare</span><%end%>
+      </div>
+    </nav>
+  </div>
+
+<script type="text/javascript">
+$(function () {
+    $("#menu1.collapse a").each(function() {
+      va1 =window.location.href.split("/", 4).join("/");
+      va2 =this.href.split("/", 4).join("/");
+
+     //alert(va1);
+       if (va1 == va2) {
+        $('#collapse1').attr("aria-expanded","true");
+        $("#menu1.collapse").attr("aria-expanded","true").addClass("in show");
+        $(this).addClass("active_sidebar_li");
+         }
+    });
+
+    $("#menu2.collapse a").each(function() {
+      va3 =window.location.href.split("/", 4).join("/");
+      va4 =this.href.split("/", 4).join("/");
+       if (va3 == va4) {
+        $('#collapse2').attr("aria-expanded","true");
+        $("#menu2.collapse").attr("aria-expanded","true").addClass("in show");
+        $(this).addClass("active_sidebar_li");
+         }
+    });
+
+
+    $("#menu23.collapse a").each(function() {
+      va3 =window.location.href.split("/", 4).join("/");
+      va4 =this.href.split("/", 4).join("/");
+            
+      if (va3 == va4) {
+        $('#collapse23').attr("aria-expanded","true");
+        $("#menu23.collapse").attr("aria-expanded","true").addClass("in show");
+        $(this).addClass("active_sidebar_li");
+         }
+    });
+
+     $("#menu13.collapse a").each(function() {
+      va3 =window.location.href.split("/", 5).join("/");
+
+      va4 =this.href.split("/", 5).join("/");
+            
+      if (va3 == va4) {
+        $('#collapse13').attr("aria-expanded","true");
+        $("#menu13.collapse").attr("aria-expanded","true").addClass("in show");
+        $(this).addClass("active_sidebar_li");
+         }
+    });
+
+    $("#menu3.collapse a").each(function() {
+      va3 =window.location.href.split("/", 5).join("/");
+
+      va4 =this.href.split("/", 5).join("/");
+            
+      if (va3 == va4) {
+        $('#collapse3').attr("aria-expanded","true");
+        $("#menu3.collapse").attr("aria-expanded","true").addClass("in show");
+        $(this).addClass("active_sidebar_li");
+         }
+    });
+
+    $("#menu4.collapse a").each(function() {
+      va3 =window.location.href.split("/", 5).join("/");
+
+      va4 =this.href.split("/", 5).join("/");
+            
+      if (va3 == va4) {
+        $('#collapse4').attr("aria-expanded","true");
+        $("#menu4.collapse").attr("aria-expanded","true").addClass("in show");
+        $(this).addClass("active_sidebar_li");
+         }
+    });
+
+    $("#menu5.collapse a").each(function() {
+      va3 =window.location.href.split("/", 5).join("/");
+
+      va4 =this.href.split("/", 5).join("/");
+            
+      if (va3 == va4) {
+        $('#collapse5').attr("aria-expanded","true");
+        $("#menu5.collapse").attr("aria-expanded","true").addClass("in show");
+        $(this).addClass("active_sidebar_li");
+         }
+    });
+   
+   $("#menu6.collapse a").each(function() {
+      va3 =window.location.href.split("/", 5).join("/");
+
+      va4 =this.href.split("/", 5).join("/");
+            
+      if (va3 == va4) {
+        $('#collapse6').attr("aria-expanded","true");
+        $("#menu6.collapse").attr("aria-expanded","true").addClass("in show");
+        $(this).addClass("active_sidebar_li");
+         }
+    });
+   
+   $("#menu7.collapse a").each(function() {
+      va3 =window.location.href.split("/", 5).join("/");
+
+      va4 =this.href.split("/", 5).join("/");
+            
+      if (va3 == va4) {
+        $('#collapse7').attr("aria-expanded","true");
+        $("#menu7.collapse").attr("aria-expanded","true").addClass("in show");
+        $(this).addClass("active_sidebar_li");
+         }
+    });
+   
+   $("#menu8.collapse a").each(function() {
+      va3 =window.location.href.split("/", 5).join("/");
+
+      va4 =this.href.split("/", 5).join("/");
+            
+      if (va3 == va4) {
+        $('#collapse8').attr("aria-expanded","true");
+        $("#menu8.collapse").attr("aria-expanded","true").addClass("in show");
+        $(this).addClass("active_sidebar_li");
+         }
+    });
+   
+   $("#menu9.collapse a").each(function() {
+      va3 =window.location.href.split("/", 5).join("/");
+
+      va4 =this.href.split("/", 5).join("/");
+            
+      if (va3 == va4) {
+        $('#collapse9').attr("aria-expanded","true");
+        $("#menu9.collapse").attr("aria-expanded","true").addClass("in show");
+        $(this).addClass("active_sidebar_li");
+         }
+    });
+   
+   
+    
+})
+
+  $(document).ready(function() {
+    $(".list-group a").each(function() {
+       if (this.href == window.location.href) {
+        $(this).addClass("active_sidebar");
+         }
+    });    
+  });
+</script>
+
+<script type="text/javascript">
+/* $(function () {
+     $("#menu1.collapse a").each(function() {
+
+       va11=window.location.href.split("/");
+       va1=va11[3].split("?");
+       va2=this.href.split("/", 4);
+
+       if ((va11[3] == va2[2]) || (va1[0] == va2[3])) {
+         $('#collapse1').attr("aria-expanded","true");
+         $("#menu1.collapse").attr("aria-expanded","true").addClass("in show");
+         $(this).addClass("active_sidebar_li");
+          }
+     });
+     $("#menu2.collapse a").each(function() {
+     
+       va22 =window.location.href.split("/");
+      
+       va3=va22[3].split("?");
+       va4=this.href.split("/", 4);
+        if ((va22[3] == va4[3]) || (va3[0] == va4[3])) {
+         $('#collapse2').attr("aria-expanded","true");
+         $("#menu2.collapse").attr("aria-expanded","true").addClass("in show");
+         $(this).addClass("active_sidebar_li");
+          }
+     });
+*/     /*$("#menu3.collapse a").each(function() {
+
+     va33 =window.location.href.split("/");
+      
+     va5=va33[3].split("?");
+
+     va6=this.href.split("/", 4);
+     if (va5[0] == va6[3]) {
+         $(this).addClass("active_sidebar_li");
+          }
+     });
+
+     $(".list-group a").each(function() {
+       va44 =window.location.href.split("/");
+       va7=va44[3].split("?");
+       va8=this.href.split("/", 4);
+       if ((va44[3] == va8[3]) || (va7[0] == va8[3])) {
+         $(this).addClass("active_sidebar");
+         $("#collapse1").removeClass("active_sidebar");
+         $("#collapse2").removeClass("active_sidebar");
+       }
+     });    
+
+ })
+ */
+
+</script>
+
+</body>
+</html>

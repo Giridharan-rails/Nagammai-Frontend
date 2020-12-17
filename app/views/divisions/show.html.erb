@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+          <header>
+          	<h3>division Details</h3>
+          </header>
+          
+          
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>#</th>   
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                   </tr>
+                </thead>
+                <tbody class="scroll">
+                
+                    <td><%= @division["id"] %> </td>
+                    <td><%= @division["name"] %> </td>
+                    <td><%= @division["email"] %> </td>
+                    <td><%= @division["phone_number"] %></td>
+                    <td><%= @division["address"] %>  </td>
+                    
+                                                    
+                </tbody>
+              </table>
+</body>
+</html>
+
+

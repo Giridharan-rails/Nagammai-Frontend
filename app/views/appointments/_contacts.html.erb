@@ -1,0 +1,43 @@
+<div class="col-md-12 contacts">
+  <div class="table_bg table_mrgn">
+    <table class="table table_front table-striped">
+      <thead>
+        <tr>
+          <th class="th_sno">#</th>
+          <th class="th_appointment_name">Contact</th>
+          <th class="th_appointment_title">Title</th>
+          <th class="th_appointment_phno">Phone no</th>
+          <th class="th_appointment_email">Email</th>
+          <th class="th_appointment_check" style="text-align: inherit;">Select</th>
+        </tr>
+      </thead>
+      <tbody class="scroll">
+     <%if @contacts.present?%>        
+        <% s_no = 1 %>
+        <% @contacts.map do |contact| %>
+        <tr>              
+          <th class="td_sno" scope="row"><%= s_no %></th>
+          <td class="td_appointment_name"><%= contact["name"] %></td>
+
+          <td class="td_appointment_title"><%= contact["jobs_name"]["job_name"] if contact["jobs_name"].present?%></td>
+          <td class="td_appointment_phno"><%= contact["phone_number"] %></td>
+          <td class="td_appointment_email"><%= contact["email"] %></td>                      
+          <td class="td_appointment_check">
+          <% if params[:appointment_id].present? %>
+            <% if @appointment[0]["contacts_ids"].include?(contact["id"]) %>
+              <%= check_box_tag 'contacts_ids[]', contact["id"], checked: true %>
+            <% else %>
+              <%= check_box_tag 'contacts_ids[]', contact["id"] %>
+            <% end %>
+          <% else %>
+            <%= check_box_tag 'contacts_ids[]', contact["id"] %>
+          <% end %>
+          </td>
+        </tr>
+        <% s_no = s_no+1 %>
+        <% end %>      
+<%end%>                      
+      </tbody>
+    </table>                
+  </div>           
+</div>            

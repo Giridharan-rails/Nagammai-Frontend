@@ -1,0 +1,37 @@
+
+
+<div class="card_hg">
+            <table class="table table_front table-striped table-list-search">
+              <thead>
+                <tr>
+                  <th class="th_sno2">Mf.Code</th>
+                  <th class="th_supplier_name">Name</th>
+                  <th class="th_supplier_email">Email</th>
+                  <th class="th_phone">Phone</th>
+                  <th class="th_supplier_adrs">Address</th>
+                  <th class="th_supplier_edit">Edit</th>
+                  <th class="th_supplier_cnt">Contacts</th>
+                  <th class="th_supplier_mnf">Divisions</th>
+                </tr>
+              </thead>
+              <tbody class="scroll">
+              <% @manufacturers.map do |i| %>
+                <tr class="content">             
+                   
+                    <td><%= i["code"] %> </td>
+                    <td><%= i["name"] %> </td>
+                    <td><%= i["email"] %> </td>
+                    <td><%= i["phone_number"] %> </td>
+                    <td><%= i["address"] %> </td>
+                    
+                    <td><%= link_to '', edit_manufacturer_path(i["id"]), class:"fa fa-pencil-square-o icon_clr" %></td>
+                 <!--    <td><!%= link_to 'Destroy', manufacturers_manufacturer_delete_path(i["id"]), method: :delete, data: { confirm: 'Are you sure?' } %--></td>
+                  <td><%= link_to 'Contacts', contacts_sup_man_div_based_contacts_path(:manufacturer_id=>i["id"],:data=>"Manufacturer") %></td>
+                    <td><%= link_to 'divisions', divisions_path(:manufacturer_id=>i["id"]) %></td>
+              
+                    </tr>
+                   <% end %>
+                  </tbody>
+                  </table>
+</div>
+   

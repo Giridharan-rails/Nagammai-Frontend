@@ -1,0 +1,33 @@
+<!-- <div class="col-md-6 pending_claims"> -->
+  <label class="form-control-label" for="formGroupExampleInput">PENDING CLAIMS</label>
+  <div class="card card_height table_mrgn">
+    <div class="card-block">
+      <table class="table table_front table-striped">
+        <thead>
+          <tr>
+            <th class="th_pnd_no">Claim No</th>
+            <th class="th_pnd_desp">Claim Type</th>
+            <th class="th_pnd_qty">Amount</th>
+            <th class="th_pnd_qty">Settled Amount</th>
+          </tr>
+        </thead>
+        <tbody class="scroll">
+        
+          <% @claims.each do |claim| %>
+          <tr>
+            <th class="td_pnd_no" scope="row"><%= claim["claim_no"] %></th>
+            <td class="td_pnd_desp"><%= claim["claim_type"] %></td>
+            <td class="td_pnd_qty"><%= claim["claim_amount"] %></td>
+            <td class="td_pnd_qty"><%= claim["settled_amount"] %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2"> </div>
+    <div class="col-md-6"><h5> Value of Pending Claims</h5></div>
+    <div class="col-md-4"><h5><%= @claims.map { |e| e["claim_amount"].to_i }.sum - @claims.map { |e| e["settled_amount"].to_i }.sum %></h5></div>
+  </div>
+<!-- </div> -->

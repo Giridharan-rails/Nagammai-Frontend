@@ -1,0 +1,318 @@
+<head>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+
+</head>
+<section>
+  <div class="container-fluid issue-report">
+    <header class="table-header">
+      <ol class="breadcrumb">
+        <%= render_breadcrumbs :tag => :li, :separator => "" %>
+        <%#= link_to "<i class=' fa fa-file-text-o'></i>&nbsp;Approved Issues".html_safe, issues_approved_claims_path, class: "btn btn-link float-right load" %>           
+      </ol>
+     <%=form_for "filter",:url=>{:controller=>"issues",:action=>"datewisefilter"} do |i|%>
+      <div class="date-search">
+          <div class="row">
+              <div class="col-md-3">
+                <label>From Date</label>
+                  <br>
+                <input name="from_date" type="text" id="dt1" class="form-control date" value="<%=@from_date%>" placeholder="dd-M-yy">
+              </div>
+              <div class="col-md-3">
+                <label>To Date</label>
+                <br>                  
+                <input name="to_date" type="text" id="dt2" class="form-control date1" value="<%=@to_date%>" placeholder="dd-M-yy">
+              </div>
+              <div class="col-md-4">
+                <label>Claims Status</label>
+                  <br>                  
+                <select class="form-control filter" name="status" >
+                    <option value="" selected>Select</option>
+                    <option value="Open" <% if @stat=="Open"%> selected <%end%>>Open</option>
+                    <option value="Closed" <% if @stat=="Closed"%> selected <%end%>>Closed</option>
+                    <option value="Re-open" <% if @stat=="Re-open"%> selected <%end%>>Re-open</option>
+                    <option value="Approved" <% if @stat=="Approved"%> selected <%end%>>Approved</option>
+                </select>                
+                          
+              </div>
+              <div class="col-md-2">
+                <label>&nbsp;</label>
+                  <br>
+                <%=i.submit "Show", class: "btn btn-full btn-primary"%>
+              </div>
+                
+          </div>
+            <%end%>
+      </div>
+      <h3>Issues Audit Report</h3>           
+      </header>
+        <%=form_for "issue_update",:url=>{:controller=>"issues",:action=>"issue_update"} do |j|%>
+          <div class="display status">
+            <table id="example">
+               <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Divison</th>
+                  <th class="text-center">Cut-off Date </th>                  
+                  <th>Resolved By</th>
+                  <th class="text-center">Created Date</th>
+                  <th>Notes</th>
+                  <th>Status</th>
+                  
+                  <th>Remarks</th>
+                  <th class="text-center">Approve</th>
+ 
+                </tr>
+              </thead>
+              <tbody>
+              <%if @issues.present?%>
+              <%@issues.map do |i|%>
+              <%#byebug%>
+                <tr>
+                    <%=hidden_field_tag "ids[]" ,i["id"] %>
+                    <td>
+                        <span style="width: 200px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" title="<%=i["description"]%>"><%=link_to i["description"], appointment_path(:id=>i["appointment_id"],data:"issue"),class: "btn btn-link"%></span>
+                    </td>
+                    <%= puts i["appointment"] %>
+                    <td><%=i["appointment"]["app_contact"].present? ? i["appointment"]["app_contact"]["div_name"] : "no app contact" %></td>
+                  
+                    <td class="text-center" data-order = "<%=i["cut_off_date"].to_date.strftime("%Y-%m-%d") if i["cut_off_date"].present? %>">
+                      <%=i["cut_off_date"].to_date.strftime("%d-%m-%Y") unless i["cut_off_date"].nil? %>
+                      
+                    </td>
+                  
+                    <td><%=i["contact"]["name"]%></td>
+                    <td class="text-center"><%=i["created_at"].to_date.strftime('%d-%m-%Y') unless i["created_at"].nil?%></td>
+                    <td><span style="width: 200px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" title="<%=i["notes"]%>"><h4 class="btn-link"><%= i["notes"]%></h4></span></td>
+
+                    <td class="td_issue_status">
+                      <%= select_tag "status[]", options_for_select([['Open'],['Closed'],['Re-open']],:selected=>i["status"]),  class: "form-control", include_blank: "Select"%>
+                    </td>
+                    <% if i["status"]=="Closed" and i["approval"] == nil%>
+                    <td><input type="text" name="remarks[]" class="form-control"></td>
+
+                    <td class="td_issue_approval"> 
+                      <input type="checkbox" name="approval[]" value="<%=i["id"]%>">
+                      
+                    </td>  
+                    <%else%>
+                    <td></td>
+                    <td></td>
+                    <%end%>
+                    </tr>
+                 <%end%>
+                       
+              </tbody>
+            </table>         
+
+          </div>
+            <footer class="table-footer">
+          <%=j.submit "Save" , class: "btn btn-one load", id: "sopissue1"%>
+          <%=link_to "Cancel", pages_dashboard_path , class: "btn btn-primary load", id: "sopissue2"%>
+          </footer>
+          <%end%>
+</div>
+          
+        <%end%>
+             
+</section>
+
+
+
+      <!-- 
+ 
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $('#datefilter').change(function(){
+
+         var id=($(this).val());
+          $.ajax({
+            type: "GET",
+            url: "/issues/datewisefilter?date="+id
+          });
+         
+      });
+
+});
+</script>
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    $('.filter').change(function(){
+         var id=($(this).val());
+          $.ajax({
+            type: "GET",
+            url: "/issues/filterstatus?status="+id
+          });
+         
+      });
+
+});
+</script> -->
+<!-- <script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+          dom: 'Bfrtip',
+            bSort:true,
+              buttons: [
+                 'excelHtml5',
+                 'pdfHtml5',
+                 'print'
+               ]
+       } );
+} );
+ </script>
+ -->
+ 
+      
+<script type="text/javascript">
+  $(document).ready(function () {
+
+        $("#dt1").datepicker({
+            
+            dateFormat: "dd-M-yy",
+            /*setDate: ,*/
+
+            //minDate: 0,
+            onSelect: function (date) {
+                var dt2 = $('#dt2');
+                var startDate = $(this).datepicker('getDate');
+                var minDate = $(this).datepicker('getDate');
+                dt2.datepicker('setDate', minDate);
+                startDate.setDate(startDate.getDate() + 720);
+                //sets dt2 maxDate to the last day of 30 days window
+                dt2.datepicker('option', 'maxDate', startDate);
+                dt2.datepicker('option', 'minDate', minDate);
+                //$(this).datepicker('option', 'minDate', minDate);
+            }
+        });
+        $('#dt2').datepicker({
+            dateFormat: "dd-M-yy"
+        });
+    });
+
+
+</script>
+<script type="text/javascript">
+  $(document).ready(function(){ 
+    $("#dt1").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "dd-mm-yy");
+    }
+    });
+    $("#dt2").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "dd-mm-yy");
+    }
+    });    
+  });  
+
+
+</script>
+
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+</script>
+<!-- <script type="text/javascript">
+$( document ).ready(function() {
+    var d = new Date();
+    var curr_date = d.getDate();
+    var curr_month = d.getMonth() + 1;
+    var curr_year = d.getFullYear();
+    var date=(curr_date + "-" + curr_month + "-" + curr_year);
+   $("#dt1").attr("placeholder",date);
+   $("#dt2").attr("placeholder",date);
+});
+</script>
+
+ -->
+
+
+  <link rel="stylesheet" href="/assets/datatable.css">
+  <link rel="stylesheet" href="/assets/datatablebutton.css">
+  <script src="/assets/datatablejquery.js"></script>
+  <script src="/assets/datatablejquery1.js"></script>
+  <script src="/assets/datatablebuttons.js"></script>
+  <script src="/assets/datatablejszip.js"></script>
+  <script src="/assets/datatablepdf.js"></script>
+  <script src="/assets/datatablefont.js"></script>
+  <script src="/assets/datatablehtml.js"></script>
+  <script src="/assets/datatableprint.js"></script>
+
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+<!-- <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>  -->
+
+<!-- <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+
+<script src="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/jqueryui/dataTables.jqueryui.js">
+</script>
+ -->
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+          dom: 'Bfrtip',
+          bSort:true,
+          "pageLength": 13,
+         buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2,3,4,5]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2,3,4,5 ]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2,3,4,5]
+                }
+              }
+          ],
+             "order": [[ 2, "asc" ]]
+          } );
+  } );
+
+  </script>
+
+
+
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type=search]").focus();
+  });
+
+  $(document).ready(function(){
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+</script>

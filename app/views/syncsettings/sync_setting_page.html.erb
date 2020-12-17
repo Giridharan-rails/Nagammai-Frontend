@@ -1,0 +1,330 @@
+<%=form_for @sync_setting,:url=>{:controller=>"syncsettings",:action=>"sync_setting_update",:id=>params["id"]} do |i|%>
+
+
+      <section class="user-edit">
+        <div class="container-fluid">
+          <header>
+              <ol class="breadcrumb">
+    <%= render_breadcrumbs :tag => :li, :separator => "" %>
+  </ol>
+            <h3>Sync Settings</h3>
+          </header>
+        </div>
+
+        <%=hidden_field_tag 'last_sync' ,@data_json["last_sync"]%>
+   <%select_schedule=@data_json["schedule"]%>
+   
+        <div class="container cont_pad">
+          <div class="card card_edit">
+            <div class="edit-form">
+
+              <div class="form-group">
+                <div class="row d-flex align-items-center mrgn_add" id="settings">
+                <%if @data_json["job_name"] == "Excess Stock"%>
+                  <div class="col-md-3">
+                    <label class="form-control-label" for="formGroupExampleInput">Send Mail Job<span class="required">*</span></label>
+                        <input type="text" value="<%=@data_json["job_name"]%>" name="job_name" class="form-control" readonly>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-control-label" for="formGroupExampleInput">Days for Excess Stock<span class="required">*</span></label>
+                        <input type="text" value="<%=@data_json["additional1"]%>" name="additional1" class="form-control">
+                  </div>  
+
+<%else%>
+
+  <div class="col-md-6">
+                    <label class="form-control-label" for="formGroupExampleInput">Send Mail Job<span class="required">*</span></label>
+                        <input type="text" value="<%=@data_json["job_name"]%>" name="job_name" class="form-control" readonly>
+                  </div>
+                    <%end%>              
+                  <div class="col-md-6">
+                    <label class="form-control-label" for="formGroupExampleInput">Schedule Period<span class="required">*</span></label>
+                    <div id="myRadioGroup">
+                       <div class="col-md-3 d-flex col_pad">
+                         <input type="radio" name="cars" value="Manual"  id="manual" <%if select_schedule=="Manual"%> checked="checked" <%end%>/>&nbsp;Manual
+                       </div>
+                       <div class="col-md-3 d-flex col_pad">
+                         <input type="radio" name="cars" value="Daily"  id="daily" <%if select_schedule=="Daily"%> checked="checked" <%end%>/>&nbsp;Daily
+                       </div>
+                       <div class="col-md-3 d-flex col_pad">
+                         <input type="radio" name="cars" value="Weekly"  id="weekly" <%if select_schedule=="Weekly"%> checked="checked" <%end%>/>&nbsp;Weekly
+                       </div>
+                       <div class="col-md-3 d-flex col_pad">
+                         <input type="radio" name="cars" value="Monthly" id="monthly" <%if select_schedule=="Monthly"%> checked="checked" <%end%>/>&nbsp;Monthly
+                       </div>
+                    </div>
+                  </div>
+                </div>
+                      <div class="row">
+<!--  <div class="col-md-12">
+                <div class="col-md-3">
+                  <label class="form-control-label" for="formGroupExampleInput">Days for Excess Stock<span class="required">*</span></label>
+                      <input type="text" value="<%#=@data_json["additional1"]%>" name="additional1" class="form-control">
+                </div>
+                <div class="col-md-6">
+                </div>
+                </div> -->
+
+  </div>   
+                <div class="row">
+                  <div class="col-md-12">
+
+                    <div id="CarsManual" class="desc mrgn_add" style="display: none;">
+                    <!-- <label>Sechuled Frequency</label>
+                    <input type="text" name="manual" class="form-control" <!%if select_schedule=="Manual"%> value=<!%= @data_json["schedule_period"]%><!%end%>>
+                    -->
+                    </div>
+
+                    <div id="CarsDaily" class="desc">
+                    </div>
+
+                    <div id="CarsWeekly" class="desc mrgn_add" style="display: none;">
+                    <label>Weekly</label>
+                    <%= select_tag "week_data", options_for_select([['Monday'],['Tuesday'],['Wednesday'],['Thursday'],['Friday'],['Saturday'],['Sunday']],:selected=>@data_json["schedule_period"]),include_blank: "Select Day" %>
+                    </div>
+
+                    <div id="CarsMonthly" class="desc mrgn_add" style="display: none;">
+                    <label>Monthly</label>
+                    <%= select_tag "month_data", options_for_select([['1st'],['2nd'],['3rd'],['4th'],['5th'],['6th'],['7th'],['9th'],['10th'],['11th'],['12th'],['13th'],['14th'],['15th'],['16th'],['17th'],['18th'],['19th'],['20th'],['21st'],['22nd'],['23rd'],['24th'],['25th'],['26th'],['27th'],['28th'],['29th'],['30th'],['31st']],:selected=>@data_json["schedule_period"]),include_blank: "Select Date"%>
+
+                    </div>
+                  </div>  
+                </div>  
+
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+ sele();
+  $("input[name$='cars']").click(function() {
+    var test = $(this).val();
+  
+          if(test=="Manual")
+  {
+       $("div.desc").hide();
+       $("#pop").hide();
+       $("#Cars" + test).show();
+  }
+  else{
+  $("#pop").show();
+    $("div.desc").hide();
+     
+       $("#Cars" + test).show();
+ 
+  }
+
+    });
+   
+});
+function sele(){
+       var test = "<%=select_schedule%>";
+
+  if(test=="Manual")
+  {
+       $("div.desc").hide();
+       $("#pop").hide();
+       $("#Cars" + test).show();
+  }
+  else{
+  $("#pop").show();
+    $("div.desc").hide();
+     
+       $("#Cars" + test).show();
+ 
+  }
+
+   }
+
+</script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+
+
+<div ng-app="myApp" ng-controller="MyCtrl" id="pop">
+
+
+<label class="form-control-label syc_time" for="formGroupExampleInput">Sync Time<span class="required">*</span>
+             <span class="btn_add" ng-click="addInput()"><i class="fa fa-plus" aria-hidden="true"></i></span>
+</label>
+
+               <div ng-repeat="input in values">
+               
+                <div class="d-flex align-items-center mrgn_add">
+                
+               <select class="form-control field_width" name="schedule_time[]" ng-model="input.name" id="values">
+                   <option value="00:15">00:15</option>
+                    <option value="00:30">00:30</option>
+                    <option value="00:45">00:45</option>
+                    <option value="01:00">01:00</option>
+                    <option value="01:15">01:15</option>
+                    <option value="01:30">01:30</option>
+                    <option value="01:45">01:45</option>
+                    <option value="02:00">02:00</option>
+                    <option value="02:15">02:15</option>
+                    <option value="02:30">02:30</option>
+                    <option value="02:45">02:45</option>
+                    <option value="03:00">03:00</option>
+                    <option value="03:15">03:15</option>
+                    <option value="03:30">03:30</option>
+                    <option value="03:45">03:45</option>
+                    <option value="04:00">04:00</option>
+                    <option value="04:15">04:15</option>
+                    <option value="04:30">04:30</option>
+                    <option value="04:45">04:45</option>
+                    <option value="05:00">05:00</option>
+                    <option value="05:15">05:15</option>
+                    <option value="05:30">05:30</option>
+                    <option value="05:45">05:45</option>
+                    <option value="06:00">06:00</option>
+                    <option value="06:15">06:15</option>
+                    <option value="06:30">06:30</option>
+                    <option value="06:45">06:45</option>
+                    <option value="07:00">07:00</option>
+                    <option value="07:15">07:15</option>
+                    <option value="07:30">07:30</option>
+                    <option value="07:45">07:45</option>
+                    <option value="08:00">08:00</option>
+                    <option value="08:15">08:15</option>
+                    <option value="08:30">08:30</option>
+                    <option value="08:45">08:45</option>
+                    <option value="09:00">09:00</option>
+                    <option value="09:15">09:15</option>
+                    <option value="09:30">09:30</option>
+                    <option value="09:45">09:45</option>
+                    <option value="10:00">10:00</option>
+                    <option value="10:15">10:15</option>
+                    <option value="10:30">10:30</option>
+                    <option value="10:45">10:45</option>
+                    <option value="11:00">11:00</option>
+                    <option value="11:15">11:15</option>
+                    <option value="11:30">11:30</option>
+                    <option value="11:45">11:45</option>
+                    <option value="12:00">12:00</option>
+                    <option value="12:15">12:15</option>
+                    <option value="12:30">12:30</option>
+                    <option value="12:45">12:45</option>
+                    <option value="13:00">13:00</option>
+                    <option value="13:00">13:15</option>
+                    <option value="13:30">13:30</option>
+                    <option value="13:45">13:45</option>
+                    <option value="14:00">14:00</option>
+                    <option value="14:15">14:15</option>
+                    <option value="14:30">14:30</option>
+                    <option value="14:45">14:45</option>
+                    <option value="15:00">15:00</option>
+                    <option value="15:15">15:15</option>
+                    <option value="15:30">15:30</option>
+                    <option value="15:45">15:45</option>
+                    <option value="16:00">16:00</option>
+                    <option value="16:15">16:15</option>
+                    <option value="16:30">16:30</option>
+                    <option value="16:45">16:45</option>
+                    <option value="17:00">17:00</option>
+                    <option value="17:15">17:15</option>
+                    <option value="17:30">17:30</option>
+                    <option value="17:45">17:45</option>
+                    <option value="18:00">18:00</option>
+                    <option value="18:15">18:15</option>
+                    <option value="18:30">18:30</option>
+                    <option value="18:45">18:45</option>
+                    <option value="19:00">19:00</option>
+                    <option value="19:15">19:15</option>
+                    <option value="19:30">19:30</option>
+                    <option value="19:45">19:45</option>
+                    <option value="20:00">20:00</option>
+                    <option value="20:15">20:15</option>
+                    <option value="20:30">20:30</option>
+                    <option value="20:45">20:45</option>
+                    <option value="21:00">21:00</option>
+                    <option value="21:15">21:15</option>
+                    <option value="21:30">21:30</option>
+                    <option value="21:15">21:45</option>
+                    <option value="22:00">22:00</option>
+                    <option value="22:15">22:15</option>
+                    <option value="22:30">22:30</option>
+                    <option value="22:45">22:45</option>
+                    <option value="23:00">23:00</option>
+                    <option value="23:15">23:15</option>
+                    <option value="23:30">23:30</option>
+                    <option value="23:45">23:45</option>
+                    <option value="24:00">24:00</option>
+                    
+                    </select>
+               
+               <label ng-click="removeInput($index)" class="remove btn btn_pad"><i class="fa fa-minus-circle pad" aria-hidden="true"></i></label>
+              </div>
+            </div>
+             <!-- <label class="btn btn-info" ng-click="addInput()"><i class="fa fa-plus" aria-hidden="true"></i></label> -->
+
+        </div>
+
+
+   <div id="TextBoxContainer"></div>
+
+              </div>
+
+
+
+
+              <footer class="form-footer">
+                <button class="btn btn-primary btn-one"  id="save">Save</button>
+                <button type="submit" class="btn btn-primary" onclick="window.location.href='sync.html'">Cancel</button>
+              </footer>
+            </div>
+          </div>
+        </div>
+      </section>
+
+  
+      <%end%>
+
+<script type="text/javascript">
+
+var app = angular.module('myApp', []);
+
+app.controller('MyCtrl', ['$scope', function ($scope) {
+$scope.values=[]
+
+  var first_data = "<%=@schedule_time.uniq.join(",")%>";
+  $scope.inputs = first_data.split(",");
+for(var i in $scope.inputs){
+  var id=i*1+1
+  $scope.values.push({"name":$scope.inputs[i],"id":id});
+}
+
+ $scope.addInput = function(){
+    $scope.count=$scope.values.length+1
+     $scope.values.push({"id":$scope.count})
+
+  }
+$scope.removeInput = function(index){
+    $scope.values.splice(index,1);
+   
+}
+}]);
+</script>
+
+
+<!-- <script type="text/javascript">
+  $(document).ready(function(){
+    $("#save").click(function(){
+        var id=$("#values option:selected").val();
+         var answer = confirm('Time is Selected! Okay?');
+         if (answer)
+          {
+            console.log('yes');
+            window.location.href='';
+          }
+          else
+          {
+            //alert("cancel")
+            console.log('cancel');
+                //event.preventDefault();
+                return;
+          }
+    });
+});
+</script> -->
+

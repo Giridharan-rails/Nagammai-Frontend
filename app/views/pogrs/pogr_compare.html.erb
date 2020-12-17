@@ -1,0 +1,150 @@
+<section>
+  <div class="container-fluid user-assign">
+   <%= form_for "goods_receipt", url: {controller: "pogrs", action: "map_pogr"} do |i| %>
+    <header>
+       <ol class="breadcrumb">
+    <%= render_breadcrumbs :tag => :li, :separator => "" %>
+  </ol>
+      <h3>GRN Compared For:"<%= params["order_no"] %>"
+
+      <% if @compared_data.present?%>
+        <span class="float-right">
+          <a href=""><button type="submit" class="btn btn-link load" id="confirmButton"><i class="fa fa-send"></i> Send Mail</button></a>
+        </span>
+        <%end%>
+     </h3>
+    </header>
+
+   
+     
+      <div class="card_hg">
+        <table class="table table_front table-striped">
+          <thead>
+            <tr>
+              <th class="th_grproduct">Product</th>
+              <th class="th_grnum">GR Number</th>
+              <th class="th_supplier">Supplier</th>
+              <th class="th_poqty">PO Qty</th>
+              <th class="th_grqty">GR Qty</th>
+              <th class="th_excessqty">Excess Qty</th>
+              <!-- <th class="th_selectall">
+                <label class="li_list" name="check all" for="checkall">
+                    <input type="checkbox"  name="check all" id="checkall">
+                    <span class="fake-input"></span>
+                    <span class="fake-label"></span>
+                </label>
+                <label class="check_all">Check all</label>                    
+              </th> -->
+               <th class="th_selectall">
+                      <input type="checkbox" id="checkAll">
+               </th>
+            </tr>
+          </thead>
+          <tbody class="scroll">
+            <% @compared_data.each do |goods_receipt| %>
+           
+              <tr>
+                <td class="td_grproduct" scope="row"><%= goods_receipt["product_name"] %></td>
+                <td class="td_grnum"><%= goods_receipt["gr_qty"].present? ? goods_receipt["gr_qty"][0]["grn_number"] : nil %></td>
+                <td class="td_supplier"><%= goods_receipt["supplier_name"]["supplier_name"] %></td>
+                <td class="td_poqty"><%= a = goods_receipt["purchase_qty"] %></td>
+                <td class="td_grqty"><%= goods_receipt["gr_qty"].present? ? b =  goods_receipt["gr_qty"].map{|i|i["quantity"]}.map{|j| j.to_i}.sum: nil %></td>
+                <td class="td_excessqty"><%=c=(b - a)%></td>
+                <td class="td_selectall">
+                  <!--%= check_box_tag 'replacement[]', 0 %-->
+                   <%if c>0%> <input type="checkbox" name="replacement[]" value="<%=goods_receipt%>" class="myCheckBox"><%end%>
+                  <!-- <label class="li_list" name="check1" for="check1">
+                      <input type="checkbox"  class="case" name="check all" id="check1">
+                      <span class="fake-input"></span>
+                      <span class="fake-label"></span>
+                  </label> -->
+                                </td>
+              </tr>
+
+
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+    <% end %>
+  </div>
+  <div class="container-fluid">
+    <nav aria-label="Page navigation example" id="page_slider">
+      <h1>            
+        <ul class="pagination">
+          <%#= will_paginate @goods_receipts %>
+        </ul>
+      </h1> 
+    </nav>          
+  </div>        
+</section>
+
+<script type="text/javascript">
+
+var expanded = false;
+
+function showCheckboxes() {
+  var checkboxes = document.getElementById("checkboxes");
+  if (!expanded) {
+    checkboxes.style.display = "block";
+    expanded = true;
+  } else {
+    checkboxes.style.display = "none";
+    expanded = false;
+  }
+}
+     
+   $(function(){
+
+  // add multiple select / deselect functionality
+  $("#checkall").click(function () {
+      $('.case').prop('checked', this.checked);
+  });
+
+  // if all checkbox are selected, check the selectall checkbox
+  // and viceversa
+  $(".case").click(function(){
+
+    if($(".case").length == $(".case:checked").length) {
+      $("#checkall").prop("checked", "checked");
+    } else {
+      $("#checkall").removeAttr("checked");
+    }
+
+  });
+});
+
+
+$(function(){
+
+  // add multiple select / deselect functionality
+  $("#selectcontact").click(function () {
+      $('.Concase').prop('checked', this.checked);
+  });
+
+  // if all checkbox are selected, check the selectall checkbox
+  // and viceversa
+  $(".Concase").click(function(){
+
+    if($(".Concase").length == $(".Concase:checked").length) {
+      $("#selectcontact").prop("checked", "checked");
+    } else {
+      $("#selectcontact").removeAttr("checked");
+    }
+
+  });
+});
+
+var checkBoxes = $('tbody .myCheckBox');
+checkBoxes.change(function () {
+    $('#confirmButton').prop('disabled', checkBoxes.filter(':checked').length < 1);
+});
+$('tbody .myCheckBox').change();
+ 
+</script>
+<script type="text/javascript">
+$("#checkAll").change(function () {
+    $("input:checkbox").prop('checked', $(this).prop("checked"));
+});
+</script>

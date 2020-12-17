@@ -1,0 +1,38 @@
+ <section class="users_admin">
+        <div class="container-fluid">
+        <!-- <center ng-show="loader"><img src="https://raw.githubusercontent.com/niklausgerber/PreLoadMe/master/img/status.gif"><br>{{username}}</center>
+         -->  <header>
+            <h3>Receive Mail<a href="/receivemails/new" class="btn_add" data-target="#exampleModalLabel"><i class="fa fa-plus" aria-hidden="true"></i></a></h3>
+          </header>
+          
+          <div class="card_hg">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th class="th_sno">S.No</th>
+                    <th class="th_receive">Email</th>
+                    <th class="th_scheduled_time2">Scheduled Time</th>
+                    <th class="th_period">Scheduled Period</th>
+                    <th class="th_fetch">Fetch</th>
+                    <th class="th_setting2">Setting</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                  <% [@receive_mails].map do |i| %>
+                    <th class="td_sno" scope="row"><%=s_no %></th>
+                    <td class="td_receive"><%=i["job_name"] %></td>
+                    <td class="td_scheduled_time2"><%=i["schedule_time"] %></td>
+                    <td class="td_period"><%=i["schedule"] %>  <%=i["schedule_period"]%></td>
+                    <td class="td_fetch"><a href="#"><img src="/assets/received_mail.png" ng-click="show('ramasamy@gmail.com')" alt="HTML tutorial" width="32px" height="30px"></a></td>
+                    <td class="td_setting2"> <%= link_to '', receivemails_receive_setting_page_path(id:i["id"]), class: "fa fa-cog icon_clr load" %></td>   
+                  </tr>
+                     s
+                  <% end %>
+                </tbody>
+              </table>
+          </div>          
+        </div>
+     
+      </section>
+     

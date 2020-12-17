@@ -1,0 +1,63 @@
+
+        <div class="container-fluid user-assign">
+        <header>
+        <ol class="breadcrumb">
+    <%= render_breadcrumbs :tag => :li, :separator => "" %>
+  </ol>
+      <h3>Send mail - PO-GR Mismatch</h3>
+          </header>
+          <div class="card_hg">
+            <table class="table table-striped">
+             <%= form_for(@pogr_mismatch, :url =>{:controller => 'sendmails',:action => 'pogr_mismatch_assign'}) do |f| %>  
+              <thead>
+                <tr>
+                  <th class="text-left">Supplier</th>
+                  <th class="text-left">PO Number</th>
+                  <th class="text-right">Total Items</th>
+
+                  <th class="text-right">Total PO Quantity</th>
+                  
+                  <th class="text-right">Total GRN Quantity</th>
+                  <th class="text-right">Tatal Excess Quantity</th>
+                  <th class="th_send-preview">Preview</th>
+                  <th class="th_sno" style="text-align: center;"><input class="form-check-input" name="foo" type="checkbox" id="checkAll"></th>
+                </tr>
+              </thead>
+              <tbody>
+              <%@pogr_mismatches.map do |i|%>
+                <tr>
+                  <td class="text-left"><%=i["supplier_code"]%></td>
+                  <td class="text-left"><%=i["po_number"]%></td>
+                  <td class="text-right"><%=i["total_items"]%></td>
+                  <td class="text-right"><%=i["total_po_qty"]%></td>
+                  <td class="text-right"><%=i["total_grn_qty"]%></td>
+
+                  <td class="text-right"><%=i["total_excess_qty"]%></td>
+                  <td class="td_send-preview"><!-- <a href="read-mail.html" class="btn btn-link btn_pad">Preview</a> --><%=link_to "Preview",sendmails_pogr_details_path(order_no:i["po_number"]),class: "btn btn-link btn_pad"%></td>
+                  <th class="td_sno" style="text-align: center;" scope="row"><input name="order_no[]" type="checkbox" value="<%=i["po_number"]%>"></th>
+
+                </tr>
+                 <%end%>
+              </tbody>
+            </table>
+          </div>
+                 <footer class="table-footer">
+                 <% if @pogr_mismatches.present?%>
+                 <%=f.submit "Send" , class: "btn btn-one"%> 
+                 <%else%>
+                 <%=f.submit "Send" , class: "btn btn-one", disabled: true%> 
+                 <%end%>
+                 <%=button_to "Cancel",sendmails_path , class: "btn btn-primary"%>
+                 </footer>        
+                 <%end%>
+                    
+        </div>
+
+
+<script>
+$(document).ready(function(){
+   $("#checkAll").click(function () {
+     $('input:checkbox').not(this).prop('checked', this.checked);
+ }); 
+});
+</script>

@@ -1,0 +1,207 @@
+ <section class="user-edit">
+        <div class="container-fluid">
+          <header>
+              <ol class="breadcrumb">
+    <%= render_breadcrumbs :tag => :li, :separator => "" %>
+  </ol>
+            <h3>View Standard Operating Procedure           
+            
+          <%if params["appoint_id"].present?%>
+
+
+            <%= link_to 'Edit Sop', edit_sop_path(:id=>@sop["id"],:division_id=>@sop["division_id"],:appoint_id=>params["appoint_id"]), class: "btn-link" %>
+
+            <a href="/appointments/<%=params["appoint_id"]%>" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a></h3>
+            <%else%>
+            <%= link_to 'Edit Sop', edit_sop_path(:id=>@sop["id"],:division_id=>@sop["division_id"]), class: "btn-link" %>
+
+            <a href="/sops" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a></h3>
+          <%end%>
+                    
+          </header>
+        </div>
+        <div class="container cont_pad">
+          <div class="card">
+            <from class="edit-form">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="formGroupExampleInput">Supplier</label>
+                      <input  type="text" class="form-control"  placeholder="Supplier"   id="sc_supplier"  value="<%= @supplier_name["supplier"]["supplier_name"] if @supplier_name.present?%>" readonly>
+                  </div>                  
+                </div>
+                <!-- <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="formGroupExampleInput">Manufacturer</label>
+                   <input class="form-control" placeholder="Manufacturer"  id="sc_mfg" type="text"  value="<!%= @supplier_name["manufacturer"]["manufacturer_name"] if @supplier_name.present?%>" readonly>         
+                  </div>                  
+                </div>
+ -->            
+                 <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="formGroupExampleInput">Division</label>
+                   <input  type="text" class="form-control"  placeholder="Division" id="sc_division" value="<%= @sop["division"]["div_name"]%>" readonly >             
+                  </div>                  
+                </div>
+               
+
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="formGroupExampleInput">Delivery & Order Schedule</label>
+                    <select disabled>
+                      <option selected><%= @sop["delivery_order_schedule"]%></option>
+                    </select>                
+                  </div>                  
+                </div> 
+                
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="">Order Type</label>
+                    <input type="text" class="form-control" id="" placeholder="Order Type" value="<%= @sop["order_type"]%>" readonly>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="">Payment Terms</label>
+                    <input type="text" class="form-control" id="" placeholder="" value="<%= @sop["payment_term"]%>" readonly>
+                  </div>
+                </div> 
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="formGroupExampleInput">Dispatch Mode</label>
+                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="" value="<%=@sop["dispatch_mode"]%>"" readonly>
+                  </div>                  
+                </div>
+                           
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">Special Offers</label>
+                    <textarea class="form-control" id="exampleInputPassword1" placeholder="" readonly><%= @sop["special_offer"]%></textarea>
+                  </div>                  
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">Claims Extra Offers / SOP</label>
+                    <textarea class="form-control" id="exampleInputPassword1" placeholder="" readonly><%= @sop["claims_offer"]%></textarea>
+                  </div>                  
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">Expiry / Broken Settlement</label>
+                    <textarea class="form-control" id="exampleInputPassword1" placeholder="" readonly><%= @sop["expiry_broken_settlement"]%></textarea>
+                  </div>                  
+                </div>
+              </div>
+                <div class="row">
+                           
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="example-date-input" class="form-control-label">Monthly appointment1</label>
+                     <input type="text" class="form-control" id="formGroupExampleInput" placeholder="" value="<%=@sop["monthly_appoinment1"].to_date.strftime('%d') if @sop["monthly_appoinment1"].present? %>" readonly>
+                  </div>                  
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="example-date-input" class="form-control-label">At</label><br>
+                <% if @sop["appoint_time1"].present?%>
+                <% hr = @sop["appoint_time1"].split(":").first %>
+                <% mm = @sop["appoint_time1"].split(":").last %>
+                <%else%>
+                  <%hr = "00" %><%mm = "00"%>
+                <%end%>
+                <%= time_select :appoint_time1, {}, { default: {hour: hr, minute: mm}, minute_step: 5 }, { style: "width: 40%;" ,disabled:true } %>
+                
+                     
+                  </div>                  
+                </div>
+                
+                
+                <div class="col-md-3">
+                   <div class="form-group">
+                    <label for="example-date-input" class="form-control-label">Monthly appointment2</label>
+                     <input type="text" class="form-control" id="formGroupExampleInput" placeholder="" value="<%=@sop["monthly_appoinment2"].to_date.strftime('%d') if @sop["monthly_appoinment2"].present?%>" readonly>
+                  </div>                   
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="example-date-input" class="form-control-label">At</label><br>
+                <% if @sop["appoint_time2"].present?%>
+                <% hr = @sop["appoint_time2"].split(":").first %>
+                <% mm = @sop["appoint_time2"].split(":").last %>
+                <%else%>
+                  <%hr = "00" %><%mm = "00"%>
+                <%end%>
+                <%= time_select :appoint_time2, {}, { default: {hour: hr, minute: mm}, minute_step: 5 }, { style: "width: 40%;" ,disabled:true } %>
+                
+                     
+                  </div>                  
+                </div>
+            </div>
+              <div class="row">
+                  <div class="col-md-3">
+                   <div class="form-group">
+                    <label for="example-date-input" class="form-control-label">Monthly appointment3</label>
+                     <input type="text" class="form-control" id="formGroupExampleInput" placeholder="" value="<%=@sop["monthly_appoinment3"].to_date.strftime('%d') if @sop["monthly_appoinment3"].present?%>" readonly>
+                  </div>                   
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="example-date-input" class="form-control-label">At</label><br>
+                <% if @sop["appoint_time3"].present?%>
+                <% hr = @sop["appoint_time3"].split(":").first %>
+                <% mm = @sop["appoint_time3"].split(":").last %>
+                <%else%>
+                  <%hr = "00" %><%mm = "00"%>
+                <%end%>
+                <%= time_select :appoint_time3, {}, { default: {hour: hr, minute: mm}, minute_step: 5 }, { style: "width: 40%;" ,disabled:true } %>
+                
+                     
+                  </div>                  
+                </div>
+              
+            
+                         
+             
+              <%if @user["role"]=="Manager"%>
+              
+                <div class="col-md-3">
+                  <div class="form-group view">
+                    <label class="form-control-label" for="CurrentNS">Current N/S</label>
+                    <input type="password" class="form-control" id="CurrentNS" value="<%= @sop["current_ns"]%>" placeholder="" readonly>
+                    
+                  </div>                  
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group view">
+                    <label class="form-control-label" for="CurrentMS">Current M/S</label>
+                    <input type="password" class="form-control" id="CurrentMS" value="<%= @sop["current_ms"]%>" placeholder="" readonly>
+                    
+                  </div>                  
+                </div> 
+             <%end%>
+          
+            </div>
+<!-- 
+               <div class="col-md-4">
+                  <div class="form-group view">
+                    <label class="form-control-label" for="CurrentMS">Image</label><br>
+                    
+                    <!%= image_tag @sop["image"] %>
+                    
+                  </div>                  
+                </div>                
+              </div> -->
+              
+            </from>
+          </div>
+        </div>
+      </section>
+     

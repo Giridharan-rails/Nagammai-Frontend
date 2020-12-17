@@ -1,0 +1,91 @@
+<head>
+  <link rel="stylesheet" href="/assets/user-assign.css">
+</head>
+
+         <section>
+        <div class="container-fluid supplier">
+          <header class="table-header">
+            <ol class="breadcrumb">
+              <%= render_breadcrumbs :tag => :li, :separator => "" %>
+            </ol>
+            <h3>Suppliers</h3>
+          </header>
+          <div class="">
+            <table id="example" class="table table_front table-striped table-list-search">
+              <thead>
+                <tr>
+                  
+                  <th>Supplier Name</th>
+                  <th>Supplier Code</th>
+                  <th>Supplier Abbr</th>
+                  <th>GST Number</th>                   
+                  <th>Address</th>
+                  <th>Edit</th>
+                  <th>Enable /Disable</th>
+                  <th>Contacts</th>
+                  <th>Manufacturer</th>
+                </tr>
+              </thead>
+              <tbody class="scroll">
+                  <% @suppliers.map do |i| %>
+                   <tr>
+                    <td><%= i["supplier_name"] %> </td>
+                    <td><%= i["supplier_code"] %> </td>
+                    <td><%= i["supplier_abb"] %> </td>
+                    <td><%= i["gst_no"] %> </td>
+                    <td><%= i["address_one"]%>,<%= i["addrsss_two"]%>,<%= i["addrsss_three"]%></td>
+                    <td><%= link_to '', edit_supplier_path(i["id"]), class:"fa fa-pencil-square-o icon_clr load"%></td>
+                    <td>
+                      <%if i["active_status"]==1%>
+                        <center><a href="/suppliers?disable=<%=i["id"]%>" class="check">Enabled </a>
+                        </center>
+                      <%else%>
+                        <center><a href="/suppliers?enable=<%=i["id"]%>">Disabled</a>
+                        </center>
+                      <%end%>
+
+                      </td>
+                    <td><%= link_to 'Contacts', contacts_sup_man_div_based_contacts_path(:supplier_id=>i["id"], :data=>"Supplier"), :class=>"btn btn-link btn_pad load" %></td>
+                    <td><%= link_to 'Manufacturers', manufacturers_path(:supplier_id=>i["id"]), :class=>"btn btn-link btn_pad load" %></td>
+                   </tr>
+                   <% end %>
+                  </tbody>
+            </table>
+          </div>    
+          </div>
+          </section>      
+
+
+
+  <script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+        "bLengthChange": false
+
+      } );
+  } );
+
+  </script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+
+</script>  
+<style>
+
+.check {
+color: #1f4a8e;
+}
+
+</style>

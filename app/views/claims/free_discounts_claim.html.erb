@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+    <link rel="stylesheet" href="/assets/user-assign.css">
+   </head>
+<body>
+      <section>
+        <div class="container-fluid user-assign">
+          <header>
+                
+            <h3>Free and Discounts
+            <%if params["id"]=="report"%>
+            <a href="/sendmails/free_discount_claims" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a>
+             
+            <%elsif params["id"]=="pendingreport"%>
+            <a href="/sendmails/pending_claims_report" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a>
+            <%elsif params["id"]=="settledreport"%>
+            <a href="/sendmails/settled_claims_report" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a>
+            
+            
+            <%else%>
+
+              <a href="/sendmails/sendmails_claims_discount" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a>
+              <%end%>
+             <!-- <span class="float-right">           
+              <input placeholder="Search" class="" id="system-search" name="q" type="text">
+             </span>  
+            --> </h3>
+          </header>  
+        
+          
+          <div class="card manufacturer purschase-order">
+            <% if @emails.present?%>
+              <div class="mail-span">
+                <label>To: </label>
+                <%@emails.map do |i|%>
+                <span><%= i["email"]%></span>
+                <%end%>
+              </div>
+            <%end%>            
+            <div class="row order-address">
+              <div class="col-md-4">
+                <label>Claim Number: <span><%=@free_discounts_claims[0]["claim_no"]%></span></label>
+              </div> 
+              <div class="col-md-4">
+                <label>Claim Date: <span><%=@free_discounts_claims[0]["ack_date"].to_date.strftime("%d-%m-%Y")%></span></label>
+              </div>
+              <div class="col-md-4">
+                <label> Supplier Code: <span><%=@free_discounts_claims[0]["supplier_code"]%></span></label>
+              </div> 
+          </div> 
+              <table class="table table-responsive">
+                <thead>
+                  <tr>
+                     <th>P.Code</th>
+                    <th class="text-left">Description & Packing</th>
+                    <th class="text-right">Qty</th>
+                    <th class="text-right">Free</th>
+                    <th class="text-right">MRP</th>
+                    <th class="text-right">Rate</th>
+                    <th class="text-right">GST</th>
+                    <th class="text-right">ClaimAmount</th>
+                    <th class="text-right">SettledAmount</th>
+                    
+                   
+                  </tr>
+                </thead>
+              <tbody class="scroll">
+                <% @free_discounts_claims.map do |i| %>
+              
+                  <tr class="content">             
+                    <td><%= i["product"]["hsn_code"] if i["product"].present?%> </td>
+                    <td class="text-left"><%= i["product_name"] %> <%= i["packing"] %>  </td>
+                        <td class="text-right"><%= i["total_quantity"] %> </td>  
+                         <td class="text-right"><%= i["free_quantity"] %> </td>  
+                    <td class="text-right"><%= i["mrp"].to_f.round(2)%></td>
+                    <td class="text-right"><%= i["rate"].to_f.round(2) %> </td>
+                    <td class="text-right"><%= i["gst"].to_f.round(2) %> </td>
+                    <td class="text-right"><%= i["claim_amount"].to_f.round(2) %> </td>
+                    <td class="text-right"><%= i["settled_amount"].to_f.round(2) %> </td>                             
+                                             
+                     </tr>
+                <% end %>
+            </tbody>
+            </table>  
+             <div class="col-md-12">
+
+              <div class="col-md-3">     
+
+             <label style="font-weight: bold;">MRP: <span><%@mrp=[]%><%@free_discounts_claims.map{|i| @mrp<<(i["total_quantity"].to_f*i["mrp"].to_f)}%>
+             &#8377;&nbsp;<%= ActionController::Base.helpers.number_to_currency(@mrp.sum, unit: "")%></span>
+             </label>
+            </div>
+            
+
+             <div class="col-md-3">     
+
+             <label style="font-weight: bold;">Gross Amt: <span><%@gross=[]%><%@free_discounts_claims.map{|i| @gross<<(i["total_quantity"].to_f*i["rate"].to_f)}%>&#8377;&nbsp;<%= ActionController::Base.helpers.number_to_currency(@gross.sum, unit: "")%></span>
+             </label>
+            </div>
+            <div class="col-md-3">     
+             <label style="font-weight: bold;">Vat Amt: <span><%@vat=[]%><%@free_discounts_claims.map{|i| @vat<<i["gst"].to_f}%>&#8377;&nbsp;<%= ActionController::Base.helpers.number_to_currency(@vat.sum, unit: "")%></span>
+            </label>
+            </div>
+      
+            <div class="col-md-3">     
+             <label style="font-weight: bold;">Total Amt: <span><%@total%><%@free_discounts_claims.map{|i| @total<<i["claim_amount"].to_f}%>&#8377;&nbsp;<%= ActionController::Base.helpers.number_to_currency(@total.sum, unit: "")%></span>
+            </label>
+            </div>
+
+            <div class="col-md-3">     
+             <label style="font-weight: bold;">Settled Amt: <span><%@set_total=[]%><%@free_discounts_claims.map{|i| @set_total<<i["settled_amount"].to_f}%>&#8377;&nbsp;<%= ActionController::Base.helpers.number_to_currency(@set_total.sum, unit: "")%></span>
+            </label>
+            </div>
+      </div>        
+          </div>
+          </div>
+      </section>
+        <div class="container-fluid">
+          <nav aria-label="Page navigation example" id="page_slider">
+           <h1><ul class="pagination">
+                <%#= will_paginate  @free_discounts_claims %>
+               </ul>
+           </h1> 
+          </nav>          
+        </div>             
+        
+
+</body>
+</html>
+<style type="text/css">
+  select{
+    width: 192px;
+  }
+</style>
+
+
+
+
+
+
+
+   <script type="text/javascript">$(document).ready(function(){
+    $('select').change(function(){
+         var value=($(this).val());
+        
+         
+        $.ajax({
+              type: "GET",
+              url: "/manufacturers/manufacturer_list?id="+value
+             })
+        });        
+    });
+
+   </script>

@@ -1,0 +1,120 @@
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css"/>
+
+
+ <style type="text/css">
+      
+       #ui-datepicker-div.ui-datepicker.ui-widget.ui-widget-content.ui-helper-clearfix.ui-corner-all{
+          position: absolute;
+          top: 138.4px;
+          left: 732.733px;
+          z-index: 1;
+          display: table;
+      }
+    </style>
+<section>
+        <div class="container-fluid user-assign">
+          <header>
+                 <ol class="breadcrumb">
+    <%= render_breadcrumbs :tag => :li, :separator => "" %>
+  </ol>
+          <h3>PO-GR Mismatch
+          <%= form_for "compare data",:url=>{:controller=>"goods_receipts",:action=>"compare",:method=>"post"},:html=>{class: "float-right cmpr_sdw"} do |data|%>
+                <div class="input-group" style="display: block; !Important">
+                    <input class="form-control date_mrgn" type="text" name="order_no" placeholder="Enter P.O No" style="width: 230px;">
+                    <span class="input-group-btn cmpr_sdw">
+                        <button class="btn btn-warning btn-one">Compare</button>
+                    </span>
+                </div>
+            <%end%>
+          </h3>
+          </header>
+          <%= form_for "from date",:url=>{:controller=>"goods_receipts",:action=>"to_date"} do |i|%>     
+
+          <div class="row row_mrgn row_bg2">
+            <div class="col-md-4">
+              <label class="form-control-label" for="example-date-input">GR Number</label>
+              <input placeholder="Search" id="system-search" name="q" class="form-control" type="text" autofocus>             
+            </div>
+
+            <div class="col-md-3">
+              <label for="example-date-input" class="form-control-label">From</label>
+              <!--input class="form-control" name="from_date" type="date" value="" id="example-date-input"-->              
+              <input class="form-control" name="from_date" placeholder="<%=@from%>" id="txtFrom">              
+
+            </div>
+            <div class="col-md-3">
+              <label for="example-date-input" class="form-control-label">To</label>
+              <!--input class="form-control"  name="to_date" type="date"-->
+              <input class="form-control"  name="to_date" placeholder="<%=@to%>" id="txtTo">
+            </div>
+            <div class="col-md-2 align-items-end d-flex">
+              <button class="btn btn-warning btn_search btn_hg"><i class="fa fa-search"></i> Search</button>
+            </div>
+           
+          </div>
+
+          <%end%> 
+
+
+          <div class="card_hg2">
+            <table class="table table_front table-striped table-list-search">
+              <thead>
+                <tr>      
+              
+                  <th class="">GR No.</th>
+                  <th class="">Date</th>
+                  <th class="">Invoice No</th>
+                  <th class="">Supplier</th>
+                  <th class=""> Gross Amt</th>
+                </tr>
+              </thead>
+              <tbody class="scroll">
+               <%@gr_data.map do |row|%>  
+                <tr>
+                  
+                  <td class=""><%=row["gr_no"]%></td>
+                  <td class=""><%=row["date"]%></td>
+                  <td class=""><%=row["invoice_no"]%></td>
+                  <td class=""><%=row["supplier"]["name"]%></td>                  
+                  <td class=""><%=row["gross_amt"]%></td>
+                </tr>
+               <%end%>            
+              
+                           
+              </tbody>
+            </table>
+          </div>
+        </div>
+    <div class="container-fluid">
+          <nav aria-label="Page navigation example" id="page_slider">
+           <h1>Page 1 0f 2         
+            <ul class="pagination">
+          <%= will_paginate @gr_data %>  </ul>
+           </h1> 
+          </nav>          
+        </div>       
+      </section>
+
+
+<script type="text/javascript">
+$(function(){
+      $("#txtFrom").datepicker({
+        numberOfMonths: 1,
+        onSelect: function (selected) {
+            var dt = new Date(selected);
+            dt.setDate(dt.getDate() );
+            $("#txtTo").datepicker("option", "minDate", dt);
+        },dateFormat: 'yy-mm-dd'
+    });
+    $("#txtTo").datepicker({
+        numberOfMonths: 1,
+        onSelect: function (selected) {
+            var dt = new Date(selected);
+            dt.setDate(dt.getDate()  );
+            $("#txtFrom").datepicker("option", "maxDate", dt);
+        },dateFormat: 'yy-mm-dd',minDate: 0
+    });
+    });
+</script>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="/assets/user-assign.css">
+</head>
+<body>
+        <div class="container-fluid">
+          <header>
+          <ol class="breadcrumb">
+    <%= render_breadcrumbs :tag => :li, :separator => "" %>
+  </ol>
+            <h3>Assign Suppliers</h3>
+          </header>
+
+          <div class="card_height">
+              <table class="table table_front table-striped">
+                <thead>
+                  <tr>
+                    
+                  
+                  <th class="email">Supplier Code</th>
+                  <th class="name">Supplier Name</th>
+                  
+                  <th>
+                    <input type="checkbox" id="checkAll">
+                  </th>
+                </tr>
+                </thead>
+                <tbody class="scroll">
+                     
+                 <%= form_for(@supplier, :url => {:controller => 'users',:action => 'user_supplier',:user_id=>params[:format],:mrg=>params[:mrg]}) do |f| %>  
+                 <% @suppliers.map do |i| %>
+                 <tr>
+                  
+                  <td><%= i["supplier_code"] %></td>
+                  <td><%= i["supplier_name"] %></td>
+                  
+                  
+                  <td><input type="checkbox" name="supplier_ids[]" value="<%=i["id"]%>" <%if @supplier_id.include?(i["id"].to_s).to_s=="true"%> checked <%end%>></td>
+                                             
+                  </tr>
+                  <% end %>
+
+                </tbody>
+                
+              </table>
+          </div>
+            <footer class="table-footer">
+              <%=f.submit "Save" , class: "btn btn-one "%>
+              <%=link_to "Cancel",users_path , class: "btn btn-primary"%>
+            </footer>
+            <% end %>
+          </div>
+        
+
+</body>
+</head>
+</html>
+
+<script src="/assets/datatablejquery.js"></script>
+  <link rel="stylesheet" href="/assets/datatable.css">
+  <link rel="stylesheet" href="/assets/datatablebutton.css">
+  <script src="/assets/datatablejquery1.js"></script>
+  <script src="/assets/datatablebuttons.js"></script>
+  <script src="/assets/datatablejszip.js"></script>
+  <script src="/assets/datatablepdf.js"></script>
+  <script src="/assets/datatablefont.js"></script>
+  <script src="/assets/datatablehtml.js"></script>
+  <script src="/assets/datatableprint.js"></script>
+  
+
+
+  <script type="text/javascript">
+/*  $(document).ready(function() {
+      $('#example').DataTable( {
+          dom: 'Bfrtip',
+          bSort:true,
+          "pageLength": 13,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2 ]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2]
+                }
+              }
+          ]
+      } );
+  } );
+*/$(document).ready(function() {
+    $('#example').DataTable( {
+ 
+ "bLengthChange": false
+
+      
+      
+      
+    } );
+} );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  
+<body>
+        <div class="container-fluid">
+          <header>
+            <h3> Assign Suppliers</h3>
+          </header>
+
+          <div class="card_hg">
+              <table class="table table_front table-striped">
+                  <tr>
+                   <th class="id">ID</th>
+                  <th class="name">Name</th>
+                  <th class="email">Email</th>
+                  <th>
+                   <input type="checkbox" id="checkAll">Select All
+                  </th>
+                  </tr>
+                </thead>
+                
+                <tbody class="scroll">
+                 <!%= form_for(@supplier, :url => {:controller => 'users',:action => 'user_supplier',:user_id=>params[:format],:mrg=>params[:mrg]}) do |f| %>  
+                 <!% @suppliers.map do |i| %>
+                 <tr>
+                  <td><!%= i["id"] %></td>
+                  <td><!%= i["name"] %></td>
+                  <td><!%= i["email"] %></td>
+                   <td>                  
+                  <input type="checkbox" name="supplier_ids[]" value=<!%=i["id"]%> <!%if @supplier_ids.include?(i["id"].to_s).to_s=="true"%> checked <!%end%> >
+                   </td>
+                                               
+                  </tr>
+                  <!% end %>
+                 
+                </tbody>
+                
+              </table>
+
+                 <footer class="form-footer">
+                 <!%=f.submit "Save" , class: "btn btn-info btn-one"%> 
+                 <!%=link_to "Cancel",users_path , class: "btn btn-primary"%>
+                 </footer>
+              <!% end %>
+              </div>
+              </div>
+                  
+</body>
+</head>
+</html>
+ -->
+<script>
+$(document).ready(function(){
+   $("#checkAll").click(function () {
+     $('input:checkbox').not(this).prop('checked', this.checked);
+ }); 
+});
+</script>

@@ -1,0 +1,8 @@
+
+ <%if @supplier.first["response"] == "no data"%>
+$('.manufacturer').html("<%= escape_javascript select_tag("credit_card", options_for_select([ "No Data " ]),:include_blank => "Please select")%>");
+
+<%else%>
+    $('.manufacturer').html("<%= escape_javascript select("new division", "division_id", @supplier.collect {|p| [ p["div_name"], p["id"] ] },{:include_blank => "Please select",class: "manufacturer ",required: "true"})%>");
+    
+  <%end%>

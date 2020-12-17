@@ -1,0 +1,90 @@
+<!-- <div class="col-md-6 pending_claims"> -->
+  <label class="form-control-label" for="formGroupExampleInput">PENDING CLAIMS</label>
+  <div class="card card_height table_mrgn">
+    <div class="card-block">
+      <table class="table table_front table-striped" id="example">
+        <thead>
+          <tr>
+            <th class="">Claim No</th>
+            <th class="text-center">Claim date</th>
+            <th class="text-left">Claim Type</th>
+            <th class="text-right">Amount</th>
+            <th class="text-right">Settled Amount</th>
+          </tr>
+        </thead>
+        <tbody class="scroll">
+        <%total=[]%>
+        <%settled_total=[]%>
+        <%if @claims["free"].present?%>
+          <% @claims["free"].each do |claim| %>
+          <tr>
+            <th class="text-left" scope="row"><%= claim["claim_no"] %></th>
+            <td class="text-center"><%= claim["claim_date"].to_date.strftime('%d-%m-%Y') if claim["claim_date"].present? %></td>
+            <td class="text-left">FreeDiscount</td>
+            <td class="text-right"><%total << claim["claim_amount"].to_i%><%= claim["claim_amount"].to_i.round(2) %></td>
+            <td class="text-right"><%settled_total << claim["settled_amount"].to_i%><%= claim["settled_amount"].to_i.round(2) %></td>
+          </tr>
+          <% end %>
+        <% end %>
+        <%if @claims["expiry"].present?%>
+          <% @claims["expiry"].each do |claim| %>
+          <tr>
+            <th class="text-left" scope="row"><%= claim["claim_no"] %></th>
+            <td class="text-center"><%= claim["claim_date"].to_date.strftime('%d-%m-%Y') if claim["claim_date"].present? %></td>
+            <td class="text-left">ExpiryDamage</td>
+            <td class="text-right"><%total << claim["claim_amount"].to_i%><%= claim["claim_amount"].to_i.round(2) %></td>
+            <td class="text-right"><%settled_total << claim["settled_amount"].to_i%><%= claim["settled_amount"].to_i.round(2) %></td>
+          </tr>
+          <% end %>
+        <% end %>
+        <%if @claims["purchase"].present?%>
+          <% @claims["purchase"].each do |claim| %>
+          <tr>
+            <th class="text-left" scope="row"><%= claim["claim_no"] %></th>
+            <td class="text-center"><%= claim["claim_date"].to_date.strftime('%d-%m-%Y') if claim["claim_date"].present? %></td>
+            <td class="text-left">PurchaseReturn</td>
+            <td class="text-right"><%total << claim["claim_amount"].to_i%><%= claim["claim_amount"].to_i.round(2) %></td>
+            <td class="text-right"><%settled_total << claim["settled_amount"].to_i%><%= claim["settled_amount"].to_i.round(2) %></td>
+          </tr>
+          <% end %>
+        <% end %>
+        <%if @claims["rate"].present?%>
+          <% @claims["rate"].each do |claim| %>
+          <tr>
+            <th class="text-left" scope="row"><%= claim["claim_no"] %></th>
+            <td class="text-center"><%= claim["claim_date"].to_date.strftime('%d-%m-%Y') if claim["claim_date"].present? %></td>
+            <td class="text-left">RateChange</td>
+            <td class="text-right"><%total << claim["claim_amount"].to_i%><%= claim["claim_amount"].to_i.round(2) %></td>
+            <td class="text-right"><%settled_total << claim["settled_amount"].to_i%><%= claim["settled_amount"].to_i.round(2) %></td>
+          </tr>
+
+        <% end %>
+        <% end %>
+       <!--  <!%if total.present? and settled_total.present?%>
+          <tr class="total">
+          <th class="text-left" scope="row">TotalAmount</th>
+          <th class="text-right">&#8377;<!%= total.sum.round(2)%></th>
+          <th class="text-right">&#8377;<!%= settled_total.sum.round(2)%></th>
+          <th></th>
+          <th></th>
+          </tr>
+        <!%end%>
+        --> 
+      </tbody>
+      </table>
+    </div>
+  </div>
+<!--   <div class="row">
+    <div class="col-md-2"> </div>
+    <div class="col-md-6"><h5> Value of Pending Claims</h5></div>
+    <div class="col-md-4"><h5><!%= @claims.map { |e| e["claim_amount"].to_i }.sum - @claims.map { |e| e["settled_amount"].to_i }.sum %></h5></div>
+  </div>
+</div> --> 
+<script type="text/javascript">
+$('#example').dataTable({
+    // display everything
+    "bLengthChange": false,
+    //"iDisplayLength": -1,
+    "aaSorting": [[ 0, "asc" ]] 
+});
+</script>

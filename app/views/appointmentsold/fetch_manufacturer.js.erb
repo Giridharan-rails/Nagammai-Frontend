@@ -1,0 +1,24 @@
+$(".contacts").html("<%= escape_javascript(render 'contacts') %>");
+$(".history").html("<%= escape_javascript(render 'histroy') %>");
+$('.claim_contact').html("<%= escape_javascript select("claim_issue", "id", @contacts.collect {|p| [ p["name"], p["id"] ] },{:include_blank => "Please select"}, {class: "claim_contact"})%>");
+
+<%unless @division.nil?%>
+$('.divi').html("<%= escape_javascript select("appointment", "division_id", @division.collect {|p| [ p["div_name"], p["id"] ] },{:include_blank => "Please select"}, {class: "manu"})%>");
+<%end%>
+
+/*
+<%unless @manufacturers.nil?%>
+$('.manu').html("<%= escape_javascript select("appointment", "manufacturer_id", @manufacturers.collect {|p| [ p["manufacturer_name"], p["id"] ] },{:include_blank => "Please select"}, {class: "manu"})%>");
+<%end%>*/
+<%unless @divisions.nil? %>
+<%unless @divisions=="not shake"%>
+$('.divi').html("<%= escape_javascript select("appointment", "division_id", @divisions.collect {|p| [ p["div_name"], p["id"] ] },{:include_blank => "Please select"}, {class: "divi"})%>");
+<%end%>
+<%end%>
+<%unless @claims.nil?%>
+$('.pending_claims').html("<%=  escape_javascript(render 'pending_claims')%>");
+<%end%>
+
+<%unless @claim_issues.nil?%>
+$('.claim_issues').html("<%=  escape_javascript(render 'appoinment_claim_issues')%>");
+<%end%>

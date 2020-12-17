@@ -1,0 +1,156 @@
+
+
+ <section>
+        <div class="container-fluid issue-report">
+          <header class="table-header">
+              <ol class="breadcrumb">
+                <%= render_breadcrumbs :tag => :li, :separator => "" %>
+              <%= link_to "<i class=' fa fa-file-text-o'></i>&nbsp;Approved Issues".html_safe, issues_approved_claims_path, class: "btn btn-link float-right load" %>      
+              </ol>
+            <h3>Issues Audit Report
+              <span class="float-right">
+                <input type="date" name="date" class="form-control float-right table-filter" placeholder="select date" id="datefilter" data-toggle="tooltip" title="Date Filter" autofocus>
+                 <select class="filter">
+                   <option value="" selected>Select</option>
+                   <option value="Open">Open</option>
+                   <option value="Closed">Closed</option>
+                   <option value="Re-open">Re-open</option>
+                 </select>                
+              </span>
+            </h3>
+<!--             <div class="row">
+                <div class="">
+                 
+                </div>
+                <div class="col-md-3">
+
+                 </div>
+            </div> -->
+            
+
+          </header>
+          <%=form_for "issue_update",:url=>{:controller=>"issues",:action=>"issue_update"} do |j|%>
+
+            <table id="example" class="display date status" width="100%" cellspacing="0">
+
+
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th class="text-center">Cut-off Date </th>                  
+                  <th>Resolved By</th>
+                  <th>Status</th>
+                  <th class="text-center">Created Date</th>
+                  <th class="text-center">Approve</th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+              <%if @issues.present?%>
+              <%@issues.map do |i|%>
+                <tr>
+                  <%=hidden_field_tag "ids[]" ,i["id"] %>
+                  <td><span style="width: 400px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" title="<%=i["description"]%>"><%=link_to i["description"], appointment_path(:id=>i["appointment_id"],data:"issue"),class: "btn btn-link"%></span></td>
+                  
+                  <td class="text-center"><%=i["cut_off_date"].to_date.strftime("%d-%m-%Y") unless i["cut_off_date"].nil? %></td>
+                  
+                  <td><%=i["contact"]["name"]%></td>
+                  <td class="td_issue_status">
+                     
+                    <%= select_tag "status[]", options_for_select([['Open'],['Closed'],['Re-open']],:selected=>i["status"]), :class => 'form-control', include_blank: "Select" %>
+                     </td>
+
+                     <td class="text-center"><%=i["created_at"].to_date.strftime('%d-%m%Y') unless i["created_at"].nil?%></td>                
+                      <tdclass="td_issue_approval"> <% if i["status"]=="Closed"%>
+                      <td> <input type="checkbox" name="approval[]" value="<%=i["id"]%>">
+                    <%end%> </td>  
+                 </tr>
+                 <%end%>
+                       
+              </tbody>
+            </table>         
+
+             
+            <footer class="table-footer">
+          <%=j.submit "Save" , class: "btn btn-one load", id: "sopissue1"%>
+          <%=link_to "Cancel", pages_dashboard_path , class: "btn btn-primary load", id: "sopissue2"%>
+          </footer>
+          <%end%>
+          </div>
+          
+        <%end%>
+             
+      </section>
+
+
+
+      
+ 
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $('#datefilter').change(function(){
+
+         var id=($(this).val());
+          $.ajax({
+            type: "GET",
+            url: "/issues/datewisefilter?date="+id
+          });
+         
+      });
+
+});
+
+
+</script>
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    $('.filter').change(function(){
+         var id=($(this).val());
+          $.ajax({
+            type: "GET",
+            url: "/issues/filterstatus?status="+id
+          });
+         
+      });
+
+});
+</script>
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+          dom: 'Bfrtip',
+            bSort:true,
+              buttons: [
+                 'excelHtml5',
+                 'pdfHtml5',
+                 'print'
+               ]
+       } );
+} );
+ </script>
+
+
+
+
+      
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+
+</script> 
+
+
+
+
+ 

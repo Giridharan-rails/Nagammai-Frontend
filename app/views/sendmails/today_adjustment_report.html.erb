@@ -1,0 +1,322 @@
+<head>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+
+</head>
+
+<section class="users_admin">
+        <div class="container-fluid">
+          <header>
+            <ol class="breadcrumb">
+              <%= render_breadcrumbs :tag => :li, :separator => "" %>
+            </ol>
+          </header>
+          <!--   <a href="claims_add.html?sent=addclaims" class="btn_add" data-target="#exampleModalLabel"><i class="fa fa-plus" aria-hidden="true"></i></a> -->
+          <div class="date-search">
+          <%=form_for "filter",:url=>{:controller=>"sendmails",:action=>"today_adjust_date_filter"} do |i|%>
+
+              <div class="row">
+               <!--  <div class="col-md-3">
+                  <input type="date" name="date" class="form-control" id="date">
+                </div> -->
+
+                <div class="col-md-3">
+                  <label>From Date</label>
+                  <br>
+                  <input name="from_date" type="text" id="dt1" class="form-control date" value="<%=params["from_date"]%>" placeholder="dd-mm-yy">
+                </div>
+                
+                <div class="col-md-3">
+                  <label>To Date</label>
+                  <br>                  
+                  <input name="to_date" type="text" id="dt2" class="form-control date1" value="<%=params["to_date"]%>" placeholder="dd-mm-yy">
+                </div>
+                <!-- <div class="col-md-3">
+                  <label>Supplier</label>
+                  <br>                  
+                  <!%= select_tag "supplier_id", options_for_select(@supplier.map { |obj| [obj['supplier_name'], obj['id']] }), class: "form-control", autofocus: true, prompt: "select", required: "true" %>
+                </div>
+                 -->
+                <div class="col-md-3">
+                  <label></label>
+                  <br>
+                  <button class="date_submit btn btn-primary">Show</button>
+                </div>
+            </div>
+          <%end%>            
+          </div>
+          <h3 class="page-title">Pending Claim</h3><!--Adjustment Report-->
+<!--             <input placeholder="Search" id="system-search" class="" type="text"></span></h3>
+ -->
+          <div class="claims_radio">
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div class="tab-pane active" id="subject1" role="tabpanel">
+              <div class="display">
+                <table class="table table-striped table_front table-list-search filter" id="example">
+                  <thead class="tbl-header">
+                  
+                    <th>Supplier</th>
+                      <th>Claim Number</th>
+                      <th class="text-center">Claim Date</th>
+                      <th class="text-right">Total Quantity</th>
+                      <th class="text-right">Adjust Quantity</th>
+                      <th class="text-right">Balance Quantity</th>
+                      <th class="text-right">Claim Amount</th>
+                      <th class="text-right">Settled Amount</th>
+                     <th>Claim Type</th>
+                      <th class="text-center">View Claim</th>
+                                            
+                    
+                  </thead>
+                  <tbody class="scroll">
+
+                  
+                  
+                    <%@report.map do |i|%>
+                    
+                      <% if i["claim_product_type"]=="PurchaseReturn"%>
+                 
+                          <%if i["claim_product"].present?%>
+                               <tr>
+                              <td><%=i["claim_product"]["supplier"]["supplier_name"]%></td>
+                              <td><%=i["claim_product"]["claim_no"]%></td>
+                              <td class="text-center" data-order="<%=i["claim_product"]["claim_date"].to_date.strftime("%Y-%m-%d") if i["claim_product"]["claim_date"].present?%>"><%=i["claim_product"]["claim_date"].to_date.strftime("%d-%m-%Y") if i["claim_product"]["claim_date"].present?%></td>
+                              <td class="text-right"><%=i["claim_product"]["quantity"]%></td>
+                              <td class="text-right"><%=i["adjust_quantity"]%></td>
+                              <td class="text-right"><%=i["claim_product"]["quantity"].to_i - i["adjust_quantity"].to_i%></td>
+                              <td class="text-right">
+                              &#8377;&nbsp;<%= ActionController::Base.helpers.number_to_currency(i["claim_product"]["claim_amount"].to_f, unit: "")%>
+                              </td>
+                              <td class="text-right">&#8377;&nbsp;<%= ActionController::Base.helpers.number_to_currency(i["claim_product"]["settled_amount"].to_f, unit: "")%>
+                              </td>
+                              <td>Purchase Return</td>
+                              
+                              <td><%=link_to "Preview",sendmails_adjustment_details_path(id:i["claim_product"]["id"]) ,class: "btn btn-link btn_pad"%></td>
+                    </tr>
+					               <%end%>
+
+                      <% elsif i["claim_product_type"]=="ExpiryDamage"%>
+                      
+
+                            <%if i["claim_product"].present?%>
+                            <tr>
+                              <td><%=i["claim_product"]["supplier"]["supplier_name"]%></td>
+                              <td><%=i["claim_product"]["claim_no"]%></td>
+                              <td class="text-center" data-order="<%=i["claim_product"]["ack_date"].to_date.strftime("%Y-%m-%d") if i["claim_product"]["ack_date"].present?%>"><%=i["claim_product"]["ack_date"].to_date.strftime("%d-%m-%Y") if i["claim_product"]["ack_date"].present?%></td>
+                              <td class="text-right"><%=i["claim_product"]["quantity"]%></td>
+                              <td class="text-right"><%=i["adjust_quantity"]%></td>
+                              <td class="text-right"><%=i["claim_product"]["quantity"].to_i - i["adjust_quantity"].to_i%></td>
+                              
+                              <td class="text-right">&#8377;&nbsp;<%= ActionController::Base.helpers.number_to_currency(i["claim_product"]["claim_amount"].to_f, unit: "")%></td>
+                              <td class="text-right">&#8377;&nbsp;<%= ActionController::Base.helpers.number_to_currency(i["claim_product"]["settled_amount"].to_f, unit: "")%></td>
+                              <td>ExpiryDamage</td>
+                               <td><%=link_to "Preview",sendmails_adjustment_details_path(id:i["claim_product"]["id"]) ,class: "btn btn-link btn_pad"%></td>
+
+                        </tr>
+					            <%end%>
+
+
+                      <%elsif i["claim_product_type"]=="FreeDiscount"%>
+                             
+                            <%if i["claim_product"].present?%>
+<tr>
+                              <td><%=i["claim_product"]["supplier"]["supplier_name"]%></td>
+                              <td><%=i["claim_product"]["claim_no"]%></td>
+                              <td class="text-center" data-order="<%=i["claim_product"]["ack_date"].to_date.strftime("%Y-%m-%d") if i["claim_product"]["ack_date"].present?%>"><%=i["claim_product"]["ack_date"].to_date.strftime("%d-%m-%Y") if i["claim_product"]["ack_date"].present?%></td>
+                              <td class="text-right"><%=i["claim_product"]["total_quantity"]%></td>
+                              <td class="text-right"><%=i["adjust_quantity"]%></td>
+                              <td class="text-right"><%=i["claim_product"]["total_quantity"].to_i - i["adjust_quantity"].to_i%></td>
+                              
+                              <td class="text-right">&#8377;&nbsp;<%= ActionController::Base.helpers.number_to_currency(i["claim_product"]["claim_amount"].to_f, unit: "")%></td>
+                              <td class="text-right">&#8377;&nbsp;<%= ActionController::Base.helpers.number_to_currency(i["claim_product"]["settled_amount"].to_f, unit: "")%></td>
+                              <td>FreeDiscount</td>
+                              <td><%=link_to "Preview",sendmails_adjustment_details_path(id:i["claim_product"]["id"]) ,class: "btn btn-link btn_pad"%></td>
+                           
+</tr>
+                      <%end%>
+
+                      <% elsif i["claim_product_type"]=="RateChange"%>
+                         
+                            <%if i["claim_product"].present?%>
+                               <tr>
+                              <td><%=i["claim_product"]["supplier"]["supplier_name"]%></td>
+                              <td><%=i["claim_product"]["claim_number"]%></td>
+                              <td class="text-center" data-order="<%=i["claim_product"]["ack_date"].to_date.strftime("%Y-%m-%d") if i["claim_product"]["ack_date"].present?%>"><%=i["claim_product"]["ack_date"].to_date.strftime("%d-%m-%Y") if i["claim_product"]["ack_date"].present?%></td>
+                              <td class="text-right"><%=i["claim_product"]["total_quantity"]%></td>
+                              <td class="text-right"><%=i["adjust_quantity"]%></td>
+                              <td class="text-right"><%=i["claim_product"]["total_quantity"].to_i - i["adjust_quantity"].to_i%></td>
+                              
+                              <td class="text-right">&#8377;&nbsp;<%= ActionController::Base.helpers.number_to_currency(i["claim_product"]["claim_amount"].to_f, unit: "")%></td>
+                              <td class="text-right">&#8377;&nbsp;<%= ActionController::Base.helpers.number_to_currency(i["claim_product"]["settled_amount"].to_f, unit: "")%></td>
+                              <td>RateChange</td>
+                              <td>
+                              <%=link_to "Preview",sendmails_adjustment_details_path(id:i["claim_product"]["id"]) ,class: "btn btn-link btn_pad"%></td>
+                            </tr>
+
+                      <%end%>
+                      
+                      
+                      <%end%>
+          <%end%>
+
+                     </tbody>
+                </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+         </section>
+
+
+
+
+ <!-- <script type="text/javascript">
+   $(".date_submit").click(function() {
+    //$("#dt1").datepicker();
+    //$("#dt1").on("change",function(){
+         var id1= $('#dt1').val();
+         var id2 = $('#dt2').val();
+          
+          $.ajax({
+           
+          url: "/sendmails/today_adjustment_date_filter",
+          data: {date1: id1,date2: id2},
+          dataType: 'script'
+          });
+
+    
+        
+     });
+ </script>
+ -->
+
+
+
+
+ <script type="text/javascript">
+  $(document).ready(function () {
+
+        $("#dt1").datepicker({
+            
+            dateFormat: "dd-M-yy",
+            /*setDate: ,*/
+
+            //minDate: 0,
+            onSelect: function (date) {
+                var dt2 = $('#dt2');
+                var startDate = $(this).datepicker('getDate');
+                var minDate = $(this).datepicker('getDate');
+                dt2.datepicker('setDate', minDate);
+                startDate.setDate(startDate.getDate() + 720);
+                //sets dt2 maxDate to the last day of 30 days window
+                dt2.datepicker('option', 'maxDate', startDate);
+                dt2.datepicker('option', 'minDate', minDate);
+                //$(this).datepicker('option', 'minDate', minDate);
+            }
+        });
+        $('#dt2').datepicker({
+            dateFormat: "dd-M-yy"
+        });
+    });
+
+
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+</script>
+<script type="text/javascript">
+$( document ).ready(function() {
+    var d = new Date();
+    var curr_date = d.getDate();
+    var curr_month = d.getMonth() + 1;
+    var curr_year = d.getFullYear();
+    var date=(curr_date + "-" + curr_month + "-" + curr_year);
+   $("#dt1").attr("placeholder",date);
+   $("#dt2").attr("placeholder",date);
+});
+</script>
+
+
+
+
+  <link rel="stylesheet" href="/assets/datatable.css">
+  <link rel="stylesheet" href="/assets/datatablebutton.css">
+  <script src="/assets/datatablejquery.js"></script>
+  <script src="/assets/datatablejquery1.js"></script>
+  <script src="/assets/datatablebuttons.js"></script>
+  <script src="/assets/datatablejszip.js"></script>
+  <script src="/assets/datatablepdf.js"></script>
+  <script src="/assets/datatablefont.js"></script>
+  <script src="/assets/datatablehtml.js"></script>
+  <script src="/assets/datatableprint.js"></script>
+
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+
+
+ <script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+          dom: 'Bfrtip',
+          bSort:true,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2,3,4,5,6]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2,3,4,5,6 ]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2,3,4,5,6]
+                }
+              }
+          ],
+             "order": [[ 2, "asc" ]]
+          
+      } );
+  } );
+
+  </script>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type=search]").focus();
+  });
+
+  $(document).ready(function(){
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+</script>

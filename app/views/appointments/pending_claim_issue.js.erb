@@ -1,0 +1,3 @@
+<%unless @claims.nil?%>
+$('.pending_claims').html("<%=  escape_javascript(render 'pending_claims')%>");
+<%end%>

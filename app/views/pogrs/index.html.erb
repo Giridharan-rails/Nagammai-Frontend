@@ -1,0 +1,238 @@
+  <section>
+    <div class="container-fluid user-assign">
+      <header>
+         <ol class="breadcrumb">
+    <%= render_breadcrumbs :tag => :li, :separator => "" %>
+  </ol>
+      <h3>PO-GR Mismatch
+        <!-- <form action="pogr_compare" class="float-right cmpr_sdw" method="get">            
+            <div class="input-group"> -->
+                <!-- 
+                <span> -->
+                    <!-- <a href="pogr_compare.html" class="btn btn-warning btn-one">Compare</a> -->
+                    <%#= link_to 'Compare', pogr_compare_path, class: "btn btn-warning btn-one" %>
+                <!--     <button class="btn btn-one btn_hg"> Compare </button>
+                </span> -->
+          <!--   </div>
+        </form>   -->       
+      </h3>
+      </header>
+      <%= form_for "goods_receipt", url: {controller: "pogrs", action: "index"} do |i| %>      
+      <div class="row row_mrgn row_bg2 col_pad">
+        <div class="col-md-4 edit-form">
+          <label class="form-control-label" for="example-date-input">PO Number</label>
+          <textarea placeholder="PO Number" class="form-control" name="po_number[]" id="po_number" autofocus></textarea>
+          
+        </div>    
+
+   <div class="col-md-4 edit-form">
+          <label class="form-control-label" for="example-date-input">GRN Number</label>
+       <textarea placeholder="GRN Number" class="form-control" name="grn_number[]" id="grn_number" autofocus></textarea>
+      </div>
+        
+        <div class="col-md-2 align-items-end d-flex  edit-form">
+          <button class="btn btn-warning btn_search btn_hg load" id="pogr_compare"><i class="fa fa-search"></i> Search</button>
+        </div>
+      </div>
+      <% end %>
+     <div class="card_hg2">
+   <%= form_for "goods_receipt", url: {controller: "pogrs", action: "map_pogr"} do |i| %>
+     
+      
+        <table class="table table_front table-striped">
+          <thead>
+            <tr>
+              <th class="th_grproduct">Product</th>
+            
+              <th class="th_supplier">Supplier</th>
+              <th class="th_poqty">PO Qty</th>
+              <th class="th_grqty">GR Qty</th>
+              <th class="th_excessqty">Excess Qty</th>
+              <!-- <th class="th_selectall">
+                <label class="li_list" name="check all" for="checkall">
+                    <input type="checkbox"  name="check all" id="checkall">
+                    <span class="fake-input"></span>
+                    <span class="fake-label"></span>
+                </label>
+                <label class="check_all">Check all</label>                    
+              </th> -->
+               <th class="th_selectall">
+                      <input type="checkbox" id="checkAll">
+               </th>
+            </tr>
+          </thead>
+          <tbody class="scroll">
+           <% if @compared_data.present?%>
+    
+            <% @compared_data.each do |goods_receipt| %>
+          
+              <tr>
+              
+                <td class="td_grproduct" scope="row"><%= goods_receipt["product_name"] %></td>
+               
+                <td class="td_supplier"><%= goods_receipt["supplier_name"]["supplier_name"] %></td>
+
+                <td class="td_poqty"><%=goods_receipt["purchase_order"].present? ? a = goods_receipt["purchase_order"].map{|i|i["quantity"]}.map{|j| j.to_i}.sum : a = 0%></td>
+                <td class="td_grqty"><%= goods_receipt["gr_qty"].present? ? b =  goods_receipt["gr_qty"].map{|i|i["quantity"]}.map{|j| j.to_i}.sum: b = 0 %></td>
+                <td class="td_excessqty"><%=c=(b - a)%></td>
+                <td class="td_selectall">
+                  <!--%= check_box_tag 'replacement[]', 0 %-->
+                   <%if c>0%> 
+                   <input type="checkbox" name="replacement[]" value="<%=goods_receipt%>" class="myCheckBox"><%end%>
+                  <!-- <label class="li_list" name="check1" for="check1">
+                      <input type="checkbox"  class="case" name="check all" id="check1">
+                      <span class="fake-input"></span>
+                      <span class="fake-label"></span>
+                  </label> -->
+                                </td>
+              </tr>
+
+
+            <% end %>
+          </tbody>
+        </table>
+        
+         <% if @compared_data.present?%>
+        <span class="float-right">
+          <a href=""><button type="submit" class="btn btn-link load" id="confirmButton"><i class="fa fa-send"></i> Send Mail</button></a>
+        </span>
+        <%end%>
+       
+    <% end %>
+    <% end %>
+
+     </div>
+    </div>   
+  </section>
+  
+
+  <script src="/assets/datatablejquery.js"></script>
+  <link rel="stylesheet" href="/assets/datatable.css">
+  <link rel="stylesheet" href="/assets/datatablebutton.css">
+  <script src="/assets/datatablejquery1.js"></script>
+  <script src="/assets/datatablebuttons.js"></script>
+  <script src="/assets/datatablejszip.js"></script>
+  <script src="/assets/datatablepdf.js"></script>
+  <script src="/assets/datatablefont.js"></script>
+  <script src="/assets/datatablehtml.js"></script>
+  <script src="/assets/datatableprint.js"></script>
+  
+  <script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+          dom: 'Bfrtip',
+          bSort:true,
+          "pageLength": 13,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2, 3, 4,5, 6, 7, 8 ]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2, 3, 4,5, 6, 7, 8 ]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2, 3, 4,5, 6, 7, 8 ]
+                }
+              }
+          ]
+      } );
+  } );
+
+  </script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#pogr_compare').click(function(){
+var obj={};
+         obj.po=($('#po_number').val());
+          obj.grn=($('#grn_number').val());
+
+          $.ajax({
+            type: "GET",
+            url: "/pogrs/index",
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+          });
+         
+      });
+
+});
+
+</script>
+<script type="text/javascript">
+
+var expanded = false;
+
+function showCheckboxes() {
+  var checkboxes = document.getElementById("checkboxes");
+  if (!expanded) {
+    checkboxes.style.display = "block";
+    expanded = true;
+  } else {
+    checkboxes.style.display = "none";
+    expanded = false;
+  }
+}
+     
+   $(function(){
+
+  // add multiple select / deselect functionality
+  $("#checkall").click(function () {
+      $('.case').prop('checked', this.checked);
+  });
+
+  // if all checkbox are selected, check the selectall checkbox
+  // and viceversa
+  $(".case").click(function(){
+
+    if($(".case").length == $(".case:checked").length) {
+      $("#checkall").prop("checked", "checked");
+    } else {
+      $("#checkall").removeAttr("checked");
+    }
+
+  });
+});
+
+
+$(function(){
+
+  // add multiple select / deselect functionality
+  $("#selectcontact").click(function () {
+      $('.Concase').prop('checked', this.checked);
+  });
+
+  // if all checkbox are selected, check the selectall checkbox
+  // and viceversa
+  $(".Concase").click(function(){
+
+    if($(".Concase").length == $(".Concase:checked").length) {
+      $("#selectcontact").prop("checked", "checked");
+    } else {
+      $("#selectcontact").removeAttr("checked");
+    }
+
+  });
+});
+
+var checkBoxes = $('tbody .myCheckBox');
+checkBoxes.change(function () {
+    $('#confirmButton').prop('disabled', checkBoxes.filter(':checked').length < 1);
+});
+$('tbody .myCheckBox').change();
+ 
+</script>
+<script type="text/javascript">
+$("#checkAll").change(function () {
+    $("input:checkbox").prop('checked', $(this).prop("checked"));
+});
+</script>

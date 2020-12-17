@@ -1,0 +1,2 @@
+
+$('.manu').html("<%= escape_javascript select("issues", "manufacturer_id", @status.collect {|p| [ p["manufacturer_name"], p["id"] ] },{:include_blank => "Please select", class: "manu fold1"})%>");

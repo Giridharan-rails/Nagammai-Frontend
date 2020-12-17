@@ -1,0 +1,155 @@
+    <div class="container cont_pad">
+          <div class="card">
+            <from class="edit-form">
+             
+
+
+   <% if division["id"].present? %>
+
+      <%= form_for(:divisions, :url => {:controller => 'divisions',:action => 'division_update', method: :put}) do |f| %> 
+
+      
+
+         <%=f.hidden_field 'id',:value=>@division["id"]  %>
+
+
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                   <label for="exampleInputName">Divisioncode</label><span class="required">*</span> <%= f.text_field :name, class: "form-control" ,name: "div_code", required: "true" ,maxlength: "5", value: @division["div_code"],readonly: "true"%>
+                  </div>
+                </div>
+                 
+                <div class="col-md-4">
+                  <div class="form-group">
+                  
+                     <label for="exampleInputName">Manufaturer code<span class="required">*</span></label>
+                       <%= f.text_field :name, class: "form-control" ,name: "div_code", required: "true" ,maxlength: "5", value:@division["manufacturer"]["manufacturer_code"],readonly: "true"%></div>
+                </div>
+                
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="exampleInputName">DivisionAbbr<span class="required">*</span></label> <%= f.text_field :name, class: "form-control" ,name: "div_abb", required: "true",  value: @division["div_abb"],placeholder: "DivisionAbbr"%>
+                  </div>
+                </div>
+              </div>
+          
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                  <label for="exampleInputName">Division Name<span class="required">*</span></label>  <%= f.text_field :name, class: "form-control" ,name: "name", required: "true", value: @division["div_name"],placeholder: "Division Name"%>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="exampleInputName">Address One<span class="required">*</span></label> <%= f.text_field :address_one, class: "form-control" ,name: "address_one", value: @division["address_one"],placeholder: "Address One"%>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="exampleInputName">Address Two</label> <%= f.text_field :address_two, class: "form-control" ,name: "address_two", value: @division["address_two"],placeholder: "Address Two"%>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4">         
+                  <div class="form-group">
+                    <label for="exampleInputName">Address Three</label> <%= f.text_field :address_three, class: "form-control" ,name: "address_three", value: @division["address_three"],placeholder: "Address Three" %>
+                  </div>
+                </div>
+
+             <div class="col-md-4">
+               <div class="form-group"> 
+                 <label for="exampleInputName">City<span class="required">*</span></label> <%= f.text_field :city, class: "form-control" ,name: "city", required: "true", value: @division["city"],placeholder: "City Name"%>
+               </div>
+             </div>
+             
+             <div class="col-md-4">
+               <div class="form-group">
+                 <label for="exampleInputName">State<span class="required">*</span></label> <%= f.text_field :state, class: "form-control" ,name: "state", required: "true", value: @division["state"],placeholder: "State Name"%>
+               </div>
+             </div>
+            </div>
+          
+          
+          <footer class="form-footer">
+          <%=f.submit "Update" , class: "btn btn-primary btn-one btn-lg load", id: "div1"%>
+
+          <%=link_to "Cancel",divisions_display_path , class: "btn btn-primary btn-lg load", id: "div2"%>
+          </footer>
+      <% end %>
+   <% else %>
+      <%= form_for(division, :url => {:controller => 'divisions', :action => 'create'}) do |f| %>
+
+             <div class="form-group"><label for="exampleInputName">Divisioncode</label> <%= f.text_field :name, class: "form-control" ,name: "div_code", required: "true" ,maxlength: "6"%></div>
+             
+             <div class="form-group"><label for="exampleInputName"> Manufaturer code<span class="required">*</span></label>
+             <%=select("new division", "manufacturer_id",  @manufacturers.collect {|p| [ p["manufacturer_code"], p["id"] ] },{:include_blank => "Please select"}, {class: "fold1", required: "true"})%></div>
+
+
+             <div class="form-group"><label for="exampleInputName">DivisionAbb</label> <%= f.text_field :name, class: "form-control" ,name: "div_abb", required: "true"%></div>
+          
+             <div class="form-group"><label for="exampleInputName">Name</label>  <%= f.text_field :name, class: "form-control" ,name: "name", required: "true"%></div>
+
+             <div class="form-group"><label for="exampleInputName">Address One</label> <%= f.text_field :address_one, class: "form-control" ,name: "address_one"%></div>
+             
+             <div class="form-group"><label for="exampleInputName">Address Two</label> <%= f.text_field :address_two, class: "form-control" ,name: "address_two"%></div>
+             
+             <div class="form-group"><label for="exampleInputName">Address Three</label> <%= f.text_field :address_three, class: "form-control" ,name: "address_three" %></div>
+
+             
+             <div class="form-group"><label for="exampleInputName">City<span class="required">*</span></label> <%= f.text_field :city, class: "form-control" ,name: "city", required: "true"%></div> 
+
+             <div class="form-group"><label for="exampleInputName">State<span class="required">*</span></label> <%= f.text_field :state, class: "form-control" ,name: "state", required: "true"%></div> 
+          
+          
+            
+                 
+            <footer class="form-footer">
+            <%=f.submit "Save" , class: "btn btn-primary btn-one btn-lg load", id: "div3"%>
+            <%=link_to "Cancel",divisions_display_path , class: "btn btn-primary btn-lg load", id: "div4"%>
+            </footer>
+      <% end %>
+   <% end %>
+
+   </from>
+</div>
+</div>
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".fold").change(function(){
+           var id=($(this).val());
+                   $.ajax({
+                     type: "GET",
+                     url: "/divisions/dynamic_manufacturer."+id
+                  })
+            });
+    });
+</script>
+<script type="text/javascript">
+$(document).ready(function () {
+  //called when key is pressed in textbox
+  $("#quantity").keypress(function (e) {
+     //if the letter is not digit then display error and don't type anything
+     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+        //display error message
+        $("#errmsg").html("Digits Only").show().fadeOut("slow");
+               return false;
+    }
+   });
+});
+
+</script>
+<style type="text/css">
+  #errmsg
+{
+color: red;
+}
+</style>
+

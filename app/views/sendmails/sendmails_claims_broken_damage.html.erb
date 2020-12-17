@@ -1,0 +1,200 @@
+
+        <div class="container-fluid user-assign">
+
+        <header class="table-header">
+            <ol class="breadcrumb">
+              <%= render_breadcrumbs :tag => :li, :separator => "" %>
+            </ol>
+            <div class="date-search">
+         <%=form_for "filter",:url=>{:controller=>"sendmails",:action=>"sendmail_supplier_filter"} do |i|%>
+              <div class="row">
+                <div class="col-md-3">
+                  <label>From Date</label>
+                  <br>
+                  <input name="from_date" type="text" id="dt1" class="form-control date" value="<%=@from_date%>" placeholder="dd-M-yy">
+                </div>
+                <div class="col-md-3">
+                  <label>To Date</label>
+                  <br>                  
+                  <input name="to_date" type="text" id="dt2" class="form-control date1" value="<%=@to_date%>" placeholder="dd-M-yy">
+                </div>
+                <div class="col-md-3">
+                  <label>Supplier</label>
+                  <br>
+                  <%= select_tag "supplier_id", options_for_select(@supplier.map { |obj| [obj['supplier_name'], obj['id']] }), class: "id1", autofocus: true, prompt: "select", required: "true" %>
+                </div>
+                <div class="col-md-3">
+                 <label></label>
+                 <br>
+                    <%=i.submit "show", class: "btn btn-md btn-primary"%>
+                </div>  
+                <%=i.hidden_field 'claim_type',:value=>"Expiry"%>
+              </div>   
+              
+            </div>
+            <%end%>
+      </header>
+
+       <h3>Send mail - Claims (Expiry / Broken)<%=link_to "Refresh", sendmails_sendmails_claims_broken_damage_path, class: "btn-refresh" %></h3>
+
+          
+          <%= form_for(@broken , :url =>{:controller => 'sendmails',:action => 'expiryanddamage_assign'}) do |f| %>  
+            <table class="table table-striped" id="example">
+              <thead>
+                <tr>
+                  <tr>
+                  <th>Claim Number</th>
+                  <th class="text-center">Claim Date</th>
+                  <th>Supplier</th>
+                  <th>Preview</th>
+<!--                   <th class="th_send-adjuctment">Adjustment</th> -->
+                  <th><input class="form-check-input" name="foo" type="checkbox" id="checkAll"></th>
+                </tr>
+                </tr>
+              </thead>
+              <tbody>
+              <%@brokens.map do |i|%>
+                <tr>
+                  <td><%=i["claim_no"]%></td>
+		  <% claim_date = i["ack_date"].to_date.strftime("%d-%m-%Y") if i["ack_date"].present? %>
+                  <td class="text-center" data-order="<%=i["ack_date"].present? ? i["ack_date"].to_date.strftime("%d-%m-%Y") : []%>"><%= i["ack_date"].present? ? i["ack_date"].to_date.strftime("%d-%m-%Y") : []%></td>
+                
+                  <td class="text-left"><%=i["supplier"]["supplier_name"] if i["supplier"].present?%></td>
+                  <td><!-- <a href="read-mail.html" class="btn btn-link btn_pad">Preview</a> --><%=link_to "Preview",claims_expiry_damage_claim_path(claim_no:i["claim_no"], claim_date: claim_date),class: "btn btn-link btn_pad"%></td>
+                  <!-- <td class="td_send-adjustment"><!%=link_to "Adjustment",sendmails_expiry_damage_adjustment_path(claim_no:i["claim_no"]),class: "btn btn-link btn_pad"%></td>
+                   -->
+                   <th><input class="form-check-input" name="claim_no[]" type="checkbox" value="<%=i["claim_no"]%>"></th>
+                </tr>
+                 <%end%>
+              </tbody>
+            </table>
+        
+               <footer class="table-footer table-footer-brd">
+                                         
+                 <% if@brokens.present?%>
+                 <%=f.submit "Send" , class: "btn btn-one"%> 
+                 <%= link_to 'Send All', sendmails_sendmails_claims_broken_damage_path(:id =>"Expiry"), class: "btn btn-primary" %>
+
+                 <%else%>
+                 <%=f.submit "Send" , class: "btn btn-one", disabled:true%> 
+                 <%= link_to 'Send All', sendmails_sendmails_claims_broken_damage_path(:id =>"Expiry"), class: "btn btn-primary",disabled: true %>
+
+                 <%end%>
+                 
+                 <%=link_to "Cancel",sendmails_sendmails_claims_broken_damage_path , class: "btn btn-primary"%>
+
+                </footer>        
+            <%end%>
+     </div>
+
+
+<script>
+$(document).ready(function(){
+   $("#checkAll").click(function () {
+     $('input:checkbox').not(this).prop('checked', this.checked);
+ }); 
+});
+</script>
+  <script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+         /* dom: 'Bfrtip',
+          bSort:true,
+          "pageLength": 13,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2 ]
+                }
+              }
+          ]*/
+           "bLengthChange": false,
+           "order": [[1,"asc"]]
+
+      } );
+  } );
+
+  </script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+
+  // $(document).ready(function(){
+  //   $('.id1').select2();
+  // });
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+       <%if params["supplier_id"].present?%>
+        $('.id1').select2().select2('val','<%=params["supplier_id"]%>')
+       <%else%>
+        $('.id1').prepend('<option></option>').select2({placeholder: "Please Select"});
+      <%end%>
+      });
+</script>
+
+<script type="text/javascript">
+$( document ).ready(function() {
+    var d = new Date();
+    var curr_date = d.getDate();
+    var curr_month = d.getMonth() + 1;
+    var curr_year = d.getFullYear();
+    var date=(curr_date + "-" + curr_month + "-" + curr_year);
+   $("#dt1").attr("placeholder",date);
+    $("#dt2").attr("placeholder",date);
+});
+</script>
+
+
+ <script type="text/javascript">
+  $(document).ready(function () {
+
+        $("#dt1").datepicker({
+            
+            dateFormat: "dd-M-yy",
+            /*setDate: ,*/
+
+            //minDate: 0,
+            onSelect: function (date) {
+                var dt2 = $('#dt2');
+                var startDate = $(this).datepicker('getDate');
+                var minDate = $(this).datepicker('getDate');
+                dt2.datepicker('setDate', minDate);
+                startDate.setDate(startDate.getDate() + 720);
+                //sets dt2 maxDate to the last day of 30 days window
+                dt2.datepicker('option', 'maxDate', startDate);
+                dt2.datepicker('option', 'minDate', minDate);
+                //$(this).datepicker('option', 'minDate', minDate);
+            }
+        });
+        $('#dt2').datepicker({
+            dateFormat: "dd-M-yy"
+        });
+    });
+
+
+</script>

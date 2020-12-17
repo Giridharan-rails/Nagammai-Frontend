@@ -1,0 +1,24 @@
+<div class="mail_tbl_bg emails">
+
+
+            <table id="example" class="table table-hover table_front table-striped table-list-search">
+              <tbody class="scroll">
+            
+              <%@emails.map do |i|%>
+            
+                  <tr>
+                  <td class="mailbox-name"><h4><%=i["from_mail"]%></h4></td>
+                  <td class="mailbox-subject">
+                    <%=link_to  i["subject"], emails_email_assign_path(:id=>i["id"])%> 
+                    <%if i["message"].present?%>
+                      <p><%=i["message"]%></p>
+                    <%end%>
+                  </td>
+                  <td class="mailbox-attachment"><%if i["attachment"].present?%><img src="/assets/atchm.png" width="32px"><%end%></td>
+                   <td class="mailbox-date"><%=i["date"].to_date.strftime("%d-%m-%Y")%></td>
+
+                </tr>
+                <%end%>
+                </tbody>
+                </table>
+                </div>

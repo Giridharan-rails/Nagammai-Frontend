@@ -1,0 +1,79 @@
+                   <!-- <div class="card cnt-edit-tabel">
+
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Select</th>
+                    </tr>
+                </thead>
+
+              <!%if @suppliers.present?%>
+                    <tbody class="scroll">
+                      <!%= form_for(:supplier, :url => {:controller => 'contacts',:action => 'contact_update'}) do |f| %>  
+                      <tr> <!%@suppliers.map do |i| %>
+
+                       
+
+                      <td><!%= i["supplier_name"] %> </td>                                      
+                      <td><input type="checkbox" name="supplier_id" value="<!%=i["id"]%>" <!%if @contacts_selection["sub_contact_id"] == i["id"]%> checked <!%end%> readonly></td>                     
+                      </tr>
+                      <!% end %> 
+                      <!%end%>          
+                     </tbody>
+                               
+               <!%elsif @manufacturers.present?%>
+                 <tbody class="scroll">
+                      <!%= form_for(:manufacturers, :url => {:controller => 'contacts',:action => 'contact_update'}) do |f| %>  
+                      <tr> <!% @manufacturers.map do |i| %>
+                      <td><!%= i["manufacturer_name"] %> </td>                               
+                    
+                      <td><input type="checkbox" name="manufacturer_id" value="<!%=i["id"]%>" <!%if @contacts_selection["sub_contact_id"] == i["id"]%> checked <!%end%>></td>                       
+                      </tr>
+                  <!% end %>
+                  <!%end%>          
+                                                  
+                </tbody>
+                 <!% else%>
+
+                     <tbody class="scroll">
+                     <!%= form_for(:supplier, :url => {:controller => 'contacts',:action => 'contact_update'}) do |f| %>  
+                  <tr> <!%@divisions.map do |i| %>
+                    <td><!%= i["div_name"] %> </td>                                      
+                    <td><input type="checkbox" name="division_id" value="<!%=i["id"]%>" <!%if @contacts_selection["sub_contact_id"] == i["id"]%> checked <!%end%>></td>                                          
+                  </tr>
+                  <!% end %>
+                 <!%end%>          
+                                                  
+                </tbody>
+                <!%end%>
+              
+              
+              </table>
+              </div>
+ -->
+
+
+
+
+ <%if @suppliers.present?%>
+ <%@suppliers.map do |i| %>
+ <%if @contacts_selection["sub_contact_id"] == i["id"]%>
+   <div><label>Supplier Name:&nbsp;<span><%=i["supplier_name"]%></span></label></div><!-- <input type="text" name="supplier_id" class="form-control" value="<!%=i["supplier_name"]%>" readonly>   -->
+   <%end%>
+   <%end%>
+  
+<%elsif @manufacturers.present?%>
+  <% @manufacturers.map do |i| %>
+ <%if @contacts_selection["sub_contact_id"] == i["id"]%>
+   <div><label>Manufacturer Name:&nbsp;<span><%=i["manufacturer_name"]%></span></label></div>
+   <%end%>
+   <%end%>
+  
+   <%else%>
+     <%@divisions.map do |i| %>
+     <%if @contacts_selection["sub_contact_id"] == i["id"]%>
+   <div><label>Division Name:&nbsp;<span><%=i["div_name"]%></span></label></div>
+   <%end%>
+   <%end%>
+<%end%>

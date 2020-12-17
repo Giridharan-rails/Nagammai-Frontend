@@ -1,0 +1,180 @@
+<head>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+
+</head>
+
+
+ <section>
+        <div class="container-fluid approved-claims">
+          <header class="table-header">
+              <ol class="breadcrumb">
+                <%= render_breadcrumbs :tag => :li, :separator => "" %>
+              </ol>
+            <h3>Approved Issues
+           <!--    <input type="date" name="date" class="form-control float-right table-filter" placeholder="dd-mm-yyyy" id="datefilter" data-toggle="tooltip" title="Date Filter" autofocus>
+ -->
+              <input name="date" type="text" id="dt1" class="form-control date" placeholder="dd-M-yy">
+
+            </h3>
+
+          </header>
+
+<div class="approval">
+            <table id="example" class="display" width="100%" cellspacing="0" >
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th class="text-center">Cut-off Date </th>                  
+                  <th class="text-left">Resolved By</th>
+                  <th >Remarks</th>
+<!--                 <th class="text-center">Status</th> -->
+           
+                  
+                </tr>
+              </thead>
+              <tbody>
+              
+
+              <%@issues.map do |i|%>
+                <tr>
+                  <%=hidden_field_tag "ids[]" ,i["id"] %>
+                  <td><span style="width: 400px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" title="<%=i["description"]%>"><%=link_to i["description"], appointment_path(i["appointment_id"],data:"approval"),class: "btn btn-link"%></span></td>
+                  <td class="text-center"><%=i["cut_off_date"].to_date.strftime("%d-%m-%Y") unless i["cut_off_date"].nil? %></td>
+                  
+                  <td class="text-left"><%=i["contact"]["name"]%></td>
+                  <td class="text-left"><%=i["remarks"]%></td>
+           <!--        <td class="td_issue_status">
+                     
+                    <!%= select_tag "status[]", options_for_select([['Open'],['Closed'],['Re-open']],:selected=>i["status"]),include_blank: "Select" %>
+                     </td>                
+            -->        
+                 </tr>
+                           <%end%>
+                 
+              </tbody>
+            </table>         
+
+            </div>
+          </div>
+
+        
+             
+      </section>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#dt1').change(function(){
+
+         var id=($(this).val());
+          $.ajax({
+            type: "GET",
+            url: "/issues/approved_claims_filter?date="+id
+          });
+         
+      });
+
+});
+
+</script>
+<script type="text/javascript">
+  $(document).ready(function () {
+        $('#dt1').datepicker({
+            dateFormat: "dd-M-yy"
+        });
+    });
+
+
+</script>
+<script type="text/javascript">
+  $(document).ready(function(){ 
+    $("#dt1").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "dd-mm-yy");
+    }
+    });
+      
+  });  
+
+
+</script>
+
+ <link rel="stylesheet" href="/assets/datatable.css">
+  <link rel="stylesheet" href="/assets/datatablebutton.css">
+  <script src="/assets/datatablejquery.js"></script>
+  <script src="/assets/datatablejquery1.js"></script>
+  <script src="/assets/datatablebuttons.js"></script>
+  <script src="/assets/datatablejszip.js"></script>
+  <script src="/assets/datatablepdf.js"></script>
+  <script src="/assets/datatablefont.js"></script>
+  <script src="/assets/datatablehtml.js"></script>
+  <script src="/assets/datatableprint.js"></script>
+
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+<!-- <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>  -->
+
+<!-- <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+
+<script src="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/jqueryui/dataTables.jqueryui.js">
+</script>
+ -->
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+          dom: 'Bfrtip',
+          bSort:true,
+          "pageLength": 13,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2 ]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2 ]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2 ]
+                }
+              }
+          ]
+     
+
+
+      } );
+  } );
+
+  </script>
+
+
+
+
+
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type=search]").focus();
+  });
+
+  $(document).ready(function(){
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+</script>

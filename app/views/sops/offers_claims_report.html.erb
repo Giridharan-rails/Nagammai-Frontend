@@ -1,0 +1,115 @@
+ 
+
+<head>
+    <link rel="stylesheet" href="/assets/user-assign.css">
+   </head>
+ <section>
+        <div class="container-fluid user-assign">
+          <header>
+              <ol class="breadcrumb">
+    <%= render_breadcrumbs :tag => :li, :separator => "" %>
+  </ol>
+            <h3>SOP Report<span class="float-right">
+           <input placeholder="Search" id="system-search" name="q" class="" type="text"> </span>
+            </h3>
+          </header>
+          <div class="card_hg">
+              <table class="table table_front table-striped table-list-search sops">
+              <thead>
+                <tr>
+                  <th class="th_sop_code">Division code</th>
+                  <th class="th_sop_division">Division</th>
+                  <th class="th_sop_offer">Special Offers</th>
+                  <th class="th_sop_extra_off">Claim Extra Offers</th>
+                </tr>
+              </thead>
+              <tbody class="scroll">
+              
+              <%@sops.map do |i|%>
+              
+                <tr>
+                  <td class="td_sop_code" scope="row"><%=i["division"]["div_code"]%></td>
+                  <td class="td_sop_division" scope="row"><%=i["division"]["div_name"]%></td>
+                  <td class="td_sop_offer" scope="row"><%=i["special_offer"]%>%</td>
+                  <td class="td_sop_extra_off"><%=i["claims_offer"]%>%</td>
+                               
+                 </tr>
+              <%end%>
+              
+                       
+              </tbody>
+            </table>  
+            <%= link_to "Download CV", sops_offers_claims_report_path(@sops, :format => :pdf) , :format => :pdf %>          
+          </div>
+          </div>
+        </div>
+             
+      </sect          ion>
+     
+     <script type="text/javascript">
+      $(document).ready(function(){
+      $("#division").change(function(){
+             var id=($(this).val());
+             
+                   $.ajax({
+                     type: "GET",
+                     url: "/sops/dynamic_sop."+id
+                  })
+            });
+      });
+     </script>
+     <script type="text/javascript">
+      $(document).ready(function() {
+    var activeSystemClass = $('.list-group-item.active');
+
+    //something is entered in search form
+    $('#system-search').keyup( function() {
+       var that = this;
+        // affect all table rows on in systems table
+        var tableBody = $('.table-list-search tbody');
+        var tableRowsClass = $('.table-list-search tbody tr');
+        $('.search-sf').remove();
+        tableRowsClass.each( function(i, val) {
+        
+            //Lower text for case insensitive
+            var rowText = $(val).text().toLowerCase();
+            var inputText = $(that).val().toLowerCase();
+            if(inputText != '')
+            {
+                $('.search-query-sf').remove();
+                tableBody.prepend('<tr class="search-query-sf"><td colspan="4"><strong>Searching for: "'
+                    + $(that).val()
+                    + '"</strong></td></tr>');
+            }
+            else
+            {
+                $('.search-query-sf').remove();
+            }
+
+            if( rowText.indexOf( inputText ) == -1 )
+            {
+                //hide rows
+                tableRowsClass.eq(i).hide();
+                
+            }
+            else
+            {
+                $('.search-sf').remove();
+                tableRowsClass.eq(i).show();
+            }
+        });
+        //all tr elements are hidden
+        if(tableRowsClass.children(':visible').length == 0)
+        {
+            tableBody.append('<tr class="search-sf"><td class="text-muted" colspan="4">No entries found.</td></tr>');
+        }
+    });
+});
+
+ $('#example tr').click(function() {
+        var href = $(this).find("a").attr("href");
+        if(href) {
+            window.location = href;
+        }
+    });
+    </script>

@@ -1,0 +1,260 @@
+
+    <div class="container-fluid user-assign">
+        <header class="table-header">
+            <ol class="breadcrumb"><li>
+               Rate Change Claims<!--%=link_to "Rate Change Claims", sendmails_rate_change_claims_path,class: "load"%-->
+            </li>
+              
+            </ol>
+           
+          </header>
+          <div class="date-search">
+          <%=form_for "filter",:url=>{:controller=>"sendmails",:action=>"claims_supplier_filter"} do |i|%>
+              <div class="row">
+                
+                <div class="col-md-3">
+                  <label>Supplier</label>
+                  <br>
+                  <%= select_tag "supplier_id", options_for_select(@supplier.map { |obj| [obj['supplier_name'], obj['id']] }), class: "id1", autofocus: true, prompt: "select", required: "true" %>
+                </div>
+
+                <div class="col-md-3">
+                  <label>From Date</label><br>
+                   <input name="from_date" type="text" id="dt1" class="form-control date" value="<%=@from_date%>" placeholder="dd-M-yy">
+                </div>
+                <div class="col-md-3">
+                  <label>To Date</label><br>
+                    <input name="to_date" type="text" id="dt2" class="form-control date1" value="<%=@to_date%>" placeholder="dd-M-yy">
+                </div>
+
+                <div class="col-md-3">
+                 <label></label>
+                 <br>
+                    <%=i.submit "Show", class: "btn btn-md btn-primary"%>
+                </div>  
+                <%=i.hidden_field 'claim_type',:value=>"Rate"%>
+              </div>   
+              
+            </div>
+            <%end%>   
+   
+            <h3 class="page-title2">Claims - Rate Change</h3>
+          
+          
+          <div class="">
+            <table class="table table-striped" id="example">
+              <thead>
+                  <tr>
+                  <th class="th_send-ordno">Claim Number</th>
+                  <th class="text-center">Claim Date</th>
+                  <th class="text-left">Supplier</th>
+                  <th class="text-right">TotalQuantity</th>
+                  <th class="text-right">Claim Amount</th>
+                  <th class="text-right">Settled Amount</th>
+                  <th class="text-right">WonderSoft Adjustment Amount</th>
+                  <th class="th_send-preview">Preview</th>
+                  <th class="th_send-adjuctment">Adjustment</th>
+                  </tr>
+              </thead>
+              <tbody>
+              <%if @brokens.present?%> 
+
+                  <%@brokens.map do |i|%>
+                  <% claim_amount=[]%>
+                  <% i["claim_amount"].map{|i| claim_amount << i.to_f}%>
+                    <% settled_amount=[]%>
+                  <% i["settled_amount"].map{|i| settled_amount << i.to_f}%>
+<%if settled_amount.sum.round(2) <= 0%>           
+
+               <tr>
+                  <td class="td_send-orddate" ><%=i["claim_no"]%></td>
+                  <%j=0%>
+            
+                  <td class="text-center" data-order="<%if i["data"][j]["ack_date"].present?%><%=i["data"][j]["ack_date"].to_date.strftime("%Y-%m-%d")%><%end%>"><%if i["data"][j]["ack_date"].present?%><%=i["data"][j]["ack_date"].to_date.strftime("%d-%m-%Y")%><%end%></td>
+                  <td class="text-left"><%=i["data"][j]["supplier"]["supplier_name"]%></td>
+                  <% @quantity=[]%>
+                  <% i["total_quantity"].map{|i| @quantity << i.to_i}%>
+                   <td class="text-right"><%=@quantity.sum%></td>
+                  
+                   <td class="text-right">&#8377;&nbsp;<%= "#{claim_amount.sum.to_f.round(2).to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}" %></td>
+                 
+                    <td class="text-right">&#8377;&nbsp;<%= "#{settled_amount.sum.to_f.round(2).to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}" %></td>   <td class="text-right">&#8377;&nbsp;<%= i["data"][0]["ws_settle_amount"].to_f%></td>                      
+                  <td class="td_send-preview">
+                    <%=link_to "Preview", sendmails_rate_claim_preview_path(:claim_no=>i["claim_no"],data:"rate_change",supplier_id: params[:supplier_id]),class: "btn btn-link btn_pad" %>
+                  </td>
+                
+                  <td class="td_send-preview">
+                    <%=link_to "Adjustment", sendmails_rate_change_adjustment_path(:claim_no=>i["claim_no"]),class: "btn btn-link btn_pad" %>
+                  </td>
+                    
+                 </tr>
+                 <%j=j+1%>
+<!--                  <!%end%> -->
+
+<%elsif settled_amount.sum.round(2) >= claim_amount.sum.round(2)%>
+ <tr>
+                  <td class="td_send-orddate" style="color: blue;"><%=i["claim_no"]%></td>
+                  <%j=0%>
+            
+                  <td class="text-center" style="color: blue;" data-order="<%if i["data"][j]["ack_date"].present?%><%=i["data"][j]["ack_date"].to_date.strftime("%Y-%m-%d")%><%end%>"><%if i["data"][j]["ack_date"].present?%><%=i["data"][j]["ack_date"].to_date.strftime("%d-%m-%Y")%><%end%></td>
+                  <td class="text-left" style="color: blue;"><%=i["data"][j]["supplier"]["supplier_name"]%></td>
+                  <% @quantity=[]%>
+                  <% i["total_quantity"].map{|i| @quantity << i.to_i}%>
+                   <td class="text-right" style="color: blue;"><%=@quantity.sum%></td>
+                  
+                   <td class="text-right" style="color: blue;">&#8377;&nbsp;<%="#{claim_amount.sum.to_f.round(2).to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}" %></td>
+                 
+                    <td class="text-right" style="color: blue;">&#8377;&nbsp;<%= "#{settled_amount.sum.to_f.round(2).to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}" %></td>   
+                      <td class="text-right" style="color: blue">&#8377;&nbsp;<%= i["data"][0]["ws_settle_amount"].to_f%></td>                    
+                  <td class="td_send-preview">
+                    <%=link_to "Preview", sendmails_rate_claim_preview_path(:claim_no=>i["claim_no"],data:"rate_change",supplier_id: params[:supplier_id]),class: "btn btn-link btn_pad" %>
+                  </td>
+                
+                  <td class="td_send-preview">
+                    <%=link_to "Adjustment", sendmails_rate_change_adjustment_path(:claim_no=>i["claim_no"]),class: "btn btn-link btn_pad" %>
+                  </td>
+                    
+                 </tr>
+                 <%j=j+1%>
+<%else%>
+ <tr>
+                  <td class="td_send-orddate" style="color: green;"><%=i["claim_no"]%></td>
+                  <%j=0%>
+            
+                  <td class="text-center" style="color: green;" data-order="<%if i["data"][j]["ack_date"].present?%><%=i["data"][j]["ack_date"].to_date.strftime("%Y-%m-%d")%><%end%>"><%if i["data"][j]["ack_date"].present?%><%=i["data"][j]["ack_date"].to_date.strftime("%d-%m-%Y")%><%end%></td>
+                  <td class="text-left" style="color: green;"><%=i["data"][j]["supplier"]["supplier_name"]%></td>
+                  <% @quantity=[]%>
+                  <% i["total_quantity"].map{|i| @quantity << i.to_i}%>
+                   <td class="text-right" style="color: green;"><%=@quantity.sum%></td>
+                  
+                   <td class="text-right" style="color: green;">&#8377;&nbsp;<%= "#{claim_amount.sum.to_f.round(2).to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}" %></td>
+                 
+                    <td class="text-right" style="color: green;">&#8377;&nbsp;<%= "#{settled_amount.sum.to_f.round(2).to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}" %></td>     
+                      <td class="text-right" style="color: green;">&#8377;&nbsp;<%= i["data"][0]["ws_settle_amount"].to_f%></td>                  
+                  <td class="td_send-preview">
+                    <%=link_to "Preview", sendmails_rate_claim_preview_path(:claim_no=>i["claim_no"],data:"rate_change",supplier_id: params[:supplier_id]),class: "btn btn-link btn_pad" %>
+                  </td>
+                
+                  <td class="td_send-preview">
+                    <%=link_to "Adjustment", sendmails_rate_change_adjustment_path(:claim_no=>i["claim_no"]),class: "btn btn-link btn_pad" %>
+                  </td>
+                    
+                 </tr>
+                 <%j=j+1%>
+<%end%>
+              <%end%> 
+   <%end%> 
+
+              </tbody>
+            </table>
+          </div>
+        
+
+    </div>
+
+
+<script>
+$(document).ready(function(){
+   $("#checkAll").click(function () {
+     $('input:checkbox').not(this).prop('checked', this.checked);
+ }); 
+});
+</script>
+  <script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+         /* dom: 'Bfrtip',
+          bSort:true,
+          "pageLength": 13,
+          buttons: [              
+              {
+                extend: 'excelHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2]
+                }
+              },
+              {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                 columns: [ 0, 1, 2]
+                }
+              },
+              {
+                extend: 'print',
+                exportOptions: {
+                 columns: [ 0, 1, 2 ]
+                }
+              }
+          ]*/
+           "bLengthChange": false,
+           "order": [[1,"asc"]]
+
+      } );
+  } );
+
+  </script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input[type='search']").focus();
+  });
+
+  $(document).ready(function(){ 
+    $("input[type=search]").each(function(ev)
+    {
+        if(!$(this).val()) { 
+       $(this).attr("placeholder", "Search");
+    }
+    });
+  });
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+       <%if params["supplier_id"].present?%>
+        $('.id1').select2().select2('val','<%=params["supplier_id"]%>')
+       <%else%>
+        $('.id1').prepend('<option></option>').select2({placeholder: "Please Select"});
+      <%end%>
+      });
+</script>
+
+<script type="text/javascript">
+$( document ).ready(function() {
+    var d = new Date();
+    var curr_date = d.getDate();
+    var curr_month = d.getMonth() + 1;
+    var curr_year = d.getFullYear();
+    var date=(curr_date + "-" + curr_month + "-" + curr_year);
+   $("#dt1").attr("placeholder",date);
+    $("#dt2").attr("placeholder",date);
+});
+</script>
+
+ <script type="text/javascript">
+  $(document).ready(function () {
+
+        $("#dt1").datepicker({
+            
+            dateFormat: "dd-M-yy",
+            /*setDate: ,*/
+
+            //minDate: 0,
+            onSelect: function (date) {
+                var dt2 = $('#dt2');
+                var startDate = $(this).datepicker('getDate');
+                var minDate = $(this).datepicker('getDate');
+                dt2.datepicker('setDate', minDate);
+                startDate.setDate(startDate.getDate() + 720);
+                //sets dt2 maxDate to the last day of 30 days window
+                dt2.datepicker('option', 'maxDate', startDate);
+                dt2.datepicker('option', 'minDate', minDate);
+                //$(this).datepicker('option', 'minDate', minDate);
+            }
+        });
+        $('#dt2').datepicker({
+            dateFormat: "dd-M-yy"
+        });
+    });
+
+
+</script>
