@@ -26,12 +26,12 @@
             <label>From Date</label>
               <br>
 		<%#= @from_date %> <%#= "--------------" %> <%#= @to_date %>
-              <input name="from_date" type="text"  class="form-control" id="dt1" value="<%=@from_date%>">
+              <input name="from_date" type="text"  class="form-control datepicker" id="dt1" value="<%=@from_date%>">
           </div>
           <div class="col-md-4">
             <label>To Date</label>
               <br>                  
-              <input name="to_date" type="text" class="form-control" id="dt2" value="<%=@to_date%>">
+              <input name="to_date" type="text" class="form-control datepicker" id="dt2" value="<%=@to_date%>">
           </div>
           <!-- <div class="col-md-4">
             <label>Contact Type</label>
@@ -86,27 +86,26 @@
 </section>
 
 <!-- script for datepicker -->
-<script type="text/javascript">
-  $(document).ready(function () {
-    $("#dt1").datepicker({
-      dateFormat: "dd-mm-yy",
-        onSelect: function (date) {
-            var dt2 = $('#dt2');
-            alert('test')
-            var startDate = $(this).datepicker('getDate');
-            var minDate = $(this).datepicker('getDate');
+<!-- <script type="text/javascript">
+  // $(document).ready(function () {
+  //   $("#dt1").datepicker({
+      // dateFormat: "dd-mm-yy",
+      //   onSelect: function (date) {
+      //       var dt2 = $('#dt2');
+            // var startDate = $(this).datepicker('getDate');
+            // var minDate = $(this).datepicker('getDate');
             //dt2.datepicker('setDate', minDate);
             //startDate.setDate(startDate.getDate() + 720);
             //sets dt2 maxDate to the last day of 30 days window
-            dt2.datepicker('option', 'maxDate', startDate);
-            dt2.datepicker('option', 'minDate', minDate);
+            // dt2.datepicker('option', 'maxDate', startDate);
+            // dt2.datepicker('option', 'minDate', minDate);
             //$(this).datepicker('option', 'minDate', minDate);
-            }
-    });
-      $('#dt2').datepicker({
-            dateFormat: "dd-mm-yy"
-      });
-  });
+  //           }
+  //   });
+  //     $('#dt2').datepicker({
+  //           dateFormat: "dd-mm-yy"
+  //     });
+  // });
 
 
 //  $(document).ready(function(){ 
@@ -130,14 +129,14 @@
  //   var curr_month = d.getMonth() + 1;
  //   var curr_year = d.getFullYear();
  //   var date=(curr_date + "-" + curr_month + "-" + curr_year);
- //   <%if params["from_date"].nil? and params["to_date"].nil?%>
+ //   <%#if params["from_date"].nil? and params["to_date"].nil?%>
  //  $("#dt1").attr("value",date);
  //  $("#dt2").attr("value",date);
-//   <%end%>
+//   <%#end%>
 //  });
 
 
-</script>
+</script> -->
 <!-- script for data table -->
   <link rel="stylesheet" href="/assets/datatable.css">
   <link rel="stylesheet" href="/assets/datatablebutton.css">

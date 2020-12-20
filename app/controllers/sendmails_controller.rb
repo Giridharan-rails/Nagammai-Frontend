@@ -1,5 +1,5 @@
 class SendmailsController < ApplicationController
-  before_action :supplier, only: [:pending_claims_report, :free_discount_claims,:sendmails_excess_stock,:sendmails_claims_broken_damage,:purchase_order_report,:expiry_damage_claims,:purchase_return_claims,:rate_change_claims,:today_adjustment_report,:excess_stock_report,:sendmails_claims_discount,:sendmails_claims_purchase_return,:sendmails_claims_rate_change]
+  before_action :supplier, only: [:pending_claims_report, :free_discount_claims,:sendmails_excess_stock,:sendmails_claims_broken_damage,:purchase_order_report,:expiry_damage_claims,:purchase_return_claims,:rate_change_claims,:today_adjustment_report,:excess_stock_report,:sendmails_claims_discount,:sendmails_claims_purchase_return,:sendmails_claims_rate_change, :non_findable_claims]
   
   add_breadcrumb "SendMails", :sendmails_path 
 
@@ -660,6 +660,12 @@ end
     #end
          
   end
+
+  def non_findable_claims
+    @from_date = params["from_date"].present? ? params["from_date"].to_date.strftime("%d-%m-%Y") : Date.today
+    @to_date = params["to_date"].present? ? params["to_date"].to_date.strftime("%d-%m-%Y") : Date.today
+    @brokens=JSON.parse RestClient.get $api_service+"/claims/non_findable_claims?supplier_id=#{params["supplier_id"]}&&from_date=#{params[:from_date]}&&to_date=#{params[:to_date]}"
+  end
   #to display the today's adjustment claims
   def today_adjustment_report
     if params["from_date"].present?
@@ -773,6 +779,11 @@ end
       from_date=params["from_date"]
       to_date=params["to_date"]
       redirect_to action: "purchase_return_claims",:supplier_id=>supplier_id,:from_date=>from_date,:to_date=>to_date
+    elsif params["filter"]["claim_type"]=="NonFindable"
+      supplier_id=params["supplier_id"]
+      from_date=params["from_date"]
+      to_date=params["to_date"]
+      redirect_to action: "non_findable_claims",:supplier_id=>supplier_id,:from_date=>from_date,:to_date=>to_date
     end
   end
 # purchase order report date filter

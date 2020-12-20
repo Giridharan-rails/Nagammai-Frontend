@@ -60,6 +60,18 @@
 
         <% end %>
         <% end %>
+        <%if @claims["non_findable"].present?%>
+          <% @claims["non_findable"].each do |claim| %>
+          <tr>
+            <th class="text-left" scope="row"><%= claim["claim_no"] %></th>
+            <td class="text-center"><%= claim["claim_date"].to_date.strftime('%d-%m-%Y') if claim["claim_date"].present? %></td>
+            <td class="text-left">Non Findable</td>
+            <td class="text-right"><%total << claim["claim_amount"].to_i%><%= claim["claim_amount"].to_i.round(2) %></td>
+            <td class="text-right"><%settled_total << claim["settled_amount"].to_i%><%= claim["settled_amount"].to_i.round(2) %></td>
+          </tr>
+
+        <% end %>
+        <% end %>
        <!--  <!%if total.present? and settled_total.present?%>
           <tr class="total">
           <th class="text-left" scope="row">TotalAmount</th>

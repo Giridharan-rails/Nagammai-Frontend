@@ -9,7 +9,7 @@ require 'will_paginate/array'
 #http://182.72.104.66:4202/
 #$api_service = 'http://182.72.104.66:4202/'   #backend ip
 #$api_service = 'http://183.82.250.137:4202/'   #backend ip
-$api_service = 'http://192.168.0.156:81/'   #backend ip
+$api_service = 'http://localhost:4022/'   #backend ip
 
 #$api_service = 'http://192.168.1.106:5200'
 #$api_service = 'http://192.168.1.106:4202'

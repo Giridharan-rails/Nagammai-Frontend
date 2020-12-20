@@ -29,13 +29,13 @@
                 <div class="col-md-4">
                   <label>From Date</label>
                   <br>
-                  <input name="from_date" type="text" id="dt1" class="form-control" value="<%=@from_date%>" placeholder="dd-M-yy">
+                  <input name="from_date" type="text" id="dt1" class="form-control datepicker" value="<%=@from_date%>" placeholder="dd-M-yy">
 
                 </div>
                 <div class="col-md-4">
                   <label>To Date</label>
                   <br>                  
-                  <input name="to_date" type="text" id="dt2" class="form-control" value="<%=@to_date%>" placeholder="dd-M-yy">
+                  <input name="to_date" type="text" id="dt2" class="form-control datepicker" value="<%=@to_date%>" placeholder="dd-M-yy">
                 </div>
                 <!-- <div class="col-md-4">
                   <label>Contact Type</label>
@@ -93,7 +93,7 @@
 
 
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
   $(document).ready(function () {
 
         $("#dt1").datepicker({
@@ -116,7 +116,7 @@
         });
     });
 </script>
-<script type="text/javascript">
+ --><script type="text/javascript">
   $(document).ready(function(){ 
     $("#dt1").each(function(ev)
     {

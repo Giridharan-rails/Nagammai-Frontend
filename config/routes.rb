@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   get 'sendmails/adjustment_details'
   get 'sendmails/today_adjustment_report'
   get 'sendmails/rate_change_claims'
+  get 'sendmails/non_findable_claims'
   get 'sendmails/purchase_return_claims'
   get 'sendmails/free_discount_claims'
   get 'sendmails/expiry_damage_claims'
