@@ -54,6 +54,7 @@
                   <tr>
                     <th>P.Code</th>
                     <th>Description & Packing</th>
+                    <th class="text-right">Batch</th>
                     <th class="text-right">Qty</th>
                     <th class="text-right">Free</th>
                     <th class="text-cenetr">Exp</th>
@@ -73,6 +74,7 @@
                   <tr class="content">             
                     <td><%= i["product"]["hsn_code"] if i["product"].present? && i["product"]["hsn_code"].present?%> </td>
                     <td><%= i["item_description"] %> <%= i["packing"] %></td>
+                    <td class="text-right"><%= i["batch"] %> </td>  
                     <td class="text-right"><%= i["quantity"] %> </td>  
                     <td class="text-right"><%= i["free_quantity"] %> </td> 
                     <td class="text-cenetr"><%= i["expiry_date"].to_date.strftime('%d-%m-%Y') %></td>

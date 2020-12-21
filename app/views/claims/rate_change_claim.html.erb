@@ -49,11 +49,12 @@
                 <thead>
                   <tr>
                    
-                    <th style="width: 60%;">Description</th>
-                    <th style="width: 25%;" class="text-right">Discount Amount</th>
-                    <th style="width: 25%;" class="text-right">Claim Amount</th>
-                    <th style="width: 25%;">GST</th>
-                    <th style="width: 25%;" class="text-right">Settled Amount</th>
+                    <td style="width: 50%;">Description</th>
+                    <th style="width: 10%">Batch</th>
+                    <th style="width: 10%" class="text-right">Discount Amount</th>
+                    <th style="width: 10%" class="text-right">Claim Amount</th>
+                    <th style="width: 10%">GST</th>
+                    <th style="width: 10%" class="text-right">Settled Amount</th>
 
                     
                   </tr>
@@ -62,12 +63,12 @@
               
                   <% @rate_change_claims.map do |i| %>
                     <tr class="content">             
-                      <td style="width: 60%;"><p><%= i["remarks"] %></p></td>
-                     
-                      <td style="width: 25%;" class="text-right"><%= i["disc_amount"].to_f.round(2) %> </td>  
-                      <td style="width: 25%;" class="text-right"><%= i["claim_amount"].to_f.round(2) %> </td>
-                      <td style="width: 25%;"><%= i["gst"].to_f.round(2) %> </td>
-                      <td style="width: 25%;" class="text-right"><%= i["settled_amount"].to_f.round(2) %> </td>                             
+                      <td style="width: 50%;"><p><%= i["remarks"] %></p></td>
+                      <td style="width: 10%;"><p><%= i["batch"] %></p></td>
+                      <td style="width: 10%" class="text-right"><%= i["disc_amount"].to_f.round(2) %> </td>  
+                      <td style="width: 10%" class="text-right"><%= i["claim_amount"].to_f.round(2) %> </td>
+                      <td style="width: 10%"><%= i["gst"].to_f.round(2) %> </td>
+                      <td style="width: 10%" class="text-right"><%= i["settled_amount"].to_f.round(2) %> </td>                             
                                                
                     </tr>
                   <% end %>

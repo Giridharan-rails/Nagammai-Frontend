@@ -54,6 +54,7 @@
                   <tr>
                      <th>P.Code</th>
                     <th class="text-left">Description & Packing</th>
+                    <th class="text-right">Batch</th>
                     <th class="text-right">Qty</th>
                     <th class="text-right">Free</th>
                     <th class="text-right">MRP</th>
@@ -71,6 +72,7 @@
                   <tr class="content">             
                     <td><%= i["product"]["hsn_code"] if i["product"].present?%> </td>
                     <td class="text-left"><%= i["product_name"] %> <%= i["packing"] %>  </td>
+                        <td class="text-right"><%= i["batch_desc"] %> </td>  
                         <td class="text-right"><%= i["total_quantity"] %> </td>  
                          <td class="text-right"><%= i["free_quantity"] %> </td>  
                     <td class="text-right"><%= i["mrp"].to_f.round(2)%></td>
