@@ -47,12 +47,11 @@
                   <th class="th_send-ordno">Claim Number</th>
                   <th class="text-center">Claim Date</th>
                   <th class="text-left">Supplier</th>
-                  <th class="text-right">TotalQuantity</th>
+                  <th class="text-right">Total Qty</th>
                   <th class="text-right">Claim Amount</th>
                   <th class="text-right">Settled Amount</th>
-                  <th class="text-right">WonderSoft Adjustment Amount</th>
+                  <th class="text-right">Bal=(Claim - WS)</th>
                   <th class="th_send-preview">Preview</th>
-                  <th class="th_send-adjuctment">Adjustment</th>
                   </tr>
               </thead>
               <tbody>
@@ -65,50 +64,27 @@
                   <% i["settled_amount"].map{|i| settled_amount << i.to_f}%>              
  <%if settled_amount.sum.round(2) <= 0%>
                <tr>
-                  <td class="td_send-orddate" ><%=i["claim_no"]%></td>
+                  <td class="td_send-orddate" style="color: red;" ><%=i["claim_no"]%></td>
                   <%j=0%>
             
-                  <td class="text-center" data-order="<%if i["data"][j]["claim_date"].present?%><%=i["data"][j]["claim_date"].to_date.strftime("%Y-%m-%d")%><%end%>">
+                  <td class="text-center" style="color: red;" data-order="<%if i["data"][j]["claim_date"].present?%><%=i["data"][j]["claim_date"].to_date.strftime("%Y-%m-%d")%><%end%>">
                   <%if i["data"][j]["claim_date"].present?%><%=i["data"][j]["claim_date"].to_date.strftime("%d-%m-%Y")%><%end%></td>
-                  <td class="text-left"><%=i["data"][j]["supplier"]["supplier_name"]%></td>
+                  <td class="text-left" style="color: red;"><%=i["data"][j]["supplier"]["supplier_name"]%></td>
                   <% @quantity=[]%>
                   <% i["total_quantity"].map{|i| @quantity << i.to_i}%>
-                   <td class="text-right"><%=@quantity.sum%></td>
+                   <td class="text-right" style="color: red;"><%=@quantity.sum%></td>
                   
-                   <td class="text-right">&#8377;&nbsp;<%= "#{claim_amount.sum.to_f.round(2).to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}" %></td>
-                  
-                    <td class="text-right">&#8377;&nbsp;<%= "#{settled_amount.sum.to_f.round(2).to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}" %></td>
-                    <td class="text-right">&#8377;&nbsp;<%= i["data"][0]["ws_settle_amount"].to_f%></td>               
-                    <td class="td_send-preview"><!-- <a href="read-mail.html" class="btn btn-link btn_pad">Preview</a> --><%=link_to "Preview",sendmails_purchase_return_claim_preview_path(claim_no:i["claim_no"],data:"return",supplier_id: params[:supplier_id]) ,class: "btn btn-link btn_pad"%></td>
+                    <td class="text-right" style="color: red;">&#8377;&nbsp;<%=  "%.2f" % claim_amount.sum.to_f.round(2) %></td>
+                    <td class="text-right" style="color: red;">&#8377;&nbsp;<%=  "%.2f" % settled_amount.sum.to_f.round(2) %></td>
+                    <td class="text-right" style="color: red;">&#8377;&nbsp;<%="%.2f" % (claim_amount.sum.to_f - settled_amount.sum.to_f) %></td>
+                    <td class="td_send-preview" style="color: red;"><!-- <a href="read-mail.html" class="btn btn-link btn_pad">Preview</a> --><%=link_to "Preview",sendmails_purchase_return_claim_preview_path(claim_no:i["claim_no"],data:"return",supplier_id: params["supplier_id"].blank? ? i["data"][j]["supplier_id"] : params["supplier_id"]),class: "btn btn-link btn_pad"%></td>
 
-                  <td><%= link_to "Adjustment",sendmails_purchase_return_ajustment_path(claim_no:i["claim_no"]), class: "btn btn-link btn_pad"%></td>
+                  <!-- <td><%#= link_to "Adjustment",sendmails_purchase_return_ajustment_path(claim_no:i["claim_no"]), class: "btn btn-link btn_pad"%></td> -->
                    
                  </tr>
                  <%j=j+1%>
 <!--                  <!%end%> -->
 <%elsif settled_amount.sum.round(2) >= claim_amount.sum.round(2)%>
- <tr>
-                  <td class="td_send-orddate" style="color: blue;"><%=i["claim_no"]%></td>
-                  <%j=0%>
-            
-                  <td class="text-center" style="color: blue;" data-order="<%if i["data"][j]["claim_date"].present?%><%=i["data"][j]["claim_date"].to_date.strftime("%Y-%m-%d")%><%end%>"><%if i["data"][j]["claim_date"].present?%><%=i["data"][j]["claim_date"].to_date.strftime("%d-%m-%Y")%><%end%></td>
-                  <td class="text-left" style="color: blue;"><%=i["data"][j]["supplier"]["supplier_name"]%></td>
-                  <% @quantity=[]%>
-                  <% i["total_quantity"].map{|i| @quantity << i.to_i}%>
-                   <td class="text-right" style="color: blue;"><%=@quantity.sum%></td>
-                  
-                   <td class="text-right" style="color: blue;">&#8377;&nbsp;<%= "#{claim_amount.sum.to_f.round(2).to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}" %></td>
-                  
-                    <td class="text-right" style="color: blue;">&#8377;&nbsp;<%= "#{settled_amount.sum.to_f.round(2).to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}" %></td>      
-                    <td class="text-right" style="color: blue;">&#8377;&nbsp;<%= i["data"][0]["ws_settle_amount"].to_f%></td>            
-                    <td class="td_send-preview" ><!-- <a href="read-mail.html" class="btn btn-link btn_pad">Preview</a> --><%=link_to "Preview",sendmails_purchase_return_claim_preview_path(claim_no:i["claim_no"],data:"return",supplier_id: params[:supplier_id]) ,class: "btn btn-link btn_pad"%></td>
-
-                  <td><%= link_to "Adjustment",sendmails_purchase_return_ajustment_path(claim_no:i["claim_no"]), class: "btn btn-link btn_pad"%></td>
-                   
-                 </tr>
-                 <%j=j+1%>
-
-<%else%>
  <tr>
                   <td class="td_send-orddate" style="color: green;"><%=i["claim_no"]%></td>
                   <%j=0%>
@@ -119,13 +95,35 @@
                   <% i["total_quantity"].map{|i| @quantity << i.to_i}%>
                    <td class="text-right" style="color: green;"><%=@quantity.sum%></td>
                   
-                   <td class="text-right" style="color: green;">&#8377;&nbsp;<%= "#{claim_amount.sum.to_f.round(2).to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}" %></td>
+                   <td class="text-right" style="color: green;">&#8377;&nbsp;<%=  "%.2f" % claim_amount.sum.to_f.round(2) %></td>
                   
-                    <td class="text-right" style="color: green;">&#8377;&nbsp;<%= "#{settled_amount.sum.to_f.round(2).to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}" %></td>     
-                    <td class="text-right" style="color: green;">&#8377;&nbsp;<%= i["data"][0]["ws_settle_amount"].to_f%></td>             
-                    <td class="td_send-preview" ><!-- <a href="read-mail.html" class="btn btn-link btn_pad">Preview</a> --><%=link_to "Preview",sendmails_purchase_return_claim_preview_path(claim_no:i["claim_no"],data:"return",supplier_id: params[:supplier_id]) ,class: "btn btn-link btn_pad"%></td>
+                    <td class="text-right" style="color: green;">&#8377;&nbsp;<%=  "%.2f" % settled_amount.sum.to_f.round(2) %></td>     
+                    <td class="text-right" style="color: green;">&#8377;&nbsp;<%="%.2f" % (claim_amount.sum.to_f - settled_amount.sum.to_f) %></td>            
+                    <td class="td_send-preview" ><!-- <a href="read-mail.html" class="btn btn-link btn_pad">Preview</a> --><%=link_to "Preview",sendmails_purchase_return_claim_preview_path(claim_no:i["claim_no"],data:"return",supplier_id: params["supplier_id"].blank? ? i["data"][j]["supplier_id"] : params["supplier_id"]),class: "btn btn-link btn_pad"%></td>
 
-                  <td><%= link_to "Adjustment",sendmails_purchase_return_ajustment_path(claim_no:i["claim_no"]), class: "btn btn-link btn_pad"%></td>
+                  <!-- <td><%#= link_to "Adjustment",sendmails_purchase_return_ajustment_path(claim_no:i["claim_no"]), class: "btn btn-link btn_pad"%></td> -->
+                   
+                 </tr>
+                 <%j=j+1%>
+
+<%else%>
+ <tr>
+                  <td class="td_send-orddate" style="color: blue;"><%=i["claim_no"]%></td>
+                  <%j=0%>
+            
+                  <td class="text-center" style="color: blue;" data-order="<%if i["data"][j]["claim_date"].present?%><%=i["data"][j]["claim_date"].to_date.strftime("%Y-%m-%d")%><%end%>"><%if i["data"][j]["claim_date"].present?%><%=i["data"][j]["claim_date"].to_date.strftime("%d-%m-%Y")%><%end%></td>
+                  <td class="text-left" style="color: blue;"><%=i["data"][j]["supplier"]["supplier_name"]%></td>
+                  <% @quantity=[]%>
+                  <% i["total_quantity"].map{|i| @quantity << i.to_i}%>
+                   <td class="text-right" style="color: blue;"><%=@quantity.sum%></td>
+                  
+                   <td class="text-right" style="color: blue;">&#8377;&nbsp;<%=  "%.2f" % claim_amount.sum.to_f.round(2) %></td>
+                  
+                    <td class="text-right" style="color: blue;">&#8377;&nbsp;<%=  "%.2f" % settled_amount.sum.to_f.round(2) %></td>    
+                    <td class="text-right" style="color: blue;">&#8377;&nbsp;<%="%.2f" % (claim_amount.sum.to_f - settled_amount.sum.to_f) %></td>             
+                    <td class="td_send-preview" ><!-- <a href="read-mail.html" class="btn btn-link btn_pad">Preview</a> --><%=link_to "Preview",sendmails_purchase_return_claim_preview_path(claim_no:i["claim_no"],data:"return",supplier_id: params["supplier_id"].blank? ? i["data"][j]["supplier_id"] : params["supplier_id"]),class: "btn btn-link btn_pad"%></td>
+
+                 <!--  <td><%#= link_to "Adjustment",sendmails_purchase_return_ajustment_path(claim_no:i["claim_no"]), class: "btn btn-link btn_pad"%></td> -->
                    
                  </tr>
                  <%j=j+1%>

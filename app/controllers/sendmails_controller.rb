@@ -823,12 +823,17 @@ end
 # display the selected purchase return claim preview in report
   def purchase_return_claim_preview
     #@purchase_return_claims=(JSON.parse RestClient.get $api_service+'/purchasereturn_claim?claim_no='+params[:claim_no])
-    @purchase_return_claims=JSON.parse RestClient.get $api_service+"/purchasereturn_claim?claim_no=#{params[:claim_no]}&&supplier_id=#{params[:supplier_id]}"
+    @purchase_return_claims=JSON.parse RestClient.get $api_service+"/claims/purchase_return_claim_no?claim_no=#{params[:claim_no]}&&supplier_id=#{params[:supplier_id]}"
   end  
 # display the selected rate change claim preview in report
   def rate_claim_preview
     
    @rate_change=JSON.parse RestClient.get $api_service+"/claims/rate_change_claim_no?claim_no=#{params[:claim_no]}&&supplier_id=#{params[:supplier_id]}"  
+  end
+
+  def non_findable_claim_preview
+    
+   @non_findable_claims=JSON.parse RestClient.get $api_service+"/claims/non_findable_claim_no?claim_no=#{params[:claim_no]}&&supplier_id=#{params[:supplier_id]}"  
   end  
 
   def sendmail_supplier_filter

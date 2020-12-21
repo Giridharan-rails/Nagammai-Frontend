@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get 'sendmails/purchase_return_claim_preview'
   get  'sendmails/free_claim_preview'
   get  'sendmails/expiry_claim_preview'
+  get  'sendmails/non_findable_claim_preview'
   post 'sendmails/settled_adjust_date_filter'
   post 'sendmails/today_adjust_date_filter'
   post 'sendmails/po_date_filter'

@@ -21,6 +21,7 @@
                    <tr>
                    <th >Product Code</th>
                    <th >Product </th>
+                   <th >Batch </th>
                    <th >Qty</th>
                    <th >Adjust Qty</th>
                    <th >Free Qty</th>
@@ -46,6 +47,8 @@
                       <tr>
                                     <td><%=i["product_code"]%></td> 
                                     <td class="text-left"><%=i["product"]["product_name"]%></td>
+                                    <td class="text-center"><%=i["expiry_date"]%></td>
+                                    <td class="text-right"><%=i["batch_desc"]%></td> 
                                     <td class="text-right"><%=i["total_quantity"]%></td> 
                                     
                                     <td class="text-right"><%=j["adjust_quantity"]%></td>
@@ -71,6 +74,7 @@
                     <tr>
                     <td><%=i["product_code"]%></td> 
                     <td class="text-left"><%=i["product"]["product_name"]%></td>
+                    <td class="text-left"><%=i["batch_desc"]%></td>
                     <td class="text-right"><%=i["total_quantity"]%></td> 
                     
                     <td class="text-right"><%= 0%></td>

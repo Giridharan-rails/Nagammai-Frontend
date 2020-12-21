@@ -57,7 +57,7 @@
                   <th class="text-center">Cut-off Date </th>                  
                   <th>Resolved By</th>
                   <th class="text-center">Created Date</th>
-                  <th>Notes</th>
+                  <th>Description</th>
                   <th>Status</th>
                   
                   <th>Remarks</th>
@@ -74,7 +74,7 @@
                     <td>
                         <span style="width: 200px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" title="<%=i["description"]%>"><%=link_to i["description"], appointment_path(:id=>i["appointment_id"],data:"issue"),class: "btn btn-link"%></span>
                     </td>
-                    <%= puts i["appointment"] %>
+                    <%#= puts i["appointment"] %>
                     <td><%=i["appointment"]["app_contact"].present? ? i["appointment"]["app_contact"]["div_name"] : "no app contact" %></td>
                   
                     <td class="text-center" data-order = "<%=i["cut_off_date"].to_date.strftime("%Y-%m-%d") if i["cut_off_date"].present? %>">
