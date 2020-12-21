@@ -134,6 +134,8 @@ class AppointmentsController < ApplicationController
   end
 # this method for appointment create
   def edit
+    users=RestClient.get $api_service+'/users'
+    @users=JSON.parse users
     @appoin="edit appointment"
     id = params[:id]
     @appointment = JSON.parse RestClient.get $api_service+'/appointments/'+id  
