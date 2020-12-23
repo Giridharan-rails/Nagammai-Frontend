@@ -224,6 +224,7 @@ get 'claims/purchase_return_claim'
   resources :receivemails
   resources :emails
   resources :goods_receipts
+  resources :claim_issues
   root :to => "users#login"
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Claim Issues</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @claim_issues.each do |claim_issue| %>
+      <tr>
+        <td><%= claim_issue["id"] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Claim Issue', new_claim_issue_path %>
