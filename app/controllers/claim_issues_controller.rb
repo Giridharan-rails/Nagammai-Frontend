@@ -1,5 +1,6 @@
 class ClaimIssuesController < ApplicationController
   before_action :set_claim_issue, only: [:show, :edit, :update, :destroy]
+  before_action :set_supplier, only: [:new]
 
   # GET /claim_issues
   # GET /claim_issues.json
@@ -16,6 +17,12 @@ class ClaimIssuesController < ApplicationController
   # GET /claim_issues/new
   def new
     @claim_issue = "new claim_issue"
+    @manufacturers=[]
+    @divisions=[]
+    @claims=[]
+    @claim_issues=[]
+    @contacts = []
+    @history=[]
   end
 
   # GET /claim_issues/1/edit
@@ -66,6 +73,10 @@ class ClaimIssuesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_claim_issue
       @claim_issue = ClaimIssue.find(params[:id])
+    end
+
+    def set_supplier
+      @suppliers = JSON.parse RestClient.get $api_service+'/suppliers'
     end
 
     # Only allow a list of trusted parameters through.
