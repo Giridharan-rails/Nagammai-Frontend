@@ -1,5 +1,5 @@
 class SendmailsController < ApplicationController
-  before_action :supplier, only: [:pending_claims_report, :free_discount_claims,:sendmails_excess_stock,:sendmails_claims_broken_damage,:purchase_order_report,:expiry_damage_claims,:purchase_return_claims,:rate_change_claims,:today_adjustment_report,:excess_stock_report,:sendmails_claims_discount,:sendmails_claims_purchase_return,:sendmails_claims_rate_change, :non_findable_claims]
+  before_action :supplier, only: [:pending_claims_report, :free_discount_claims,:sendmails_excess_stock,:sendmails_claims_broken_damage,:purchase_order_report, :sendmail_purchase_order_page, :expiry_damage_claims,:purchase_return_claims,:rate_change_claims,:today_adjustment_report,:excess_stock_report,:sendmails_claims_discount,:sendmails_claims_purchase_return,:sendmails_claims_rate_change, :non_findable_claims]
   
   add_breadcrumb "SendMails", :sendmails_path 
 
@@ -147,7 +147,13 @@ end
     begin
     order_id=[]
     @purchase_orders ="Send Purchase Orders"
-    sendmail_set=RestClient.get $api_service+'/send_mails/get_purchase_order'
+
+    if params["from_date"].present? and params["to_date"].present?
+      sendmail_set = RestClient.get $api_service+"/send_mails/send_mail_purchase_order_report?from_date=#{params["from_date"]}&to_date=#{params["to_date"]}&supplier_id=#{params["supplier_id"]}"
+    else  
+      sendmail_set = RestClient.get $api_service+'/send_mails/get_purchase_order'
+    end
+
     @purchase_order = JSON.parse sendmail_set
      rescue => e
     Rails.logger.custom_log.error { "#{e} sendmail_controller sendmail_purchase_order_page method" }
@@ -578,7 +584,6 @@ end
      @purchase_order=JSON.parse RestClient.get $api_service+'/send_mails/purchase_order_report'
     end
     #@suppliers=JSON.parse RestClient.get $api_service+'/suppliers'
-   
   end
 # to adjust the purchase return claim for view page
   def purchase_return_ajustment

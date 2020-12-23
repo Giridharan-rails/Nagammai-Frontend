@@ -15,8 +15,13 @@
           </header>
           <div class="date-search">
           <%=form_for "filter",:url=>{:controller=>"sendmails",:action=>"po_date_filter"} do |i|%>
-
             <div class="row">
+
+              <div class="col-md-3">
+                <label>Supplier</label>
+                <br>       
+                <%= select_tag "supplier_id", options_for_select(@supplier.map { |obj| [obj['supplier_name'], obj['id']] }, selected: params["supplier_id"]), class: "form-control", autofocus: true, prompt: "select" %>
+              </div>
 
               <div class="col-md-3">
                 <label>From Date</label>
@@ -29,11 +34,6 @@
                 <br>                  
                 <input name="to_date" type="text" id="dt2" class="form-control datepicker" value="<%=params["to_date"]%>" placeholder="dd-mm-yy">
               </div>              
-              <div class="col-md-3">
-                <label>Supplier</label>
-                <br>       
-                <%= select_tag "supplier_id", options_for_select(@supplier.map { |obj| [obj['supplier_name'], obj['id']] }, selected: params["supplier_id"]), class: "form-control", autofocus: true, prompt: "select" %>
-              </div>              
               
               <div class="col-md-2">
                <label></label>
@@ -41,7 +41,7 @@
                   <button class="date_submit btn btn-full btn-primary">Show</button>
               </div>
             </div>
-            <%end%>            
+          <%end%>            
           </div>
           <h3 class="page-title d-inline-flex">PO Report
           </h3>

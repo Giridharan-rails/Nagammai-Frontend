@@ -172,6 +172,7 @@ get 'wondersofts/wondersoft'
  post 'sendmails/sendmail_update'
  get 'sendmails/sendmail_redirect_page'
  get 'sendmails/sendmail_purchase_order_page'
+ match "sendmails/sendmail_purchase_order_page" => "sendmails#sendmail_purchase_order_page", via: [:get, :post]
  get 'sendmails/sendmails_excess_stock'
  get 'sendmails/sendmails_claims_discount'
  get 'sendmails/sendmails_claims_rate_change'
