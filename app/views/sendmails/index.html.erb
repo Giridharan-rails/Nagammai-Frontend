@@ -25,7 +25,7 @@
               <% @sendmail_data.map do |i| %>
                    <tr>
                 
-                    <td class="td_title"><%= i["job_name"] %> </td>
+                    <td class="td_title"><%= i["job_name"] == "Claims(NonFindable)" ? "Claims(Others)" : i["job_name"] %> </td>
                     <td class="td_scheduled_time"><span class="schedule_bg"><%=i["schedule_time"]%></span></td>
                     <td class="td_scheduled_frequency"> <%= i["schedule"]%> <%= i["schedule_period"] %></td>
                     <%if i["schedule"] =="Manual"%>
