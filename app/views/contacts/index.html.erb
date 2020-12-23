@@ -19,7 +19,7 @@
       
         <div class= "row">
           <div class="col-md-3">
-            <%= link_to 'Sample CSV Format', contacts_path(:file =>"/home/nagammaialtius/Nagammai/Nagammai-Frontend/app/assets/images/CONTACTS.csv"), class: "btn-link" %>
+            <%= link_to 'Sample CSV Format', contacts_path(:file =>"#{Rails.root.join('app','assets','images','sample_contacts.csv')}"), class: "btn-link" %>
           </div>
           <%= form_for(:sheet, url: contacts_csv_sheet_path(format: "csv")) do |f| %>
             <div class="col-md-3">

@@ -112,7 +112,7 @@
                     </div>
                     <div class="col-sm-6 col-md-3 form-group">
                       <div class="d-inline-flex">
-                        <input type="checkbox" name="mail[]" value="excess_stock" <%unless @contact["mail_allocation"].nil?%><%if @contact["mail_allocation"].split(",").include?("excess_stock").to_s == "true"%> checked <%end%><%end%>>&nbsp;Excess Stock
+                        <input type="checkbox" name="mail[]" value="non_moving_stock" <%unless @contact["mail_allocation"].nil?%><%if @contact["mail_allocation"].split(",").include?("non_moving_stock").to_s == "true"%> checked <%end%><%end%>>&nbsp;Non-Moving-Stock
                       </div>
                     </div>
                     <div class="col-sm-6 col-md-3 form-group">
@@ -137,7 +137,7 @@
                     </div>
                     <div class="col-sm-6 col-md-3 form-group">
                       <div class="d-inline-flex">
-                        <input type="checkbox" name="mail[]" value="po_gr"<%unless @contact["mail_allocation"].nil?%><%if @contact["mail_allocation"].split(",").include?("po_gr").to_s == "true"%> checked <%end%> <%end%>>&nbsp;PO-GR Mismatch
+                        <input type="checkbox" name="mail[]" value="other_claim"<%unless @contact["mail_allocation"].nil?%><%if @contact["mail_allocation"].split(",").include?("other_claim").to_s == "true"%> checked <%end%> <%end%>>&nbsp;Other Claim
                       </div>
                     </div>
                 </div>

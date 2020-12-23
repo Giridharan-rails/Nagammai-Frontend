@@ -477,13 +477,17 @@ end
 def file_download
 
 file={"file":params["contacts"]["file"]}
-
-contact=RestClient.post $api_service+'/contacts/file_upload',file
-if contact.present?
- result=JSON.parse contact
+begin
+  contact=RestClient.post $api_service+'/contacts/file_upload',file
+  if contact.present?
+   result=JSON.parse contact
+  end
+  redirect_to action: "index"
+  flash[:notice]="SuceesFully Uploaded"
+rescue => e
+  redirect_to action: "index"
+  flash[:notice]="Something went wrong while uploading file, Check input data format"
 end
-redirect_to action: "index"
-flash[:notice]="SuceesFully Uploaded"
 
 
 
