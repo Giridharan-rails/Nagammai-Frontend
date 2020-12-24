@@ -56,6 +56,7 @@ class AppointmentsController < ApplicationController
          #@contacts = []
          #@history = []
       if params["format"].present?
+        @users=JSON.parse RestClient.get $api_service+'/users'
          case params["type"]
               when "supplier_id"
                    @contacts= JSON.parse RestClient.get $api_service+'/suppliers/supplier_contact?supplier_id='+params[:format]

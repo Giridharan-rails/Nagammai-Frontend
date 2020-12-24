@@ -1,12 +1,16 @@
 class ClaimIssuesController < ApplicationController
-  before_action :set_claim_issue, only: [:show, :edit, :update, :destroy]
-  before_action :set_supplier, only: [:new]
+ # before_action :set_claim_issue, only: [:show, :edit, :update, :destroy]
+  before_action :set_supplier, only: [:new, :index]
 
   # GET /claim_issues
   # GET /claim_issues.json
   def index
-    response = RestClient.get $api_service+'/claim_issues'
+    @users=JSON.parse RestClient.get $api_service+'/users'
+    @from_date, @to_date, @status, @user_id, @supplier_id, @division_id = params["from_date"], params["to_date"], params["status"], params["user_id"], params["supplier_id"], params["division_id"]
+    response = RestClient.get $api_service+"/claim_issues?from_date=#{params["from_date"]}&to_date=#{params["to_date"]}&status=#{params["status"]}&division_id=#{params["division_id"]}&user_id=#{params["user_id"]}"
+    user = RestClient.get $api_service+"/users/#{session[:user_id]}"
     @claim_issues = JSON.parse response
+    @user = JSON.parse user
   end
 
   # GET /claim_issues/1
@@ -22,7 +26,7 @@ class ClaimIssuesController < ApplicationController
     @claims=[]
     @claim_issues=[]
     @contacts = []
-    @history=[]
+    @users = []
   end
 
   # GET /claim_issues/1/edit
@@ -32,16 +36,13 @@ class ClaimIssuesController < ApplicationController
   # POST /claim_issues
   # POST /claim_issues.json
   def create
-    @claim_issue = ClaimIssue.new(claim_issue_params)
-
-    respond_to do |format|
-      if @claim_issue.save
-        format.html { redirect_to @claim_issue, notice: 'Claim issue was successfully created.' }
-        format.json { render :show, status: :created, location: @claim_issue }
-      else
-        format.html { render :new }
-        format.json { render json: @claim_issue.errors, status: :unprocessable_entity }
-      end
+    begin
+    params.permit!
+    claim_issue = {:claim_issue => {"description" => params["description"], "contact_id" => params["contact_id"], "user_id" => params["user_id"], "cut_off_date" => params["cut_off_date"],"status"=> params["status"], "notes" => params["notes"], "division_id" => params["division_id"]}}
+    response = RestClient.post $api_service+'/claim_issues',claim_issue
+    redirect_to :action => "index"
+    rescue =>e
+        Rails.logger.custom_log.error { "#{e} ClaimIssuesController create method" }
     end
   end
 
@@ -62,17 +63,14 @@ class ClaimIssuesController < ApplicationController
   # DELETE /claim_issues/1
   # DELETE /claim_issues/1.json
   def destroy
-    @claim_issue.destroy
-    respond_to do |format|
-      format.html { redirect_to claim_issues_url, notice: 'Claim issue was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    response = RestClient.delete $api_service+"/claim_issues/"+params['id']
+    redirect_to :action => "index"
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_claim_issue
-      @claim_issue = ClaimIssue.find(params[:id])
+      @claim_issue = ClaimIssue.find(params["id"])
     end
 
     def set_supplier

@@ -35,14 +35,20 @@ class IssuesController < ApplicationController
     approval=params["approval"]
 
     remarks=params["remarks"]
+    from_date=params["from_date"]
+    to_date=params["to_date"]
+    status=params["status"]
+    division_id=params["division_id"]
+    supplier_id=params["supplier_id"]
+    users=params["users"]
     
-    issue={"ids"=>ids,"status"=>status,"approval"=>approval,"remarks"=> remarks }
+    issue={"ids"=>ids,"status"=>status,"users"=>users,"remarks"=> remarks }
     data=RestClient.post $api_service+'/sops/issues_update',issue
     #rescue => e
    # Rails.logger.custom_log.error { "#{e.class} #{sops_controller issue_update method}" }
     #end
     #JSON.parse data
-    redirect_to :action=>"index"
+    redirect_to claim_issues_path#(status:status,from_date:from_date,to_date:to_date,supplier_id:supplier_id,division_id: division_id,user_id: user_id)
     
   end
 # this is to filter the issues by fromdate, todate and status
@@ -51,7 +57,10 @@ class IssuesController < ApplicationController
   from_date=params["from_date"]
   to_date=params["to_date"]
   status=params["status"]
-  redirect_to :action=>"index",stat:status,from_date:from_date,to_date:to_date
+  supplier_id=params["supplier_id"]
+  division_id=params["division_id"]
+  user_id=params["user_id"]
+  redirect_to claim_issues_path(status:status,from_date:from_date,to_date:to_date,supplier_id: supplier_id, division_id: division_id,user_id: user_id)
  
   end
   # this method is to filter the approved claim issues

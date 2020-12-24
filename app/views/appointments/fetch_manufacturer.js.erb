@@ -2,6 +2,7 @@ $(".contacts").html("<%= escape_javascript(render 'contacts') %>");
 $(".history").html("<%= escape_javascript(render 'histroy') %>");
 <%unless @contacts.nil?%>
 $('.claim_contact').html("<%= escape_javascript select("claim_issue", "id", @contacts.collect {|p| [ p["name"], p["id"] ] },{:include_blank => "Please select"}, {class: "claim_contact"})%>");
+$('.nagammai_users').html("<%= escape_javascript select("claim_issue", "id", @users.collect {|p| [ p["user_name"], p["id"] ] },{:include_blank => "Please select"}, {class: "claim_contact"})%>");
 <%end%>
 <%unless @division.nil?%>
 
