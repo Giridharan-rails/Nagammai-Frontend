@@ -153,7 +153,6 @@
                       <%end%>
                       <%if @pending_claims["expiry"].present?%>
                         <%@pending_claims["expiry"].map do |j|%>
-                        <%= j %>
                               <%claim_amount=[]%>
                               <% j["claim_amount"].map {|k|  claim_amount << k.to_f} %>
                                <%# j["data"].map{|k| claim_amount << k["claim_amount"].to_f if k["ack_date"]} %>

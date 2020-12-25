@@ -14,42 +14,42 @@
           </header>
           <!--   <a href="claims_add.html?sent=addclaims" class="btn_add" data-target="#exampleModalLabel"><i class="fa fa-plus" aria-hidden="true"></i></a> -->
           <div class="date-search">
-            <div class="row">
-               <!--  <div class="col-md-3">
-                  <input type="date" name="date" class="form-control" id="date">
-                </div> -->
+            <%=form_for "filter",:url=>{:controller=>"sendmails",:action=>"overall_claims_report"} do |i|%>
 
-		            <div class="col-md-3">
-                  <label>Supplier</label>
-                  <br>
-                  <%= select_tag "supplier_id", options_for_select(@supplier.map { |obj| [obj['supplier_name'], obj['id']] }), id: "supplier", autofocus: true, prompt: "select" %>
-                </div>
+                <div class="row">
+                 <!--  <div class="col-md-3">
+                    <input type="date" name="date" class="form-control" id="date">
+                  </div> -->
+                  <div class="col-md-3">
+                    <label>Supplier</label>
+                    <br>
+                    <%= select_tag "supplier_id", options_for_select(@supplier.map { |obj| [obj['supplier_name'], obj['id']] }), id: "supplier", autofocus: true, prompt: "select" %>
+                  </div>
 
-                <div class="col-md-3">
-                  <label>From Date</label>
-                  <br>
-                  <input name="from_date" type="text" id="dt1" class="form-control datepicker" value="<%=@from_date%>" placeholder="dd-M-yy">
+                  <div class="col-md-3">
+                    <label>From Date</label>
+                    <br>
+                    <input name="from_date" type="text" id="dt1" class="form-control datepicker" value="<%=@from_date%>" placeholder="dd-mm-yy">
+                  </div>
+                  
+                  <div class="col-md-3">
+                    <label>To Date</label>
+                    <br>                  
+                    <input name="to_date" type="text" id="dt2" class="form-control datepicker" value="<%=@to_date%>" placeholder="dd-mm-yy">
+                  </div>
+                  <!-- <div class="col-md-3">
+                    <label>Supplier</label>
+                    <br>                  
+                    <!%= select_tag "supplier_id", options_for_select(@supplier.map { |obj| [obj['supplier_name'], obj['id']] }), class: "form-control", autofocus: true, prompt: "select", required: "true" %>
+                  </div>
+                   -->
+                  <div class="col-md-3">
+                    <label></label>
+                    <br>
+                    <button class=" btn btn-primary">Show</button>
+                  </div>
                 </div>
-                
-                <div class="col-md-3">
-                  <label>To Date</label>
-                  <br>                  
-                  <input name="to_date" type="text" id="dt2" class="form-control datepicker" value="<%=@to_date%>" placeholder="dd-M-yy">
-                </div>
-
-                <!-- <div class="col-md-3">
-                <label>Supplier</label>
-                <br>       
-                <%#= select_tag "supplier_id", options_for_select(@supplier.map { |obj| [obj['supplier_name'], obj['id']] }, selected: params["supplier_id"]), class: "form-control", autofocus: true, prompt: "select" %>
-              </div>   -->            
-
-              
-                <div class="col-md-3">
-                  <label></label>
-                  <br>
-                <button class="date_submit btn btn-primary load ">Show</button>
-                </div>
-            </div>            
+            <%end%>            
           </div>
           <h3 class="page-title">Overall Claims</h3>
 <!--             <input placeholder="Search" id="system-search" class="" type="text"></span></h3>

@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   get 'sendmails/expiry_damage_claims'
   post 'sendmails/adjustment_rate_change'
   get 'sendmails/overall_claims_report'
+  post 'sendmails/overall_claims_report'
   get 'sendmails/settled_claims_report'
   post 'sendmails/adjustment_free_discount'
   get 'sendmails/free_discount_adjustment'

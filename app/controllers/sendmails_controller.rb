@@ -1,5 +1,5 @@
 class SendmailsController < ApplicationController
-  before_action :supplier, only: [:pending_claims_report, :free_discount_claims,:sendmails_excess_stock,:sendmails_claims_broken_damage,:purchase_order_report, :sendmail_purchase_order_page, :expiry_damage_claims,:purchase_return_claims,:rate_change_claims,:today_adjustment_report,:excess_stock_report,:sendmails_claims_discount,:sendmails_claims_purchase_return,:sendmails_claims_rate_change, :non_findable_claims]
+  before_action :supplier, only: [:pending_claims_report, :free_discount_claims, :overall_claims_report, :sendmails_excess_stock,:sendmails_claims_broken_damage,:purchase_order_report, :sendmail_purchase_order_page, :expiry_damage_claims,:purchase_return_claims,:rate_change_claims,:today_adjustment_report,:excess_stock_report,:sendmails_claims_discount,:sendmails_claims_purchase_return,:sendmails_claims_rate_change, :non_findable_claims]
   
   add_breadcrumb "SendMails", :sendmails_path 
 
@@ -613,7 +613,7 @@ end
   def overall_claims_report
     @from_date = params["from_date"].present? ? params["from_date"].to_date.strftime("%d-%m-%Y") : Date.today
     @to_date = params["to_date"].present? ? params["to_date"].to_date.strftime("%d-%m-%Y") : Date.today
-    @pending_claims=JSON.parse RestClient.get $api_service+"/send_mails/overall_claims_report"  
+    @pending_claims=JSON.parse RestClient.get $api_service+"/send_mails/overall_claims_report?from_date=#{@from_date}&to_date=#{@to_date}&supplier_id=#{params[:supplier_id]}"
   end
 #to display the expiry damage claim by slected suppliers
 
@@ -622,7 +622,7 @@ end
     @from_date = params["from_date"].present? ? params["from_date"].to_date.strftime("%d-%m-%Y") : Date.today
     @to_date = params["to_date"].present? ? params["to_date"].to_date.strftime("%d-%m-%Y") : Date.today
     #if params["supplier_id"].present?
-      @brokens= JSON.parse RestClient.get $api_service+"/claims/expiry_damage_claims?supplier_id=#{params["supplier_id"]}&&from_date=#{params[:from_date]}&&to_date=#{params[:to_date]}"
+      @brokens= JSON.parse RestClient.get $api_service+"/claims/expiry_damage_claims?from_date=#{@from_date}&to_date=#{@to_date}&supplier_id=#{params[:supplier_id]}"
     #else
      # @brokens= JSON.parse RestClient.get $api_service+'/claims/expiry_damage_claims'
     #end
@@ -634,7 +634,7 @@ end
     @from_date = params["from_date"].present? ? params["from_date"].to_date.strftime("%d-%m-%Y") : Date.today
     @to_date = params["to_date"].present? ? params["to_date"].to_date.strftime("%d-%m-%Y") : Date.today
     #if params["supplier_id"].present?
-      @brokens=JSON.parse RestClient.get $api_service+"/claims/free_discount_claims?supplier_id=#{params["supplier_id"]}&&from_date=#{params[:from_date]}&&to_date=#{params[:to_date]}"
+      @brokens=JSON.parse RestClient.get $api_service+"/claims/free_discount_claims?from_date=#{@from_date}&to_date=#{@to_date}&supplier_id=#{params[:supplier_id]}"
     #else
      # @brokens=JSON.parse RestClient.get $api_service+'/claims/free_discount_claims'
     #end
@@ -646,7 +646,7 @@ end
     @from_date = params["from_date"].present? ? params["from_date"].to_date.strftime("%d-%m-%Y") : Date.today
     @to_date = params["to_date"].present? ? params["to_date"].to_date.strftime("%d-%m-%Y") : Date.today
     #if params["supplier_id"].present?
-      @brokens=JSON.parse RestClient.get $api_service+"/claims/purchase_return_claims?supplier_id=#{params["supplier_id"]}&&from_date=#{params[:from_date]}&&to_date=#{params[:to_date]}"
+      @brokens=JSON.parse RestClient.get $api_service+"/claims/purchase_return_claims?from_date=#{@from_date}&to_date=#{@to_date}&supplier_id=#{params[:supplier_id]}"
     #else
      #@brokens=JSON.parse RestClient.get $api_service+'/claims/purchase_return_claims'
     #end
@@ -659,7 +659,7 @@ end
     @from_date = params["from_date"].present? ? params["from_date"].to_date.strftime("%d-%m-%Y") : Date.today
     @to_date = params["to_date"].present? ? params["to_date"].to_date.strftime("%d-%m-%Y") : Date.today
     #if params["supplier_id"].present?
-      @brokens=JSON.parse RestClient.get $api_service+"/claims/rate_change_claims?supplier_id=#{params["supplier_id"]}&&from_date=#{params[:from_date]}&&to_date=#{params[:to_date]}"
+      @brokens=JSON.parse RestClient.get $api_service+"/claims/rate_change_claims?from_date=#{@from_date}&to_date=#{@to_date}&supplier_id=#{params[:supplier_id]}"
     #else
      # @brokens=JSON.parse RestClient.get $api_service+'/claims/rate_change_claims'
     #end
@@ -669,7 +669,7 @@ end
   def non_findable_claims
     @from_date = params["from_date"].present? ? params["from_date"].to_date.strftime("%d-%m-%Y") : Date.today
     @to_date = params["to_date"].present? ? params["to_date"].to_date.strftime("%d-%m-%Y") : Date.today
-    @brokens=JSON.parse RestClient.get $api_service+"/claims/non_findable_claims?supplier_id=#{params["supplier_id"]}&&from_date=#{params[:from_date]}&&to_date=#{params[:to_date]}"
+    @brokens=JSON.parse RestClient.get $api_service+"/claims/non_findable_claims?from_date=#{@from_date}&to_date=#{@to_date}&supplier_id=#{params[:supplier_id]}"
   end
   #to display the today's adjustment claims
   def pending_claims_report
