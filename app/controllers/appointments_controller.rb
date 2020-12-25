@@ -57,8 +57,12 @@ class AppointmentsController < ApplicationController
          #@history = []
       if params["format"].present?
         @users=JSON.parse RestClient.get $api_service+'/users'
+        puts "===from => #{params[:from]}"
          case params["type"]
               when "supplier_id"
+                  if params[:from] == "index"
+                   @division=JSON.parse RestClient.get $api_service+'/suppliers/supplier_manufacturer?supplier_id='+params[:format]
+                  else                    
                    @contacts= JSON.parse RestClient.get $api_service+'/suppliers/supplier_contact?supplier_id='+params[:format]
                    @history =(JSON.parse RestClient.get $api_service+'/appointments/supplier_histroy?supplier_id='+params[:format])
                    #@manufacturers=JSON.parse RestClient.get $api_service+'/suppliers/supplier_manufacturer?supplier_id='+params[:format]
@@ -69,6 +73,7 @@ class AppointmentsController < ApplicationController
                    @claim_issues=JSON.parse RestClient.get $api_service+'/suppliers/supplier_claim_issue?supplier_id='+params[:format]
                    @manufacturers=[] if @manufacturers[0]["response"].present?
                    @divisions=[]
+                  end
                    
                    
               when "manufacturer_id"

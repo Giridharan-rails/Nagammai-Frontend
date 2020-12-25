@@ -1,16 +1,15 @@
 class ClaimIssuesController < ApplicationController
  # before_action :set_claim_issue, only: [:show, :edit, :update, :destroy]
-  before_action :set_supplier, only: [:new, :index]
+  before_action :load_suppliers, only: [:new, :index]
+  before_action :load_users, only: [:new, :index]
 
   # GET /claim_issues
   # GET /claim_issues.json
   def index
-    @users=JSON.parse RestClient.get $api_service+'/users'
     @from_date, @to_date, @status, @user_id, @supplier_id, @division_id = params["from_date"], params["to_date"], params["status"], params["user_id"], params["supplier_id"], params["division_id"]
     response = RestClient.get $api_service+"/claim_issues?from_date=#{params["from_date"]}&to_date=#{params["to_date"]}&status=#{params["status"]}&division_id=#{params["division_id"]}&user_id=#{params["user_id"]}"
-    user = RestClient.get $api_service+"/users/#{session[:user_id]}"
+    @divisions = JSON.parse RestClient.get $api_service+'/suppliers/supplier_manufacturer?supplier_id='+@supplier_id.to_s
     @claim_issues = JSON.parse response
-    @user = JSON.parse user
   end
 
   # GET /claim_issues/1
@@ -73,8 +72,13 @@ class ClaimIssuesController < ApplicationController
       @claim_issue = ClaimIssue.find(params["id"])
     end
 
-    def set_supplier
+    def load_suppliers
       @suppliers = JSON.parse RestClient.get $api_service+'/suppliers'
+    end
+
+    def load_users
+      @users = JSON.parse RestClient.get $api_service+'/users'
+      @user = JSON.parse RestClient.get $api_service+"/users/#{session[:user_id]}"
     end
 
     # Only allow a list of trusted parameters through.

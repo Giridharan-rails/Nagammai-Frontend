@@ -17,58 +17,56 @@
     </header>
      <%=form_for "filter",:url=>{:controller=>"issues",:action=>"datewisefilter"}  do |i|%>
       <div class="date-search">
-      <div class="row">
-          <div class="col-md-2">
-              <label>From Date</label>
-              <br>
-              <input name="from_date" type="text" id="dt1" class="form-control datepicker" value="<%=@from_date%>" placeholder="dd-M-yy">
-          </div>
-          <div class="col-md-2">
-              <label>To Date</label>
-              <br>
-              <input name="to_date" type="text" id="dt2" class="form-control datepicker" value="<%=@to_date%>" placeholder="dd-M-yy">
-          </div>
-          <div class="col-md-2">
-              <label>Issue Status</label>
-              <br>
-              <select class="form-control filter" name="status">
-                  <option value="" selected>Select</option>
-                  <option value="Open" <% if @status=="Open" %> selected
-                      <%end%>>Open</option>
-                  <option value="Closed" <% if @status=="Closed" %> selected
-                      <%end%>>Closed</option>
-                  <option value="Re-open" <% if @status=="Re-open" %> selected
-                      <%end%>>Re-open</option>
-                  <option value="Approved" <% if @status=="Approved" %> selected
-                      <%end%>>Approved</option>
-              </select>
-          </div>
-          <div class="col-md-2">
-              <label>Assigned To</label>
-              <br>
-              <%= select_tag "user_id", options_for_select((@users || []).map { |obj| [obj['user_name'], obj['id']] }, @user_id), class: "fold1 s1 form-control", autofocus: true, prompt: "select" %>
-          </div>
-          <div class="col-md-2">
-              <label class="form-control-label" for="formGroupExampleInput">Select Supplier</label>
-              <%= select_tag "supplier_id", options_for_select((@suppliers || []).map { |obj| [obj['supplier_name'], obj['id']] }, @supplier_id), class: "fold1 s1 form-control", autofocus: true, prompt: "select" %>
-          </div>
-          <div class="col-md-2">
-              <div id="CarsDivision" class="desc">
-                  <label class="form-control-label" for="formGroupExampleInput">Select Division</label>
-                  <%= select_tag "division_id", options_for_select((@divisions || []).map { |obj| [obj['div_name'], obj['id']] }, @division_id), class: "fold1 divi  form-control", autofocus: true, prompt: "select" %>
-              </div>
-          </div>
-          <div class="col-md-2">
-              <label>&nbsp;</label>
-              <br>
-              <%=i.submit "Show", class: "btn btn-full btn-primary"%>
-          </div>
-      </div>
+        <div class="row">
+            <div class="col-md-2">
+                <label>From Date</label>
+                <br>
+                <input name="from_date" type="text" id="dt1" class="form-control datepicker" value="<%=@from_date%>" placeholder="dd-M-yy">
+            </div>
+            <div class="col-md-2">
+                <label>To Date</label>
+                <br>
+                <input name="to_date" type="text" id="dt2" class="form-control datepicker" value="<%=@to_date%>" placeholder="dd-M-yy">
+            </div>
+            <div class="col-md-2">
+                <label>Issue Status</label>
+                <br>
+                <select class="form-control filter" name="status">
+                    <option value="" selected>Select</option>
+                    <option value="Open" <% if @status=="Open" %> selected
+                        <%end%>>Open</option>
+                    <option value="Closed" <% if @status=="Closed" %> selected
+                        <%end%>>Closed</option>
+                    <option value="Re-open" <% if @status=="Re-open" %> selected
+                        <%end%>>Re-open</option>
+                    <option value="Approved" <% if @status=="Approved" %> selected
+                        <%end%>>Approved</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label>Assigned To</label>
+                <br>
+                <%= select_tag "user_id", options_for_select((@users || []).map { |obj| [obj['user_name'], obj['id']] }, @user_id), class: "  form-control", autofocus: true, prompt: "All" %>
+            </div>
+            <div class="col-md-2">
+                <label class="form-control-label" for="formGroupExampleInput">Select Supplier</label>
+                <%= select_tag "supplier_id", options_for_select((@suppliers || []).map { |obj| [obj['supplier_name'], obj['id']] }, @supplier_id), class: "fold1 s1 form-control", autofocus: true, prompt: "select" %>
+            </div>
+            <div class="col-md-2">
+                <div id="CarsDivision" class="desc">
+                    <label class="form-control-label" for="formGroupExampleInput">Select Division</label>
+                    <%= select_tag "division_id", options_for_select((@divisions || []).map { |obj| [obj['div_name'], obj['id']] }, @division_id), class: "divi  form-control", autofocus: true, prompt: "select" %>
+                </div>
+            </div>
+        </div>
+          <div class="text-center">
+            <%= i.submit "Show", class: "btn btn-primary"%>
+         </div>
       </div>
     <%end%>
 
-      <h3>Issues Audit Report</h3>           
-      </header>
+<!--       <h3>Issues Audit Report</h3>           
+ -->      </header>
         <%=form_for "issue_update",:url=>{:controller=>"issues",:action=>"issue_update"} do |j|%>
           <div class="display status">
             <table id="example">
@@ -82,7 +80,9 @@
                   <th>Notes</th>
                   <th>Status</th>
                   <th>Assigned To</th> 
-                  <th>Action</th> 
+                  <%if @user["role"]=="Admin"%>
+                    <th>Delete</th> 
+                  <%end%>
                 </tr>
               </thead>
               <tbody>
@@ -187,19 +187,19 @@
 <script type="text/javascript">
   $(document).ready(function(){
     $(".fold1").change(function(){
-     $(".overlay").show();
+     // $(".overlay").show();
       var id=($(this).val());
       var value=($(this).attr("id"));
        $.ajax({
           url: '/appointments/fetch_manufacturer',
-          data: {format: id, type: value},
+          data: {format: id, type: value, from: "index"},
           dataType: 'script',
            
           success: function(data) {
 
               // setTimeout added to show loading
               setTimeout(function () {
-  $(".overlay").hide();                              
+  // $(".overlay").hide();                              
               });
           }
       });
