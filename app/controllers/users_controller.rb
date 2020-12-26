@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   def index
    Rails.logger.info_log.info  " I,[#{Time.now.strftime("%Y-%m-%d %H:%M:%S %Z")}]" "INFO -- : Entered in user index page"
    begin
-
+    @current_user = JSON.parse RestClient.get $api_service+"/users/#{session[:user_id]}"
     users=RestClient.get $api_service+'/users'
     @users=JSON.parse users
     if @users.present?
@@ -23,6 +23,11 @@ class UsersController < ApplicationController
   end
 # to create new use page
   def new
+    @current_user = JSON.parse RestClient.get $api_service+"/users/#{session[:user_id]}"
+    if @current_user["role"] != "Admin"
+      flash[:notice] = "You're not allowed for this action"
+      redirect_to :action => "index"
+    end
       Rails.logger.info_log.info  " I,[#{Time.now.strftime("%Y-%m-%d %H:%M:%S %Z")}]" "INFO -- : Entered in user creation page"
    @user="new user"
     add_breadcrumb "Users", :users_path  
@@ -96,6 +101,7 @@ class UsersController < ApplicationController
   def edit
     Rails.logger.info_log.info  " I,[#{Time.now.strftime("%Y-%m-%d %H:%M:%S %Z")}]" "INFO -- : User entered in edit page"
     begin
+    @current_user = JSON.parse RestClient.get $api_service+"/users/#{session[:user_id]}"
     id=params[:id]
     user=RestClient.get $api_service+'/users/'+id
     @user=JSON.parse user
