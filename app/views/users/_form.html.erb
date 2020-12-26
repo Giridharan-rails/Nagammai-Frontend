@@ -10,13 +10,21 @@
               <%= form_for(:users, :url => {:controller => 'users',:action => 'user_update', method: :put}) do |f| %> 
 
                    <%=f.hidden_field 'id',:value=>@user["id"]  %>
-                   <div class="form-group"><label for="exampleInputName">Name<span class="required">*</span></label>  <%= f.text_field :username,:value=>@user["user_name"], class: "form-control",name: "username", required: "true",placeholder: "UserName"%></div>
-                    <div class="form-group"><label for="exampleInputName"> Email<span class="required">*</span></label> <%= f.text_field :email,:value=>@user["email"], class: "form-control", name: "email", required: "true", pattern: "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$",placeholder: "Enter your  Email"%> </div>
-                   <div class="form-group"><label for="exampleInputName">Password<span class="required">*</span></label> <%= f.password_field :password,:value=>@user["password"], class: "form-control", name: "password", required: "true",placeholder: "Password"%></div>
-                    <div class="form-group"><label for="exampleInputName">Role<span class="required">*</span></label> <%= select_tag "user", options_for_select([['Admin' ,'Admin'], ['User', 'User']],:selected=>@user["role"]),include_blank: "Select Option", required: "true"%> </div>
-                 <footer class="form-footer">
-                    <%=f.submit "Save" , class: "btn btn-primary btn-one ", id: "user1"%>
-                    <%=link_to "Cancel",users_path , class: "btn btn-primary", id: "user2"%>
+                    <div class="form-group"><label for="exampleInputName">Name<span class="required">*</span></label>
+                        <%= f.text_field :username,:value=>@user["user_name"], class: "form-control",name: "username", required: "true",placeholder: "UserName"%>
+                    </div>
+                    <div class="form-group"><label for="exampleInputName"> Email<span class="required">*</span></label>
+                        <%= f.text_field :email,:value=>@user["email"], class: "form-control", name: "email", required: "true", pattern: "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$",placeholder: "Enter your  Email"%>
+                    </div>
+                    <div class="form-group"><label for="exampleInputName">Password<span class="required">*</span></label>
+                        <%= f.password_field :password,:value=>@user["password"], class: "form-control", name: "password", required: "true",placeholder: "Password"%>
+                    </div>
+                    <div class="form-group"><label for="exampleInputName">Role<span class="required">*</span></label>
+                        <%= select_tag "user", options_for_select([['Admin' ,'Admin'], ['User', 'User']],:selected=>@user["role"]),include_blank: "Select Option", required: "true", disabled: @current_user["role"] == "Admin" ? false : true %>
+                    </div>
+                    <footer class="form-footer">
+                        <%=f.submit "Save" , class: "btn btn-primary btn-one ", id: "user1"%>
+                        <%=link_to "Cancel",users_path , class: "btn btn-primary", id: "user2"%>
                     </footer>
               <% end %>
                  

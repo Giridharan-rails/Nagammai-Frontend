@@ -1,4 +1,6 @@
-
+<% if flash[:notice] %>
+    <div class="notice text-center"><%= flash[:notice] %></div>
+  <% end %>
        <div class="container-fluid user-index">
           <header class="table-header">
           <ol class="breadcrumb">
@@ -6,7 +8,9 @@
             </ol>
              <h3>Users</h3>
           </header>
+          <%if @current_user["role"]=="Admin"%>
           <a href="users/new" class="btn_add" data-toggle="tooltip" title="Add Users"><i class="fa fa-plus" aria-hidden="true"></i></a>
+          <% end %>
           <div class="">
               <table id="example" class="table table_front table-striped">
                 <thead>
@@ -15,7 +19,9 @@
                     <th class="th_email">Email ID</th>
                     <th class="th_role">Role</th>
                     <th class="th_user_edit">Edit</th>
+                    <%if @current_user["role"]=="Admin"%>
                     <th class="th_user_delete">Delete</th>
+                    <% end %>
                     <th class="th_user_assign">Assign</th>
                   </tr>
                 </thead>
@@ -28,7 +34,10 @@
                     <td class="td_role"><%= i["role"] %> </td>
                    
                     <td class="td_user_edit"><%= link_to '', edit_user_path(i["id"]) , class:"fa fa-pencil-square-o icon_clr load" %></td>
-                    <td class="td_user_delete"><%= link_to '', users_delete_path(i["id"]), method: :delete, data: { confirm: 'Are you sure?' } ,class:"fa fa-trash-o icon_clr load"%></td>
+                    
+                    <%if @current_user["role"]=="Admin"%>
+                      <td class="td_user_delete"><%= link_to '', users_delete_path(i["id"]), method: :delete, data: { confirm: 'Are you sure?' } ,class:"fa fa-trash-o icon_clr load"%></td>
+                    <%end%>
 
                   <% if i["role"]== "User"%>
                     <td class="td_user_assign"><%= link_to '', users_user_assign_path(:format=>i["id"]) ,class:"fa fa-list icon_clr load"%></td>
