@@ -9,7 +9,7 @@ class AppointmentsController < ApplicationController
      #unless params["to_date"].nil?
 
       @from_date=params["from_date"].present? ? params["from_date"] : (Date.today).strftime("%d-%m-%Y")
-      @to_date=params["to_date"].present? ? params["to_date"] : (Date.today+5.days).strftime("%d-%m-%Y")
+      @to_date=params["to_date"].present? ? params["to_date"] : (Date.today+4.days).strftime("%d-%m-%Y")
       @type=params["type_base"]
       @data=params["data"]
        @all_appointments=(JSON.parse RestClient.get $api_service+"/appointments/appoint_filter?from_date=#{@from_date}&to_date=#{@to_date}&type_base=#{@type}")
