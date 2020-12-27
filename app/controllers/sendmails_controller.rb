@@ -613,6 +613,7 @@ end
   def overall_claims_report
     @from_date = params["from_date"].present? ? params["from_date"].to_date.strftime("%d-%m-%Y") : Date.today
     @to_date = params["to_date"].present? ? params["to_date"].to_date.strftime("%d-%m-%Y") : Date.today
+    @supplier_id = params["supplier_id"]
     @pending_claims=JSON.parse RestClient.get $api_service+"/send_mails/overall_claims_report?from_date=#{@from_date}&to_date=#{@to_date}&supplier_id=#{params[:supplier_id]}"
   end
 #to display the expiry damage claim by slected suppliers
@@ -675,6 +676,7 @@ end
   def pending_claims_report
     @from_date = params["from_date"].present? ? params["from_date"].to_date.strftime("%d-%m-%Y") : Date.today
     @to_date = params["to_date"].present? ? params["to_date"].to_date.strftime("%d-%m-%Y") : Date.today
+    @supplier_id = params["supplier_id"]
     pending_claims = RestClient.get $api_service+"/send_mails/pending_claims_report?from_date=#{@from_date}&to_date=#{@to_date}&supplier_id=#{params[:supplier_id]}"
     @pending_claims = JSON.parse pending_claims
   #@supplier= JSON.parse RestClient.get $api_service+'/suppliers'

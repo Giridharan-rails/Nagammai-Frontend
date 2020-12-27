@@ -1,7 +1,7 @@
 <head>
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css"/>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
+ --><script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
 
 </head>
 <section>
@@ -39,8 +39,6 @@
                         <%end%>>Closed</option>
                     <option value="Re-open" <% if @status=="Re-open" %> selected
                         <%end%>>Re-open</option>
-                    <option value="Approved" <% if @status=="Approved" %> selected
-                        <%end%>>Approved</option>
                 </select>
             </div>
             <div class="col-md-2">
@@ -50,7 +48,7 @@
             </div>
             <div class="col-md-2">
                 <label class="form-control-label" for="formGroupExampleInput">Select Supplier</label>
-                <%= select_tag "supplier_id", options_for_select((@suppliers || []).map { |obj| [obj['supplier_name'], obj['id']] }, @supplier_id), class: "fold1 s1 form-control", autofocus: true, prompt: "select" %>
+                <%= select_tag "supplier_id", options_for_select(@suppliers.map { |obj| [obj['supplier_name'], obj['id']] }, @supplier_id), class: "fold1 s1", autofocus: true, prompt: "select", required: "true",value: "supplier" %>
             </div>
             <div class="col-md-2">
                 <div id="CarsDivision" class="desc">
@@ -69,6 +67,8 @@
  -->      </header>
         <%=form_for "issue_update",:url=>{:controller=>"issues",:action=>"issue_update"} do |j|%>
           <div class="display status">
+            <%=j.submit "Save" , class: "btn btn-one load", id: "sopissue1"%>
+            <%=link_to "Cancel", pages_dashboard_path , class: "btn btn-primary load", id: "sopissue2"%>
             <table id="example">
                <thead>
                 <tr>
@@ -136,10 +136,9 @@
             </table>         
 
           </div>
-            <footer class="table-footer">
-          <%=j.submit "Save" , class: "btn btn-one load", id: "sopissue1"%>
-          <%=link_to "Cancel", pages_dashboard_path , class: "btn btn-primary load", id: "sopissue2"%>
-          </footer>
+            <!-- <footer class="table-footer">
+          
+            </footer> -->
           <%end%>
 </div>
           
@@ -209,8 +208,8 @@
 </script>
   <link rel="stylesheet" href="/assets/datatable.css">
   <link rel="stylesheet" href="/assets/datatablebutton.css">
-  <script src="/assets/datatablejquery.js"></script>
-  <script src="/assets/datatablejquery1.js"></script>
+<!--   <script src="/assets/datatablejquery.js"></script>
+ -->  <script src="/assets/datatablejquery1.js"></script>
   <script src="/assets/datatablebuttons.js"></script>
   <script src="/assets/datatablejszip.js"></script>
   <script src="/assets/datatablepdf.js"></script>
@@ -253,7 +252,12 @@
 
   </script>
 
-
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.s1').prepend('<option></option>').select2({placeholder: " Please Select"});
+    $('.d1').prepend('<option></option>').select2({placeholder: " Please Select"});
+  });
+</script>
 
 
 
