@@ -213,59 +213,66 @@
       </div>
     
       <div class="col-md-12">
-        <div class="card card_padding_inner">
-          <a id="add-spec" class="btn btn-link add-btn">
-            <i class="fa fa-plus" aria-hidden="true"></i> Add Issue
-          </a>          
-         <div class="table-responsive">
-  <table class="spec-table table">
-    <thead>
-    <tr>
-      <th class="th_description">Description</th>
-      <th class="th_resolvedby">Resolved By</th>
-      <th class="th_cut_off">By Cut-Off Date</th>
-      <th class="th_issues_status">Status</th>
-      <th class="th_issues_notes">Notes</th>
-      <th class="th_delete">Delete</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr class="sm">
-    <td><input type="text" name="description[]" class="form-control input_pad" id="" placeholder="Description"></td>
-      <td><%= select_tag "contact_id[]", options_for_select(@contacts.map { |obj| [obj['name'], obj['id']] }),  prompt: "select",class: "claim_contact drop_val" %></td>
-      <td><input name="cut_off_date[]" class="form-control" type="date" value="" id="example-date-input" placeholder="By Cut-Off Date" ></td>
-      <td><select name="status[]"><option value="" selected disabled>Please select</option><option value="Open">Open</option><option value="Closed">Closed</option><option value="Re-open">Re-open</option></select></td>
-      <td><textarea name="notes[]" class="form-control" rows="4"></textarea></td>
-      <td class="text-center"><!--input type="hidden" name="spec_delete[]" value="" /><span style="cursor: pointer;" class="remove-spec"><i class="fa fa-minus" aria-hidden="true"></i></span--></td>             
-    </tr>
-    
-    </tbody>
-  </table>
-</div>
-<script>
-$(document).on('click', '#add-spec', function (e) {
-  var data = $('table.spec-table tbody tr.sm .drop_val').html();
-  var html = '<tr>';
-  html += '<td><input type="text" name="description[]" class="form-control input_pad" id="" placeholder="Description" required="true"></td>';
-  html += '<td><select name="contact_id[]" class="vall" >'+data+'</select></td>';
-  html += '<td><input name="cut_off_date[]" class="form-control" type="date" value="" id="example-date-input" placeholder="By Cut-Off Date" required="true"></td>';
-  html += '<td><select name="status[]"><option value="" selected disabled>Please select</option><option value="Open">Open</option><option value="Closed">Closed</option><option value="Re-open">Re-open</option></select></td>';
-  html += '<td><textarea name="notes[]" class="form-control" style="font-size: initial;" rows="4"></textarea></td>';
-  html += '<td class="text-center"><input type="hidden" name="spec_delete[]" value="" /><span style="cursor: pointer;" class="remove-spec"><i class="fa fa-minus" aria-hidden="true"></i></span></td>';
-  html += '</tr>';
-  $('table.spec-table tbody').append(html);
-});
-$(document).on('click', '.remove-spec', function (e) {
-  $(this).closest('tr').remove();
-});
-</script> 
-        </div>
+          <div class="card card_padding_inner">
+              <a id="add-spec" class="btn btn-link add-btn">
+                  <i class="fa fa-plus" aria-hidden="true"></i> Add Issue
+              </a>
+              <div class="table-responsive">
+                  <table class="spec-table table">
+                      <thead>
+                          <tr>
+                              <th class="th_description">Description</th>
+                              <th class="th_resolvedby">Resolved By</th>
+                              <th class="th_cut_off">By Cut-Off Date</th>
+                              <th class="th_issues_status">Status</th>
+                              <th class="th_issues_notes">Notes</th>
+                              <th class="th_delete">Delete</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr class="sm">
+                              <td><input type="text" name="description[]" class="form-control input_pad" id="" placeholder="Description"></td>
+                              <td>
+                                  <%= select_tag "contact_id[]", options_for_select(@contacts.map { |obj| [obj['name'], obj['id']] }),  prompt: "select",class: "claim_contact drop_val" %>
+                              </td>
+                              <td><input name="cut_off_date[]" class="form-control" type="date" value="" id="example-date-input" placeholder="By Cut-Off Date"></td>
+                              <td><select name="status[]">
+                                      <option value="" selected disabled>Please select</option>
+                                      <option value="Open">Open</option>
+                                      <option value="Closed">Closed</option>
+                                      <option value="Re-open">Re-open</option>
+                                  </select></td>
+                              <td><textarea name="notes[]" class="form-control" rows="4"></textarea></td>
+                              <td class="text-center">
+                                  <!--input type="hidden" name="spec_delete[]" value="" /><span style="cursor: pointer;" class="remove-spec"><i class="fa fa-minus" aria-hidden="true"></i></span-->
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <script>
+              $(document).on('click', '#add-spec', function(e) {
+                  var data = $('table.spec-table tbody tr.sm .drop_val').html();
+                  var html = '<tr>';
+                  html += '<td><input type="text" name="description[]" class="form-control input_pad" id="" placeholder="Description" required="true"></td>';
+                  html += '<td><select name="contact_id[]" class="vall" >' + data + '</select></td>';
+                  html += '<td><input name="cut_off_date[]" class="form-control" type="date" value="" id="example-date-input" placeholder="By Cut-Off Date" required="true"></td>';
+                  html += '<td><select name="status[]"><option value="" selected disabled>Please select</option><option value="Open">Open</option><option value="Closed">Closed</option><option value="Re-open">Re-open</option></select></td>';
+                  html += '<td><textarea name="notes[]" class="form-control" style="font-size: initial;" rows="4"></textarea></td>';
+                  html += '<td class="text-center"><input type="hidden" name="spec_delete[]" value="" /><span style="cursor: pointer;" class="remove-spec"><i class="fa fa-minus" aria-hidden="true"></i></span></td>';
+                  html += '</tr>';
+                  $('table.spec-table tbody').append(html);
+              });
+              $(document).on('click', '.remove-spec', function(e) {
+                  $(this).closest('tr').remove();
+              });
+              </script>
+          </div>
       </div>
     <footer class="table-footer">
       <%= f.submit "Schedule Appointment" , class: "btn btn-one", id: "app1"%>
       <%= link_to "Cancel", appointments_path, class: "btn btn-primary", id: "app2" %>
     </footer>
-
     <% end %>
 
   </div>

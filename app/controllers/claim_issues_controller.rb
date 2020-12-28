@@ -37,8 +37,10 @@ class ClaimIssuesController < ApplicationController
   def create
     begin
     params.permit!
-    claim_issue = {:claim_issue => {"description" => params["description"], "contact_id" => params["contact_id"], "user_id" => params["user_id"], "cut_off_date" => params["cut_off_date"],"status"=> params["status"], "notes" => params["notes"], "division_id" => params["division_id"]}}
-    response = RestClient.post $api_service+'/claim_issues',claim_issue
+    params["description"].count.times do |index|
+      claim_issue = {:claim_issue => {"description" => params["description"][index], "contact_id" => params["contact_id"][index], "user_id" => params["user_id"][index], "cut_off_date" => params["cut_off_date"][index],"status"=> params["status"][index], "notes" => params["notes"][index], "division_id" => params["division_id"]}}
+      response = RestClient.post $api_service+'/claim_issues',claim_issue
+    end
     redirect_to :action => "index"
     rescue =>e
         Rails.logger.custom_log.error { "#{e} ClaimIssuesController create method" }
