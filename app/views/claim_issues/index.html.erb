@@ -79,9 +79,9 @@
                   <th class="text-center">Created Date</th>
                   <th>Notes</th>
                   <th>Status</th>
-                  <th>Assigned To</th> 
                   <%if @user["role"]=="Admin"%>
-                    <th>Delete</th> 
+                  <th>Assigned To</th> 
+                  <th>Delete</th> 
                   <%end%>
                 </tr>
               </thead>
@@ -125,13 +125,13 @@
                      <!--  <td>
                         <%#=i["user"].present? ? i["user"]["user_name"] : "no user" %>
                       </td> -->
-                      <td class="td_issue_status">
-                        <%= select_tag "users[]", options_for_select((@users || []).map { |obj| [obj['user_name'], obj['id']] }, i["user_id"]),  class: "form-control", include_blank: "Select"%>
-                      </td>
-                       <%if @user["role"]=="Admin"%>
+                      <%if @user["role"]=="Admin"%>
+                        <td class="td_issue_status">
+                          <%= select_tag "users[]", options_for_select((@users || []).map { |obj| [obj['user_name'], obj['id']] }, i["user_id"]),  class: "form-control", include_blank: "Select"%>
+                        </td>
                         <td><%= link_to '', "/claim_issues/#{i['id']}", method: :delete, data: { confirm: 'Are you sure?' }, class: "fa fa-trash-o icon_clr load float-right" %></td><%end%>
+                      <%end%>
                   </tr>
-                  <%end%>
               </tbody>
             </table>         
 
