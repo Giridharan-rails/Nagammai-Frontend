@@ -11,7 +11,7 @@
 
             <%= link_to 'Edit Sop', edit_sop_path(:id=>@sop["id"],:division_id=>@sop["division_id"],:appoint_id=>params["appoint_id"]), class: "btn-link" %>
 
-            <a href="/appointments/<%=params["appoint_id"]%>" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a></h3>
+            <!-- <a href="/appointments/<%=params["appoint_id"]%>" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a> --></h3>
             <%else%>
             <%= link_to 'Edit Sop', edit_sop_path(:id=>@sop["id"],:division_id=>@sop["division_id"]), class: "btn-link" %>
 

@@ -18,16 +18,16 @@
 
        <%=link_to "View SOP",sops_dynamic_sop_path(division_id:@appointment["app_contact_id"],appoint_id:@appointment["id"]),class: "btn-link"%>
 
-      <%if params["data"]=="issue"%>
+    <!--   <%#if params["data"]=="issue"%>
       <a href="/issues/index" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a></h3>
-      <%elsif params["data"]=="approval"%>
+      <%#elsif params["data"]=="approval"%>
       <a href="/issues/approved_claims" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a></h3>
-       <%elsif params["data"]=="pending"%>
+       <%#elsif params["data"]=="pending"%>
       <a href="/appointments/pending_appointment" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a></h3>
      
-      <%else%>
+      <%#else%>
       <a href="/appointments" class="btn btn-link float-right"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</a></h3>
-      <%end%>
+      <%#end%> -->
 
     </header>
 
