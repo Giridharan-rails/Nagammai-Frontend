@@ -45,7 +45,7 @@
                                     <th class="text-right">Adjusted Qty</th>
                                     <th class="text-right">Balance Qty</th>
                                     <th class="text-right">Claim Amount</th>
-                                    <!-- <th class="text-right">Settled Amount</th> -->
+                                    <th class="text-right">Settled Amount</th>
                                     <th class="text-right">Bal=(Claim - WS)</th>
                                     <th class="">Claim Type</th>
                                     <th class="th_send-preview">Preview</th>
@@ -83,9 +83,9 @@
                                       <td class="text-right" style="color: red;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
-                                      <!-- <td class="text-right" style="color: red;">
-                                          <%#= '%.2f' % ws_settle_amount.sum.round(2)%>
-                                      </td> -->                                      
+                                      <td class="text-right" style="color: red;">
+                                          <%= '%.2f' % ws_settle_amount.sum.round(2)%>
+                                      </td>                                      
                                       <td class="text-right" style="color: red;">
                                           <%= '%.2f' % (claim_amount.sum.round(2) - ws_settle_amount.sum.round(2) )%>
                                       </td>
@@ -120,9 +120,9 @@
                                       <td class="text-right" style="color: green;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
-                                      <!-- <td class="text-right" style="color: green;">
-                                          <%#= '%.2f' % ws_settle_amount.sum.round(2)%>
-                                      </td> -->                                      
+                                      <td class="text-right" style="color: green;">
+                                          <%= '%.2f' % ws_settle_amount.sum.round(2)%>
+                                      </td>                                      
                                       <td class="text-right" style="color: green;">
                                           <%=' %.2f' % (claim_amount.sum.round(2) - ws_settle_amount.sum.round(2) )%>
                                       </td>
@@ -157,9 +157,9 @@
                                       <td class="text-right" style="color: blue;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
-                                      <!-- <td class="text-right" style="color: blue;">
-                                          <%#= '%.2f' % ws_settle_amount.sum.round(2)%>
-                                      </td> -->                                      
+                                      <td class="text-right" style="color: blue;">
+                                          <%= '%.2f' % ws_settle_amount.sum.round(2)%>
+                                      </td>                                      
                                       <td class="text-right" style="color: blue;">
                                           <%=' %.2f' % (claim_amount.sum.round(2) - ws_settle_amount.sum.round(2) )%>
                                       </td>
@@ -204,9 +204,9 @@
                                       <td class="text-right" style="color: red;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
-                                      <!-- <td class="text-right" style="color: red;">
-                                          <%#= '%.2f' % ws_settle_amount.sum.round(2)%>
-                                      </td> -->                                      
+                                      <td class="text-right" style="color: red;">
+                                          <%= '%.2f' % ws_settle_amount.sum.round(2)%>
+                                      </td>                                      
                                       <td class="text-right" style="color: red;">
                                           <%= '%.2f' % (claim_amount.sum.round(2) - ws_settle_amount.sum.round(2) )%>
                                       </td>
@@ -241,9 +241,9 @@
                                       <td class="text-right" style="color: green;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
-                                      <!-- <td class="text-right" style="color: green;">
-                                          <%#= '%.2f' % ws_settle_amount.sum.round(2)%>
-                                      </td> -->                                      
+                                      <td class="text-right" style="color: green;">
+                                          <%= '%.2f' % ws_settle_amount.sum.round(2)%>
+                                      </td>                                      
                                       <td class="text-right" style="color: green;">
                                           <%=' %.2f' % (claim_amount.sum.round(2) - ws_settle_amount.sum.round(2) )%>
                                       </td>
@@ -278,9 +278,9 @@
                                       <td class="text-right" style="color: blue;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
-                                      <!-- <td class="text-right" style="color: blue;">
-                                          <%#= '%.2f' % ws_settle_amount.sum.round(2)%>
-                                      </td> -->                                      
+                                      <td class="text-right" style="color: blue;">
+                                          <%= '%.2f' % ws_settle_amount.sum.round(2)%>
+                                      </td>                                      
                                       <td class="text-right" style="color: blue;">
                                           <%=' %.2f' % (claim_amount.sum.round(2) - ws_settle_amount.sum.round(2) )%>
                                       </td>
@@ -325,9 +325,9 @@
                                       <td class="text-right" style="color: red;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
-                                      <!-- <td class="text-right" style="color: red;">
-                                          <%#= '%.2f' % ws_settle_amount.sum.round(2)%>
-                                      </td> -->                                      
+                                      <td class="text-right" style="color: red;">
+                                          <%= '%.2f' % ws_settle_amount.sum.round(2)%>
+                                      </td>                                      
                                       <td class="text-right" style="color: red;">
                                           <%= '%.2f' % (claim_amount.sum.round(2) - ws_settle_amount.sum.round(2) )%>
                                       </td>
@@ -362,9 +362,9 @@
                                       <td class="text-right" style="color: green;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
-                                      <!-- <td class="text-right" style="color: green;">
-                                          <%#= '%.2f' % ws_settle_amount.sum.round(2)%>
-                                      </td> -->                                      
+                                      <td class="text-right" style="color: green;">
+                                          <%= '%.2f' % ws_settle_amount.sum.round(2)%>
+                                      </td>                                      
                                       <td class="text-right" style="color: green;">
                                           <%=' %.2f' % (claim_amount.sum.round(2) - ws_settle_amount.sum.round(2) )%>
                                       </td>
@@ -399,9 +399,9 @@
                                       <td class="text-right" style="color: blue;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
-                                      <!-- <td class="text-right" style="color: blue;">
-                                          <%#= '%.2f' % ws_settle_amount.sum.round(2)%>
-                                      </td> -->                                      
+                                      <td class="text-right" style="color: blue;">
+                                          <%= '%.2f' % ws_settle_amount.sum.round(2)%>
+                                      </td>                                      
                                       <td class="text-right" style="color: blue;">
                                           <%=' %.2f' % (claim_amount.sum.round(2) - ws_settle_amount.sum.round(2) )%>
                                       </td>
@@ -446,9 +446,9 @@
                                       <td class="text-right" style="color: red;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
-                                      <!-- <td class="text-right" style="color: red;">
-                                          <%#= '%.2f' % ws_settle_amount.sum.round(2)%>
-                                      </td> -->                                      
+                                      <td class="text-right" style="color: red;">
+                                          <%= '%.2f' % ws_settle_amount.sum.round(2)%>
+                                      </td>                                      
                                       <td class="text-right" style="color: red;">
                                           <%= '%.2f' % (claim_amount.sum.round(2) - ws_settle_amount.sum.round(2) )%>
                                       </td>
@@ -483,9 +483,9 @@
                                       <td class="text-right" style="color: green;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
-                                      <!-- <td class="text-right" style="color: green;">
-                                          <%#= '%.2f' % ws_settle_amount.sum.round(2)%>
-                                      </td> -->                                      
+                                      <td class="text-right" style="color: green;">
+                                          <%= '%.2f' % ws_settle_amount.sum.round(2)%>
+                                      </td>                                      
                                       <td class="text-right" style="color: green;">
                                           <%=' %.2f' % (claim_amount.sum.round(2) - ws_settle_amount.sum.round(2) )%>
                                       </td>
@@ -520,9 +520,9 @@
                                       <td class="text-right" style="color: blue;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
-                                      <!-- <td class="text-right" style="color: blue;">
-                                          <%#= '%.2f' % ws_settle_amount.sum.round(2)%>
-                                      </td> -->                                      
+                                      <td class="text-right" style="color: blue;">
+                                          <%= '%.2f' % ws_settle_amount.sum.round(2)%>
+                                      </td>                                      
                                       <td class="text-right" style="color: blue;">
                                           <%=' %.2f' % (claim_amount.sum.round(2) - ws_settle_amount.sum.round(2) )%>
                                       </td>
@@ -567,9 +567,9 @@
                                       <td class="text-right" style="color: red;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
-                                      <!-- <td class="text-right" style="color: red;">
-                                          <%#= '%.2f' % ws_settle_amount.sum.round(2)%>
-                                      </td> -->                                    
+                                      <td class="text-right" style="color: red;">
+                                          <%= '%.2f' % ws_settle_amount.sum.round(2)%>
+                                      </td>                                    
                                       <td class="text-right" style="color: red;">
                                           <%= '%.2f' % (claim_amount.sum.round(2) - ws_settle_amount.sum.round(2) )%>
                                       </td>
@@ -604,9 +604,9 @@
                                       <td class="text-right" style="color: green;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
-                                      <!-- <td class="text-right" style="color: green;">
-                                          <%#= '%.2f' % ws_settle_amount.sum.round(2)%>
-                                      </td> -->                                    
+                                      <td class="text-right" style="color: green;">
+                                          <%= '%.2f' % ws_settle_amount.sum.round(2)%>
+                                      </td>                                    
                                       <td class="text-right" style="color: green;">
                                           <%=' %.2f' % (claim_amount.sum.round(2) - ws_settle_amount.sum.round(2) )%>
                                       </td>
@@ -641,9 +641,9 @@
                                       <td class="text-right" style="color: blue;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
-                                      <!-- <td class="text-right" style="color: blue;">
-                                          <%#= '%.2f' % ws_settle_amount.sum.round(2)%>
-                                      </td> -->                                    
+                                      <td class="text-right" style="color: blue;">
+                                          <%= '%.2f' % ws_settle_amount.sum.round(2)%>
+                                      </td>                                    
                                       <td class="text-right" style="color: blue;">
                                           <%=' %.2f' % (claim_amount.sum.round(2) - ws_settle_amount.sum.round(2) )%>
                                       </td>
