@@ -76,7 +76,7 @@
                      <td class="text-right"><%= i["rate"] %> </td>
                      <td class="text-right"><%= i["gst"].to_f.round(2) %> </td>
                      <td class="text-right"><%= i["claim_amount"].to_f.round(2) %> </td>
-                     <td class="text-right"><%= i["settled_amount"].to_f.round(2) %> </td>
+                     <td class="text-right"><%= i["ws_settle_amount"].to_f.round(2) %> </td>
                  </tr>
                 <% end %>
 
@@ -120,7 +120,7 @@
                   </label>
               </div>
               <div class="col-md-3">     
-                  <label style="font-weight: bold;">Settled Amount: <span><%@set_total=[]%><%@expiry_damage_claims.map{|i| @set_total<< i["settled_amount"].to_f}%>&#8377;&nbsp;<%= "#{@set_total.sum.to_f.round(2).to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}"%></span>
+                  <label style="font-weight: bold;">Settled Amount: <span><%@set_total=[]%><%@expiry_damage_claims.map{|i| @set_total<< i["ws_settle_amount"].to_f}%>&#8377;&nbsp;<%= "#{@set_total.sum.to_f.round(2).to_s.gsub(/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/, "\\1,")}"%></span>
                   </label>
               </div>
             </div>  

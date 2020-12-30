@@ -68,7 +68,7 @@
                       <td style="width: 10%" class="text-right"><%= i["disc_amount"].to_f.round(2) %> </td>  
                       <td style="width: 10%" class="text-right"><%= i["claim_amount"].to_f.round(2) %> </td>
                       <td style="width: 10%"><%= i["gst"].to_f.round(2) %> </td>
-                      <td style="width: 10%" class="text-right"><%= i["settled_amount"].to_f.round(2) %> </td>                             
+                      <td style="width: 10%" class="text-right"><%= i["ws_settle_amount"].to_f.round(2) %> </td>                             
                                                
                     </tr>
                   <% end %>
@@ -84,7 +84,7 @@
                  </label>
                  </div>
                  <div class="col-md-6">
-                  <label style="float: right;font-weight: bold;">Settled Amount: <span><%@set_total=[]%><%@rate_change_claims.map{|i| @set_total<< i["settled_amount"].to_f}%>&#8377;&nbsp;<%= ActionController::Base.helpers.number_to_currency(@set_total.sum, unit: "")%></span>
+                  <label style="float: right;font-weight: bold;">Settled Amount: <span><%@set_total=[]%><%@rate_change_claims.map{|i| @set_total<< i["ws_settle_amount"].to_f}%>&#8377;&nbsp;<%= ActionController::Base.helpers.number_to_currency(@set_total.sum, unit: "")%></span>
                   </label>
                 </div>
                 </div>

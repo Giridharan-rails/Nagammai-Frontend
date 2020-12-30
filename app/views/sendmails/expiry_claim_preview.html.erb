@@ -61,31 +61,54 @@
                    <% @expiry_damage.map do |i| %>
                    <% if i["adjustments"] != [] %>
                     <% i["adjustments"].map do |j| %>
-                   <tr>
-
-                      <td><%= i["product_code"] %></td> 
-                      <td class="text-left"><%= i["product"]["product_name"] %></td>
-                      <td class="text-left"><%= i["batch_desc"] %></td>
-                      <td class="text-right"><%= i["quantity"] %></td> 
-                      <td class="text-right"><%= j["adjust_quantity"] %></td>
-                      <td class="text-right"><%= i["free_quantity"] %></td>
-                      <td class="input-lable"><input type="text" value="<%= i["rate"] %>" style="width: 70px;" readonly></td>
-                      <td class="input-lable"><input type="text" value="<%= i["mrp"] %>" style="width: 70px;" readonly></td>
-                      <td class="input-lable"><input type="text" value="<%= i["gst"] %>" style="width: 70px;"  readonly></td>
-                      <td class="text-right"><%= i["claim_amount"].to_f.round(2) %></td> 
-                      <td class="text-right"><%= i["ws_settle_amount"].to_f.round(2) %></td>
-                      <td class="text-right"><%= (i["claim_amount"].to_f-i["ws_settle_amount"].to_f).round(2) %></td>
-                      <td class="text-right"><%= j["credit_amount"] %></td>
-                      <td class="text-right"><%= j["credit_note_num"] %></td>
-                      <td class="text-center"><%= j["credit_date"].to_date.strftime('%d-%m-%Y') if j["credit_date"].present? %></td>
-                      <td class="text-right"><%= j["actual_amount"] %></td>
-                      <td class="text-left"><%= j["remark"] %></td>
-
-
-
-                   </tr>
-
-                   <% end %>
+                      <tr>
+                        <td>
+                            <%= i["product_code"] %>
+                        </td>
+                        <td class="text-left">
+                            <%= i["product"]["product_name"] %>
+                        </td>
+                        <td class="text-left">
+                            <%= i["batch_desc"] %>
+                        </td>
+                        <td class="text-right">
+                            <%= i["quantity"] %>
+                        </td>
+                        <td class="text-right">
+                            <%= i["adjusted_quantity"] %>
+                        </td>
+                        <td class="text-right">
+                            <%= i["free_quantity"] %>
+                        </td>
+                        <td class="input-lable"><input type="text" value="<%= i[" rate"] %>" style="width: 70px;" readonly></td>
+                        <td class="input-lable"><input type="text" value="<%= i[" mrp"] %>" style="width: 70px;" readonly></td>
+                        <td class="input-lable"><input type="text" value="<%= i[" gst"] %>" style="width: 70px;" readonly></td>
+                        <td class="text-right">
+                            <%= i["claim_amount"].to_f.round(2) %>
+                        </td>
+                        <td class="text-right">
+                            <%= i["ws_settle_amount"].to_f.round(2) %>
+                        </td>
+                        <td class="text-right">
+                            <%= (i["claim_amount"].to_f-i["ws_settle_amount"].to_f).round(2) %>
+                        </td>
+                        <td class="text-right">
+                            <%= j["credit_amount"] %>
+                        </td>
+                        <td class="text-right">
+                            <%= j["credit_note_num"] %>
+                        </td>
+                        <td class="text-center">
+                            <%= j["credit_date"].to_date.strftime('%d-%m-%Y') if j["credit_date"].present? %>
+                        </td>
+                        <td class="text-right">
+                            <%= j["actual_amount"] %>
+                        </td>
+                        <td class="text-left">
+                            <%= j["remark"] %>
+                        </td>
+                      </tr>
+                    <% end %>
 
                    <% else %>
 

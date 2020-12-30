@@ -74,7 +74,7 @@
                 <tr>
                   <th>Title</th>
                   <th>Divison</th>
-                  <th class="text-center">Cut-off Date </th>                  
+                  <th style="width: 100px;" class="text-center">Cut-off Date </th>                  
                   <th>Resolved By</th>
                   <th class="text-center">Created Date</th>
                   <th>Notes</th>
@@ -119,17 +119,17 @@
                               <% end %>
                           </div>
                       </td>
-                      <td class="td_issue_status">
+                      <td class="">
                           <%= select_tag "status[]", options_for_select([['Open'],['Closed'],['Re-open']],:selected=>i["status"]),  class: "form-control", include_blank: "Select"%>
                       </td>
                      <!--  <td>
                         <%#=i["user"].present? ? i["user"]["user_name"] : "no user" %>
                       </td> -->
                       <%if @user["role"]=="Admin"%>
-                        <td class="td_issue_status">
+                        <td class="">
                           <%= select_tag "users[]", options_for_select((@users || []).map { |obj| [obj['user_name'], obj['id']] }, i["user_id"]),  class: "form-control", include_blank: "Select"%>
                         </td>
-                        <td><%= link_to '', "/claim_issues/#{i['id']}", method: :delete, data: { confirm: 'Are you sure?' }, class: "fa fa-trash-o icon_clr load float-right" %></td><%end%>
+                        <td class="text-center"><%= link_to '', "/claim_issues/#{i['id']}", method: :delete, data: { confirm: 'Are you sure?' }, class: "fa fa-trash-o icon_clr load float-center" %></td><%end%>
                       <%end%>
                   </tr>
               </tbody>

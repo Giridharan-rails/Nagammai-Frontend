@@ -72,7 +72,7 @@
                   <td class="text-left" style="color: red";><%=i["data"][j]["supplier"]["supplier_name"]%></td>
                   <% @quantity=[]%>
                   <% i["total_quantity"].map{|i| @quantity << i.to_i}%>
-                   <td class="text-right"><%=@quantity.sum%></td>
+                   <td class="text-right" style="color: red";><%=@quantity.sum%></td>
                  
 
                    <td class="text-right" style="color: red";> &#8377;&nbsp;<%= '%.2f' % claim_amount.sum.to_f.round(2) %></td>

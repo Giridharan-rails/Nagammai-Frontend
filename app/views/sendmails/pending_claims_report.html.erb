@@ -42,6 +42,8 @@
                                     <th class="text-center">Claim Date</th>
                                     <th class="text-left">Supplier</th>
                                     <th class="text-right">Total Qty</th>                                    
+                                    <th class="text-right">Adjusted Qty</th>
+                                    <th class="text-right">Balance Qty</th>
                                     <th class="text-right">Claim Amount</th>
                                     <!-- <th class="text-right">Settled Amount</th> -->
                                     <th class="text-right">Bal=(Claim - WS)</th>
@@ -71,6 +73,12 @@
                                       <%j["total_quantity"].map {|k|  quantity << k.to_i}%>
                                       <td class="text-right" style="color: red;">
                                           <%=quantity.sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: red;">
+                                          <%=j["adjusted_quantity"].map(&:to_i).sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: red;">
+                                          <%=(quantity.sum.to_i - j["adjusted_quantity"].map(&:to_i).sum).round(2)%>
                                       </td>
                                       <td class="text-right" style="color: red;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
@@ -104,6 +112,12 @@
                                           <%=quantity.sum.round(2)%>
                                       </td>
                                       <td class="text-right" style="color: green;">
+                                          <%=j["adjusted_quantity"].map(&:to_i).sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: green;">
+                                          <%=(quantity.sum.to_i - j["adjusted_quantity"].map(&:to_i).sum).round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: green;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
                                       <!-- <td class="text-right" style="color: green;">
@@ -133,6 +147,12 @@
                                       <%j["total_quantity"].map {|k|  quantity << k.to_i}%>
                                       <td class="text-right" style="color: blue;">
                                           <%=quantity.sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: blue;">
+                                          <%=j["adjusted_quantity"].map(&:to_i).sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: blue;">
+                                          <%=(quantity.sum.to_i - j["adjusted_quantity"].map(&:to_i).sum).round(2)%>
                                       </td>
                                       <td class="text-right" style="color: blue;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
@@ -176,6 +196,12 @@
                                           <%=quantity.sum.round(2)%>
                                       </td>
                                       <td class="text-right" style="color: red;">
+                                          <%=j["adjusted_quantity"].map(&:to_i).sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: red;">
+                                          <%=(quantity.sum.to_i - j["adjusted_quantity"].map(&:to_i).sum).round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: red;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
                                       <!-- <td class="text-right" style="color: red;">
@@ -207,6 +233,12 @@
                                           <%=quantity.sum.round(2)%>
                                       </td>
                                       <td class="text-right" style="color: green;">
+                                          <%=j["adjusted_quantity"].map(&:to_i).sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: green;">
+                                          <%=(quantity.sum.to_i - j["adjusted_quantity"].map(&:to_i).sum).round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: green;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
                                       <!-- <td class="text-right" style="color: green;">
@@ -236,6 +268,12 @@
                                       <%j["total_quantity"].map {|k|  quantity << k.to_i}%>
                                       <td class="text-right" style="color: blue;">
                                           <%=quantity.sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: blue;">
+                                          <%=j["adjusted_quantity"].map(&:to_i).sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: blue;">
+                                          <%=(quantity.sum.to_i - j["adjusted_quantity"].map(&:to_i).sum).round(2)%>
                                       </td>
                                       <td class="text-right" style="color: blue;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
@@ -279,6 +317,12 @@
                                           <%=quantity.sum.round(2)%>
                                       </td>
                                       <td class="text-right" style="color: red;">
+                                          <%=j["adjusted_quantity"].map(&:to_i).sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: red;">
+                                          <%=(quantity.sum.to_i - j["adjusted_quantity"].map(&:to_i).sum).round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: red;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
                                       <!-- <td class="text-right" style="color: red;">
@@ -310,6 +354,12 @@
                                           <%=quantity.sum.round(2)%>
                                       </td>
                                       <td class="text-right" style="color: green;">
+                                          <%=j["adjusted_quantity"].map(&:to_i).sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: green;">
+                                          <%=(quantity.sum.to_i - j["adjusted_quantity"].map(&:to_i).sum).round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: green;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
                                       <!-- <td class="text-right" style="color: green;">
@@ -339,6 +389,12 @@
                                       <%j["total_quantity"].map {|k|  quantity << k.to_i}%>
                                       <td class="text-right" style="color: blue;">
                                           <%=quantity.sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: blue;">
+                                          <%=j["adjusted_quantity"].map(&:to_i).sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: blue;">
+                                          <%=(quantity.sum.to_i - j["adjusted_quantity"].map(&:to_i).sum).round(2)%>
                                       </td>
                                       <td class="text-right" style="color: blue;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
@@ -382,6 +438,12 @@
                                           <%=quantity.sum.round(2)%>
                                       </td>
                                       <td class="text-right" style="color: red;">
+                                          <%=j["adjusted_quantity"].map(&:to_i).sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: red;">
+                                          <%=(quantity.sum.to_i - j["adjusted_quantity"].map(&:to_i).sum).round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: red;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
                                       <!-- <td class="text-right" style="color: red;">
@@ -413,6 +475,12 @@
                                           <%=quantity.sum.round(2)%>
                                       </td>
                                       <td class="text-right" style="color: green;">
+                                          <%=j["adjusted_quantity"].map(&:to_i).sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: green;">
+                                          <%=(quantity.sum.to_i - j["adjusted_quantity"].map(&:to_i).sum).round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: green;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
                                       <!-- <td class="text-right" style="color: green;">
@@ -442,6 +510,12 @@
                                       <%j["total_quantity"].map {|k|  quantity << k.to_i}%>
                                       <td class="text-right" style="color: blue;">
                                           <%=quantity.sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: blue;">
+                                          <%=j["adjusted_quantity"].map(&:to_i).sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: blue;">
+                                          <%=(quantity.sum.to_i - j["adjusted_quantity"].map(&:to_i).sum).round(2)%>
                                       </td>
                                       <td class="text-right" style="color: blue;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
@@ -485,6 +559,12 @@
                                           <%=quantity.sum.round(2)%>
                                       </td>
                                       <td class="text-right" style="color: red;">
+                                          <%=j["adjusted_quantity"].map(&:to_i).sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: red;">
+                                          <%=(quantity.sum.to_i - j["adjusted_quantity"].map(&:to_i).sum).round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: red;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
                                       <!-- <td class="text-right" style="color: red;">
@@ -516,6 +596,12 @@
                                           <%=quantity.sum.round(2)%>
                                       </td>
                                       <td class="text-right" style="color: green;">
+                                          <%=j["adjusted_quantity"].map(&:to_i).sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: green;">
+                                          <%=(quantity.sum.to_i - j["adjusted_quantity"].map(&:to_i).sum).round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: green;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
                                       </td>
                                       <!-- <td class="text-right" style="color: green;">
@@ -545,6 +631,12 @@
                                       <%j["total_quantity"].map {|k|  quantity << k.to_i}%>
                                       <td class="text-right" style="color: blue;">
                                           <%=quantity.sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: blue;">
+                                          <%=j["adjusted_quantity"].map(&:to_i).sum.round(2)%>
+                                      </td>
+                                      <td class="text-right" style="color: blue;">
+                                          <%=(quantity.sum.to_i - j["adjusted_quantity"].map(&:to_i).sum).round(2)%>
                                       </td>
                                       <td class="text-right" style="color: blue;">
                                           <%= '%.2f' % claim_amount.sum.round(2)%>
