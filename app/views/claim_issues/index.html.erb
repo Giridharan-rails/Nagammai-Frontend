@@ -110,8 +110,8 @@
                       <td>
                           <%#= i["notes"]%>
                           <div>
-                              <% if i["notes"]&.length.to_i > 50 %>
                               <% notes = i["notes"] %>
+                              <% if notes&.length.to_i > 50 %>
                               <%= truncate(notes, length: 50) %>
                               <%= link_to_function '...Read more', "$(this).parent().html('#{escape_javascript notes}')" %>
                               <% else %>
