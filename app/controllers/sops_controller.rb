@@ -50,6 +50,11 @@ class SopsController < ApplicationController
     add_breadcrumb "New SOP", :new_sop_path  
     
   end
+
+  def destroy
+    response = RestClient.delete $api_service+"/sops/"+params['id']
+    redirect_to :action => "index"
+  end
 # to delete the selected sop
   def sop_delete
     Rails.logger.info_log.info  " I,[#{Time.now.strftime("%Y-%m-%d %H:%M:%S %Z")}]" "INFO -- : Entered in sops Delete"
