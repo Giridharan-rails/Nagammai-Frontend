@@ -68,7 +68,8 @@
         <%=form_for "issue_update",:url=>{:controller=>"issues",:action=>"issue_update"} do |j|%>
           <div class="display status">
             <%=j.submit "Save" , class: "btn btn-one load", id: "sopissue1"%>
-            <%=link_to "Cancel", pages_dashboard_path , class: "btn btn-primary load", id: "sopissue2"%>
+            <%=j.submit "Delete" , class: "btn btn-one load", id: "sopissue1"%>
+            <%#=link_to "Cancel", pages_dashboard_path , class: "btn btn-primary load", id: "sopissue2"%>
             <table id="example">
                <thead>
                 <tr>
@@ -81,7 +82,7 @@
                   <th>Status</th>
                   <%if @user["role"]=="Admin"%>
                   <th>Assigned To</th> 
-                  <th>Delete</th> 
+                  <th><input type="checkbox" id="ckbCheckAll" /></th>
                   <%end%>
                 </tr>
               </thead>
@@ -129,7 +130,14 @@
                         <td class="">
                           <%= select_tag "users[]", options_for_select((@users || []).map { |obj| [obj['user_name'], obj['id']] }, i["user_id"]),  class: "form-control", include_blank: "Select"%>
                         </td>
-                        <td class="text-center"><%= link_to '', "/claim_issues/#{i['id']}", method: :delete, data: { confirm: 'Are you sure?' }, class: "fa fa-trash-o icon_clr load float-center" %></td><%end%>
+                        <!-- <td class="text-center"><%#= link_to '', "/claim_issues/#{i['id']}", method: :delete, data: { confirm: 'Are you sure?' }, class: "fa fa-trash-o icon_clr load float-center" %></td> -->
+                        <!-- <td><%#= link_to '', "/claim_issues/#{i['id']}", method: :delete, data: { confirm: 'Are you sure?' }, class: "fa fa-trash-o icon_clr load float-right" %></td><%#end%> -->
+                        <th>
+                          <p id="checkBoxes">
+                            <input class="form-check-input checkBoxClass" name="delete[]" type="checkbox" value="<%=i["id"]%>">
+                          </p>
+                        </th>
+                       <%end%>
                       <%end%>
                   </tr>
               </tbody>
@@ -246,7 +254,7 @@
                 }
               }
           ],
-             "order": [[ 2, "desc" ]]
+             "order": [[ 2, "asc" ]]
           } );
   } );
 
@@ -264,6 +272,11 @@
 <script type="text/javascript">
   $(document).ready(function(){
     $("input[type=search]").focus();
+    $(document).ready(function () {
+    $("#ckbCheckAll").click(function () {
+        $(".checkBoxClass").prop('checked', $(this).prop('checked'));
+    });
+    });
   });
 
   $(document).ready(function(){

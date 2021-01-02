@@ -37,8 +37,8 @@ class ClaimIssuesController < ApplicationController
   def create
     begin
     params.permit!
-    params["description"].count.times do |index|
-      claim_issue = {:claim_issue => {"description" => params["description"][index], "contact_id" => params["contact_id"][index], "user_id" => params["user_id"][index], "cut_off_date" => params["cut_off_date"][index],"status"=> params["status"][index], "notes" => params["notes"][index], "division_id" => params["division_id"]}}
+    100.times do |index|
+      claim_issue = {:claim_issue => {"description" => params["description"][0], "contact_id" => params["contact_id"][0], "user_id" => params["user_id"][0], "cut_off_date" => params["cut_off_date"][0],"status"=> params["status"][0], "notes" => params["notes"][0], "division_id" => params["division_id"]}}
       response = RestClient.post $api_service+'/claim_issues',claim_issue
     end
     redirect_to :action => "index"
