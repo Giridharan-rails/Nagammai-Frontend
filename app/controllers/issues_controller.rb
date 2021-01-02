@@ -41,8 +41,9 @@ class IssuesController < ApplicationController
     division_id=params["division_id"]
     supplier_id=params["supplier_id"]
     users=params["users"]
+    delete=params["delete"]
     
-    issue={"ids"=>ids,"status"=>status,"users"=>users,"remarks"=> remarks }
+    issue={"ids"=>ids,"status"=>status,"users"=>users,"delete_users"=>delete,"remarks"=> remarks }
     data=RestClient.post $api_service+'/sops/issues_update',issue
     #rescue => e
    # Rails.logger.custom_log.error { "#{e.class} #{sops_controller issue_update method}" }
